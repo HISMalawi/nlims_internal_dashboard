@@ -36,16 +36,16 @@
                     <h3 class="border-bottom">Molecular Labs</h3>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <button class="nav-link" url="<%= url_for(action: 'qech', controller: 'home', only_path: false) %>" id="qech">Queen Elizabeth Central Hospital</button>
+                            <button class="btn" url="<%= url_for(action: 'qech', controller: 'home', only_path: false) %>" id="qech">Queen Elizabeth Central Hospital</button>
                         </li>
                         <li class="nav-item">
-                             <button class="nav-link" url="<%= url_for(action: 'kch', controller: 'home', only_path: false) %>" id="kch">Kamuzu Central Hospital</button>
+                             <button class="btn" url="<%= url_for(action: 'kch', controller: 'home', only_path: false) %>" id="kch">Kamuzu Central Hospital</button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Mzuzu Central Hospital</a>
+                            <button class="btn" url="<%= url_for(action: 'mzuzuch', controller: 'home', only_path: false) %>" id="mzuzuch">Mzuzu Central Hospital</button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Mzimba District Hospital</a>
+                            <button class="btn" url="<%= url_for(action: 'mzimbadh', controller: 'home', only_path: false) %>" id="mzimbadh">Mzimba District Hospital</button>
                         </li>
                     </ul>
                 </div>
@@ -54,8 +54,9 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <!-- Search form -->
-                            <input class="form-control" type="text" placeholder="Search Site" aria-label="Search">
+                            <input class="form-control" id="search-lab" type="text" placeholder="Search Site" aria-label="Search">
                         </li>
+                        <li class="nav-item ml-2" id="target">cccccccc</li>
 
                     </ul>
                 </div>
@@ -221,7 +222,67 @@
                     $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
                 })         
             })
-        });
+
+            $('#mzuzuch').click(function(){
+
+                url = $('#mzuzuch').attr('url');
+                hospital = $('#mzuzuch').text();
+                
+                axios.get(url).then(function(response) {
+                    data = response.data;
+        
+                    $('#lab').text(hospital)
+                    $('#timeline').text(data.timeline)
+                    $("#total-orders-submitted").text(data.total_orders_submitted);
+                    $("#total-orders-accepted").text(data.total_orders_accepted);
+                    $("#total-orders-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-with-results").text(data.total_tests_with_results);
+                    $("#total-tests").text(data.total_tests);
+                    $("#total-tests-verrified").text(data.total_tests_verrified);
+                    $("#total-tests-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+                })         
+            })
+
+            $('#mzimbadh').click(function(){
+
+                url = $('#mzimbadh').attr('url');
+                hospital = $('#mzimbadh').text();
+                
+                axios.get(url).then(function(response) {
+                    data = response.data;
+        
+                    $('#lab').text(hospital)
+                    $('#timeline').text(data.timeline)
+                    $("#total-orders-submitted").text(data.total_orders_submitted);
+                    $("#total-orders-accepted").text(data.total_orders_accepted);
+                    $("#total-orders-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-with-results").text(data.total_tests_with_results);
+                    $("#total-tests").text(data.total_tests);
+                    $("#total-tests-verrified").text(data.total_tests_verrified);
+                    $("#total-tests-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+                })         
+            })
+        
+            $('#search-lab').keyup(function(){
+                    // $('#target').text($(this).val());
+                value = $(this).val().toLowerCase();
+                for (i = 0; i < data.sites.length; i++) {
+                    if(data.sites.length < 1 || data.sites == undefined){
+
+                    }
+                    else{
+                        if (data.sites[i].toLowerCase().startsWith(value)){
+                            $('#target').text(data.sites[i]);
+                        }   
+                    }  
+                }
+            });
+            
+  });
    
     </script>
 </body>
