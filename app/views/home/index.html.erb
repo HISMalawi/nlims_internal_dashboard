@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <title>LIMS</title>
+
 </head>
 
 <body>
@@ -35,10 +36,10 @@
                     <h3 class="border-bottom">Molecular Labs</h3>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Queen Elizabeth Central Hospital</a>
+                            <button class="nav-link" url="<%= url_for(action: 'qech', controller: 'home', only_path: false) %>" id="qech">Queen Elizabeth Central Hospital</button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Kamuzu Central Hospital</a>
+                             <button class="nav-link" url="<%= url_for(action: 'kch', controller: 'home', only_path: false) %>" id="kch">Kamuzu Central Hospital</button>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mzuzu Central Hospital</a>
@@ -62,7 +63,7 @@
             </div>
             <div class="col-9 shadow p-3 mb-5 bg-white rounded">
                 <div class="header text-center border-bottom">
-                    <h3>LIMS statistics for XXXX Hospital for the month of June, 2021</h3>
+                    <h3 id="head-title">LIMS statistics for <span id="lab">xxx lab</span> for the month of <span id="timeline">June 2021</span></h3>
                 </div>
                 <div class="filter mt-2 border-bottom">
                     <label for="start">Filter Monthly:</label>
@@ -73,7 +74,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">10</h5>
+                                <h5 class="card-title" id="total-orders-submitted">10</h5>
                                 <p class="card-text border-top">Total Orders Submitted</p>
                             </div>
                         </div>
@@ -81,7 +82,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">9</h5>
+                                <h5 class="card-title" id="total-orders-accepted">9</h5>
                                 <p class="card-text border-top">Total Orders Accepted </p>
                             </div>
                         </div>
@@ -90,7 +91,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">1</h5>
+                                <h5 class="card-title" id="total-orders-rejected">1</h5>
                                 <p class="card-text border-top">Total Orders Rejected</p>
                             </div>
                         </div>
@@ -100,7 +101,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">10</h5>
+                                <h5 class="card-title" id="total-tests">10</h5>
                                 <p class="card-text border-top">Total Tests</p>
                             </div>
                         </div>
@@ -108,8 +109,8 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">9</h5>
-                                <p class="card-text border-top">Total Tests Verified</p>
+                                <h5 class="card-title" id="total-tests-verrified">9</h5>
+                                <p class="card-text border-top">Total Tests Verrified</p>
                             </div>
                         </div>
                     </div>
@@ -117,7 +118,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">1</h5>
+                                <h5 class="card-title" id="total-tests-with-results">1</h5>
                                 <p class="card-text border-top">Total Tests with Results</p>
                             </div>
                         </div>
@@ -125,7 +126,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">1</h5>
+                                <h5 class="card-title" id="total-tests-waiting-results">1</h5>
                                 <p class="card-text border-top">Total Tests waiting Results</p>
                             </div>
                         </div>
@@ -133,7 +134,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">1</h5>
+                                <h5 class="card-title" id="total-tests-rejected">1</h5>
                                 <p class="card-text border-top">Total Tests Rejected</p>
                             </div>
                         </div>
@@ -141,7 +142,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">1</h5>
+                                <h5 class="card-title" id="total-tests-to-be-started">1</h5>
                                 <p class="card-text border-top">Total Tests to be started</p>
                             </div>
                         </div>
@@ -171,8 +172,58 @@
 
     </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#qech').click(function(){
+
+                url = $('#qech').attr('url');
+                hospital = $('#qech').text();
+                
+                axios.get(url).then(function(response) {
+                    data = response.data;
+        
+                    $('#lab').text(hospital)
+                    $('#timeline').text(data.timeline)
+                    $("#total-orders-submitted").text(data.total_orders_submitted);
+                    $("#total-orders-accepted").text(data.total_orders_accepted);
+                    $("#total-orders-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-with-results").text(data.total_tests_with_results);
+                    $("#total-tests").text(data.total_tests);
+                    $("#total-tests-verrified").text(data.total_tests_verrified);
+                    $("#total-tests-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+                })         
+            })
+
+            $('#kch').click(function(){
+
+                url = $('#kch').attr('url');
+                hospital = $('#kch').text();
+                
+                axios.get(url).then(function(response) {
+                    data = response.data;
+        
+                    $('#lab').text(hospital)
+                    $('#timeline').text(data.timeline)
+                    $("#total-orders-submitted").text(data.total_orders_submitted);
+                    $("#total-orders-accepted").text(data.total_orders_accepted);
+                    $("#total-orders-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-with-results").text(data.total_tests_with_results);
+                    $("#total-tests").text(data.total_tests);
+                    $("#total-tests-verrified").text(data.total_tests_verrified);
+                    $("#total-tests-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+                })         
+            })
+        });
+   
+    </script>
 </body>
 
 </html>
