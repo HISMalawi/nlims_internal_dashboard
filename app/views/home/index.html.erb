@@ -56,7 +56,9 @@
                             <!-- Search form -->
                             <input class="form-control" id="search-lab" type="text" placeholder="Search Site" aria-label="Search">
                         </li>
-                        <li class="nav-item ml-2" id="target">cccccccc</li>
+                        <li class="nav-item  ml-2 mt-2">
+                            <button class="btn" id="target" url="<%= url_for(action: 'index', controller: 'home', only_path: false) %>"></button>
+                        </li>
 
                     </ul>
                 </div>
@@ -275,12 +277,35 @@
 
                     }
                     else{
-                        if (data.sites[i].toLowerCase().startsWith(value)){
+                        if(data.sites[i].toLowerCase().startsWith(value)){
                             $('#target').text(data.sites[i]);
                         }   
                     }  
                 }
             });
+           $('#target').click(function(){
+               hospital = $('#target').text();
+               url = $('#target').attr('url')+ `/lims/genexpert/${hospital}`;
+            //    + `?${hospital}`;
+
+               console.log(url);
+                
+                axios.get(url).then(function(response) {
+                    data = response.data;
+        
+                    $('#lab').text(hospital)
+                    $('#timeline').text(data.timeline)
+                    $("#total-orders-submitted").text(data.total_orders_submitted);
+                    $("#total-orders-accepted").text(data.total_orders_accepted);
+                    $("#total-orders-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-with-results").text(data.total_tests_with_results);
+                    $("#total-tests").text(data.total_tests);
+                    $("#total-tests-verrified").text(data.total_tests_verrified);
+                    $("#total-tests-rejected").text(data.total_orders_rejected);
+                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+                }) 
+           }) 
             
   });
    
