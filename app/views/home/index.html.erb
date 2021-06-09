@@ -195,214 +195,195 @@
         })
 
 
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
+        var url = "/query_lab_stats_total_tests?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
             type: "Post",
             success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
+                $("#total-tests").text(res);
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+        var url = "/query_lab_stats_total_tests_verrified?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-verrified").text(res);
             },
             error: function(err){
                 alert("error");
             }
         })
 
-
-
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
-        jQuery.ajax({
-            url: url,
-            type: "Post",
-            success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
-            },
-            error: function(err){
-                alert("error");
-            }
-        })
-
-
-
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
-        jQuery.ajax({
-            url: url,
-            type: "Post",
-            success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
-            },
-            error: function(err){
-                alert("error");
-            }
-        })
     }
 
-        $(document).ready(function(){
+        // $(document).ready(function(){
 
            
-            todayDate = new Date();
-            currentYear = todayDate.getFullYear();
-            currentMonth = todayDate.getMonth() + 1;
-            $('#qech').click(function(){
+        //     todayDate = new Date();
+        //     currentYear = todayDate.getFullYear();
+        //     currentMonth = todayDate.getMonth() + 1;
+        //     $('#qech').click(function(){
 
-                url = $('#qech').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#qech').text();
+        //         url = $('#qech').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#qech').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital);
-                    $('#timeline').text(data.timeline);
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital);
+        //             $('#timeline').text(data.timeline);
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#kch').click(function(){
+        //     $('#kch').click(function(){
 
-                url = $('#kch').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#kch').text();
+        //         url = $('#kch').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#kch').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#mzuzuch').click(function(){
+        //     $('#mzuzuch').click(function(){
 
-                url = $('#mzuzuch').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#mzuzuch').text();
+        //         url = $('#mzuzuch').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#mzuzuch').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#mzimbadh').click(function(){
+        //     $('#mzimbadh').click(function(){
 
-                url = $('#mzimbadh').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#mzimbadh').text();
+        //         url = $('#mzimbadh').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#mzimbadh').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
         
-            $('#search-lab').keyup(function(){
-                    // $('#target').text($(this).val());
-                value = $(this).val().toLowerCase();
-                for (i = 0; i < data.sites.length; i++) {
-                    if(data.sites.length < 1 || data.sites == undefined){
+        //     $('#search-lab').keyup(function(){
+        //             // $('#target').text($(this).val());
+        //         value = $(this).val().toLowerCase();
+        //         for (i = 0; i < data.sites.length; i++) {
+        //             if(data.sites.length < 1 || data.sites == undefined){
 
-                    }
-                    else{
-                        if(data.sites[i].toLowerCase().startsWith(value)){
-                            $('#target').text(data.sites[i]);
-                        }   
-                    }  
-                }
-            });
-           $('#target').click(function(){
-               hospital = $('#target').text();
-               url = $('#target').attr('url')+ `lims/genexpert/${hospital}`;
-               url = url + `?year=${currentYear}&month=${currentMonth}`;
-                //    + `?${hospital}`;
+        //             }
+        //             else{
+        //                 if(data.sites[i].toLowerCase().startsWith(value)){
+        //                     $('#target').text(data.sites[i]);
+        //                 }   
+        //             }  
+        //         }
+        //     });
+        //    $('#target').click(function(){
+        //        hospital = $('#target').text();
+        //        url = $('#target').attr('url')+ `lims/genexpert/${hospital}`;
+        //        url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         //    + `?${hospital}`;
 
-                //    console.log(url);
+        //         //    console.log(url);
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                }) 
-           }) 
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         }) 
+        //    }) 
 
-           $("form").submit(function(e){
-                e.preventDefault();
-                yearMonth = $("#yearMonth").val();
-                year = yearMonth.split('-')[0];
-                month = yearMonth.split('-')[1];
-                url = url.split('?')[0] + `?year=${year}&month=${month}`;
-                console.log(url);
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //    $("form").submit(function(e){
+        //         e.preventDefault();
+        //         yearMonth = $("#yearMonth").val();
+        //         year = yearMonth.split('-')[0];
+        //         month = yearMonth.split('-')[1];
+        //         url = url.split('?')[0] + `?year=${year}&month=${month}`;
+        //         console.log(url);
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                }) 
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         }) 
                 
-            });
+        //     });
 
             
-        });
+        // });
 
 
    

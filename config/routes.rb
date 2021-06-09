@@ -9,4 +9,11 @@ Rails.application.routes.draw do
 
   post '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
   get '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
+
+  post '/query_lab_stats_total_tests' => "home#query_lab_stats_total_tests"
+  get '/query_lab_stats_total_tests' => "home#query_lab_stats_total_tests"
+
+  get '/query_lab_stats_total_tests_verrified' => "home#query_lab_stats_total_tests_verrified"
+  post '/query_lab_stats_total_tests_verrified' => "home#query_lab_stats_total_tests_verrified"
+  
 end
