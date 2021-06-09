@@ -5,7 +5,7 @@ class HomeController < ApplicationController
         current_time = DateTime.now
         year = current_time.strftime "%Y"
         month = current_time.strftime "%m"
-        month_year = Date::MONTHNAMES[month.to_i] + ', '+ year
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s + ', '+ year
         # year = params[:yearMonth].split('-')[0]
         # month = params[:yearMonth].split('-')[1]
 
@@ -15,7 +15,7 @@ class HomeController < ApplicationController
     def qech
         year = params[:year]
         month = params[:month]
-        month_year = Date::MONTHNAMES[month.to_i]
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s
         data = {
             total_orders_submitted:350, total_orders_accepted: 300,
             total_orders_rejected: 50, total_tests: 1000,
@@ -30,7 +30,7 @@ class HomeController < ApplicationController
     def kch
         year = params[:year]
         month = params[:month]
-        month_year = Date::MONTHNAMES[month.to_i]
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s
         data = {
             total_orders_submitted:33350, total_orders_accepted: 33300,
             total_orders_rejected: 3350, total_tests: 331000,
@@ -45,7 +45,7 @@ class HomeController < ApplicationController
     def mzuzuch
         year = params[:year]
         month = params[:month]
-        month_year = Date::MONTHNAMES[month.to_i]
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s
         data = {
             total_orders_submitted:11350, total_orders_accepted: 11300,
             total_orders_rejected: 1150, total_tests: 111000,
@@ -60,7 +60,7 @@ class HomeController < ApplicationController
     def mzimbadh
         year = params[:year]
         month = params[:month]
-        month_year = Date::MONTHNAMES[month.to_i]
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s
         data = {
             total_orders_submitted:88350, total_orders_accepted: 88300,
             total_orders_rejected: 8850, total_tests: 881000,
@@ -76,7 +76,7 @@ class HomeController < ApplicationController
     def genexpert
         year = params[:year]
         month = params[:month]
-        month_year = Date::MONTHNAMES[month.to_i]
+        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s
         if params[:hospital] == 'ekwendeni'
         data = {
             total_orders_submitted:22350, total_orders_accepted: 22300,
