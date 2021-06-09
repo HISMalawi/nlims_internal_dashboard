@@ -2,14 +2,24 @@ require 'date'
 
 class HomeController < ApplicationController
     def index
-        current_time = DateTime.now
-        year = current_time.strftime "%Y"
-        month = current_time.strftime "%m"
-        month_year = Date::MONTHNAMES[month.to_i] + ", "+ year.to_s + ', '+ year
-        # year = params[:yearMonth].split('-')[0]
-        # month = params[:yearMonth].split('-')[1]
+        @labs = YAML.load_file "#{Rails.root}/public/molecular_labs.json"
+    end
 
-        # puts('year '+ year + ' month '+ month)
+    def query_lab_stats_total_orders
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
     end
 
     def qech

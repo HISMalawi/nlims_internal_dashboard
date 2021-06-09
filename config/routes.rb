@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   get '/lims/mzuzu-central-hospital' , to: 'home#mzuzuch'
   get '/lims/genexpert/:hospital' , to: 'home#genexpert'
 
+  post '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
+  get '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
 end
