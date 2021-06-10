@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
 </head>
 
 <body>
@@ -42,20 +43,22 @@
                 </div>
                 <div class="gxepert-sites mt-3">
                     <h3 class="border-bottom">Genexepert Sites</h3>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <!-- Search form -->
-                            <input class="form-control" id="search-lab" type="text" placeholder="Search Site" aria-label="Search">
-                        </li>
-                        <% @genexpert_labs.each do |genexpert_lab| %>
-                            <li class="nav-item">
-                                <button class="btn" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>
-                            </li> 
-                        <% end %> 
-
-                    </ul>
+                    <div id="sites">
+                        <input class="search form-control" placeholder="Search site" />
+                        <div style="overflow: scroll; height:320px;">
+                            <ul class="nav flex-column list">
+                                
+                                    <% @genexpert_labs.each do |genexpert_lab| %>
+                                        <li class="nav-item">                     
+                                            <button class="btn name" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
+                                        </li>
+                                    <% end %> 
+                                
+                            </ul>
+                        </div>
+                    </div>
+                
                 </div>
-
             </div>
             <div class="col-9 shadow p-3 mb-5 bg-white rounded">
                 <div class="header border-bottom" style="display:none;">
@@ -226,21 +229,7 @@
             }
         })
 
-
-	  url = "/query_last_sync?lab_name=" + lab;
-          jQuery.ajax({
-            url: url,
-            type: "Post",
-            success: function(res){
-                $("#last_sync").text(res);
-                $("#last_sync").style.color = "black";
-	      },
-            error: function(err){
-                alert("error");
-            }
-        })
-
-
+        // total orders rejected ajax call
         url = "/query_lab_stats_total_orders_rejected?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -254,18 +243,7 @@
             }
         })
 
-        url = "/query_last_sync?lab_name=" + lab +"&period="+period;
-        jQuery.ajax({
-            url: url,
-            type: "Post",
-            success: function(res){
-                $("#last_sync").text(res);
-            },
-            error: function(err){
-                console.log(err);
-            }
-        })
-
+        // total tests ajax call
         url = "/query_lab_stats_total_tests?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -279,6 +257,7 @@
             }
         })
 
+        // total tests verrified ajax call
         url = "/query_lab_stats_total_tests_verrified?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -292,6 +271,8 @@
             }
         })
 
+
+        // total tests with results ajax call
         url = "/query_lab_stats_total_tests_with_results?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -305,6 +286,7 @@
             }
         })
 
+        // total tests waiting results
         url = "/query_lab_stats_total_tests_waiting_results?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -318,6 +300,7 @@
             }
         })
 
+        // total tests reject ajax call
         url = "/query_lab_stats_total_tests_rejected?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -331,6 +314,7 @@
             }
         })
 
+        // total tests to be started
         url = "/query_lab_stats_total_tests_to_be_started?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -344,15 +328,36 @@
             }
         })
 
+
+        // last sync ajax call
+        url = "/query_last_sync?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#last_sync").text(res);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+
     }
+
+    // date filter logic call
     $("form").submit(function(e){
         e.preventDefault();
-        lab= url.split('?')[1].split('&')[0].split('=')[1 ];
+        lab = url.split('?')[1].split('&')[0].split('=')[1 ];
         loadData(lab);
-        $('#date').attr('value','');
-    })
+        $('#date').val('');
+    });
 
-   
+    // search filter sites
+    var options = {
+    valueNames: [ 'name' ]
+    };
+    var userList = new List('sites', options);
+
     </script>
 </body>
 
