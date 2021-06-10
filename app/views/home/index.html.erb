@@ -155,7 +155,7 @@
                         <p>Sync Status: <span class="text-success"> Online</span></p>
                     </div>
                     <div class="col-6 mb-2 text-center">
-                        <p>Last Sync: <span class="bg-secondary text-white p-1">26/05/21 13:30</span></span>
+                        <p>Last Sync: <span class="bg-secondary text-white p-1" id="last_sync">26/05/21 13:30</span></span>
                         </p>
                     </div>
                 </div>
@@ -195,13 +195,13 @@
         })
 
 
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
+        var url = "/query_last_sync?lab_name=" + lab;
         jQuery.ajax({
             url: url,
             type: "Post",
             success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
+                $("#last_sync").text(res);
+                $("#last_sync").style.color = "black";
             },
             error: function(err){
                 alert("error");

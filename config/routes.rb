@@ -9,4 +9,5 @@ Rails.application.routes.draw do
 
   post '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
   get '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
+  post '/query_last_sync' => "home#query_last_sync"
 end
