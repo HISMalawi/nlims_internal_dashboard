@@ -16,7 +16,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">LIMS</a>
+        <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">Home <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         </div>
@@ -38,7 +38,7 @@
                     <ul class="nav flex-column">
                         <% @labs.each do |lab| %>
                             <li class="nav-item">
-                                <button class="btn" onclick="loadData('<%= lab[0] %>')" ><%= lab[1] %> </button>
+                                <button class="btn" onclick="loadData('<%= lab[0] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
                             </li> 
                         <% end %>                       
                     </ul>
@@ -59,14 +59,14 @@
 
             </div>
             <div class="col-9 shadow p-3 mb-5 bg-white rounded">
-                <div class="header text-center border-bottom">
-                    <h3 id="head-title">LIMS statistics for <span id="lab">xxx lab</span> for the month of <span id="timeline">June 2021</span></h3>
+                <div class="header border-bottom" style="display:none;">
+                    <h3 id="head-title">LAB: <span id="lab"></span><span class="ml-5"></span>Date:<span id="timeline">June 2021</span></h3>
                 </div>
-                <div class="filter mt-2 border-bottom">
+                <div class="filter mt-2 border-bottom" style="display:none;">
                     <form>
                         <div class="form-group">
-                            <label for="start">Filter Monthly:</label>
-                            <input type="month" id="yearMonth" name="yearMonth" min="1964-03">
+                            <label for="start">Filter by date:</label>
+                            <input type="date" id="date" name="date">
                             <button type="submit">Submit</button>
                         </div>
                     </form>
@@ -75,7 +75,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-submitted">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-submitted">!</h5>
                                 <p class="card-text border-top">Total Orders Submitted</p>
                             </div>
                         </div>
@@ -83,7 +83,15 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-accepted">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-submitted">!</h5>
+                                <p class="card-text border-top">Total Orders Today</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-accepted">!</h5>
                                 <p class="card-text border-top">Total Orders Accepted </p>
                             </div>
                         </div>
@@ -92,7 +100,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-rejected">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-rejected">!</h5>
                                 <p class="card-text border-top">Total Orders Rejected</p>
                             </div>
                         </div>
@@ -102,15 +110,23 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title"  style="color:red" id="total-tests">!</h5>
+                                <h5 class="card-title"  style="color:black; font-size:25px;" id="total-tests">!</h5>
                                 <p class="card-text border-top">Total Tests</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-4 mb-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title"  style="color:black; font-size:25px;" id="total-tests">!</h5>
+                                <p class="card-text border-top">Total Tests Done Today</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-verrified">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-verrified">!</h5>
                                 <p class="card-text border-top">Total Tests Verrified</p>
                             </div>
                         </div>
@@ -119,7 +135,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-with-results">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-with-results">!</h5>
                                 <p class="card-text border-top">Total Tests with Results</p>
                             </div>
                         </div>
@@ -127,7 +143,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-waiting-results">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-waiting-results">!</h5>
                                 <p class="card-text border-top">Total Tests waiting Results</p>
                             </div>
                         </div>
@@ -135,7 +151,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-rejected">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-rejected">!</h5>
                                 <p class="card-text border-top">Total Tests Rejected</p>
                             </div>
                         </div>
@@ -143,7 +159,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-to-be-started">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-to-be-started">!</h5>
                                 <p class="card-text border-top">Total Tests to be started</p>
                             </div>
                         </div>
@@ -173,15 +189,24 @@
 
     </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script>
 
     function loadData(lab){
-       
-        var period = "false";
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
+        hospital = $(`#${lab}`).text();
+        $('#lab').text(hospital);
+
+
+        period = $('#date').val()
+        if (period == ""){
+            period = "false";
+        }
+
+        $('.header').css('display', '');
+        $('.filter').css('display', '');
+
+        
+        url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
             type: "Post",
@@ -195,214 +220,293 @@
         })
 
 
-        var url = "/query_last_sync?lab_name=" + lab;
+ 
+         url = "/query_lab_stats_total_orders_accepted?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+	       $("#total-orders-accepted").text(res);
+                $("#total-orders-accepted").css('color','green');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+
+	  url = "/query_last_sync?lab_name=" + lab;
+          jQuery.ajax({
             url: url,
             type: "Post",
             success: function(res){
                 $("#last_sync").text(res);
                 $("#last_sync").style.color = "black";
-            },
+	      },
             error: function(err){
                 alert("error");
             }
         })
 
 
-
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
+        url = "/query_lab_stats_total_orders_rejected?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
             type: "Post",
             success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
+                $("#total-orders-rejected").text(res);
+                $("#total-orders-rejected").css('color','red');
             },
             error: function(err){
                 alert("error");
             }
         })
-
-
-
-        var url = "/query_lab_stats_total_orders?lab_name=" + lab +"&period="+period;
+        url = "/query_lab_stats_total_tests?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
             type: "Post",
             success: function(res){
-                $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
+                $("#total-tests").text(res);
             },
             error: function(err){
                 alert("error");
             }
         })
+        url = "/query_lab_stats_total_tests_verrified?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-verrified").text(res);
+                $("#total-tests-verrified").css('color','green');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+          url = "/query_lab_stats_total_tests_with_results?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-with-results").text(res);
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        url = "/query_lab_stats_total_tests_waiting_results?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-waiting-results").text(res);
+                $("#total-tests-waiting-results").css('color','yellow');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        url = "/query_lab_stats_total_tests_rejected?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-rejected").text(res);
+                $("#total-tests-rejected").css('color','red');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        url = "/query_lab_stats_total_tests_to_be_started?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-to-be-started").text(res);
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
     }
+    $("form").submit(function(e){
+        e.preventDefault();
+        lab= url.split('?')[1].split('&')[0].split('=')[1 ];
+        // console.log(lab);
+        loadData(lab);
+    })
 
-        $(document).ready(function(){
+        // $(document).ready(function(){
 
            
-            todayDate = new Date();
-            currentYear = todayDate.getFullYear();
-            currentMonth = todayDate.getMonth() + 1;
-            $('#qech').click(function(){
+        //     todayDate = new Date();
+        //     currentYear = todayDate.getFullYear();
+        //     currentMonth = todayDate.getMonth() + 1;
+        //     $('#qech').click(function(){
 
-                url = $('#qech').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#qech').text();
+        //         url = $('#qech').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#qech').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital);
-                    $('#timeline').text(data.timeline);
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital);
+        //             $('#timeline').text(data.timeline);
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#kch').click(function(){
+        //     $('#kch').click(function(){
 
-                url = $('#kch').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#kch').text();
+        //         url = $('#kch').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#kch').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#mzuzuch').click(function(){
+        //     $('#mzuzuch').click(function(){
 
-                url = $('#mzuzuch').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#mzuzuch').text();
+        //         url = $('#mzuzuch').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#mzuzuch').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
 
-            $('#mzimbadh').click(function(){
+        //     $('#mzimbadh').click(function(){
 
-                url = $('#mzimbadh').attr('url');
-                url = url + `?year=${currentYear}&month=${currentMonth}`;
-                hospital = $('#mzimbadh').text();
+        //         url = $('#mzimbadh').attr('url');
+        //         url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         hospital = $('#mzimbadh').text();
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                })         
-            })
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         })         
+        //     })
         
-            $('#search-lab').keyup(function(){
-                    // $('#target').text($(this).val());
-                value = $(this).val().toLowerCase();
-                for (i = 0; i < data.sites.length; i++) {
-                    if(data.sites.length < 1 || data.sites == undefined){
+        //     $('#search-lab').keyup(function(){
+        //             // $('#target').text($(this).val());
+        //         value = $(this).val().toLowerCase();
+        //         for (i = 0; i < data.sites.length; i++) {
+        //             if(data.sites.length < 1 || data.sites == undefined){
 
-                    }
-                    else{
-                        if(data.sites[i].toLowerCase().startsWith(value)){
-                            $('#target').text(data.sites[i]);
-                        }   
-                    }  
-                }
-            });
-           $('#target').click(function(){
-               hospital = $('#target').text();
-               url = $('#target').attr('url')+ `lims/genexpert/${hospital}`;
-               url = url + `?year=${currentYear}&month=${currentMonth}`;
-                //    + `?${hospital}`;
+        //             }
+        //             else{
+        //                 if(data.sites[i].toLowerCase().startsWith(value)){
+        //                     $('#target').text(data.sites[i]);
+        //                 }   
+        //             }  
+        //         }
+        //     });
+        //    $('#target').click(function(){
+        //        hospital = $('#target').text();
+        //        url = $('#target').attr('url')+ `lims/genexpert/${hospital}`;
+        //        url = url + `?year=${currentYear}&month=${currentMonth}`;
+        //         //    + `?${hospital}`;
 
-                //    console.log(url);
+        //         //    console.log(url);
                 
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                }) 
-           }) 
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         }) 
+        //    }) 
 
-           $("form").submit(function(e){
-                e.preventDefault();
-                yearMonth = $("#yearMonth").val();
-                year = yearMonth.split('-')[0];
-                month = yearMonth.split('-')[1];
-                url = url.split('?')[0] + `?year=${year}&month=${month}`;
-                console.log(url);
-                axios.get(url).then(function(response) {
-                    data = response.data;
+        //    $("form").submit(function(e){
+        //         e.preventDefault();
+        //         yearMonth = $("#yearMonth").val();
+        //         year = yearMonth.split('-')[0];
+        //         month = yearMonth.split('-')[1];
+        //         url = url.split('?')[0] + `?year=${year}&month=${month}`;
+        //         console.log(url);
+        //         axios.get(url).then(function(response) {
+        //             data = response.data;
         
-                    $('#lab').text(hospital)
-                    $('#timeline').text(data.timeline)
-                    $("#total-orders-submitted").text(data.total_orders_submitted);
-                    $("#total-orders-accepted").text(data.total_orders_accepted);
-                    $("#total-orders-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-with-results").text(data.total_tests_with_results);
-                    $("#total-tests").text(data.total_tests);
-                    $("#total-tests-verrified").text(data.total_tests_verrified);
-                    $("#total-tests-rejected").text(data.total_orders_rejected);
-                    $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
-                    $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
-                }) 
+        //             $('#lab').text(hospital)
+        //             $('#timeline').text(data.timeline)
+        //             $("#total-orders-submitted").text(data.total_orders_submitted);
+        //             $("#total-orders-accepted").text(data.total_orders_accepted);
+        //             $("#total-orders-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-with-results").text(data.total_tests_with_results);
+        //             $("#total-tests").text(data.total_tests);
+        //             $("#total-tests-verrified").text(data.total_tests_verrified);
+        //             $("#total-tests-rejected").text(data.total_orders_rejected);
+        //             $("#total-tests-waiting-results").text(data.total_tests_waiting_results);
+        //             $("#total-tests-to-be-started").text(data.total_tests_to_be_started);
+        //         }) 
                 
-            });
+        //     });
 
             
-        });
+        // });
 
 
    
