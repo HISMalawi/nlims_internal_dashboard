@@ -75,7 +75,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-submitted">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-submitted">!</h5>
                                 <p class="card-text border-top">Total Orders Submitted</p>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-accepted">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-accepted">!</h5>
                                 <p class="card-text border-top">Total Orders Accepted </p>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-orders-rejected">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-orders-rejected">!</h5>
                                 <p class="card-text border-top">Total Orders Rejected</p>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title"  style="color:red" id="total-tests">!</h5>
+                                <h5 class="card-title"  style="color:black; font-size:25px;" id="total-tests">!</h5>
                                 <p class="card-text border-top">Total Tests</p>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-verrified">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-verrified">!</h5>
                                 <p class="card-text border-top">Total Tests Verrified</p>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-with-results">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-with-results">!</h5>
                                 <p class="card-text border-top">Total Tests with Results</p>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-waiting-results">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-waiting-results">!</h5>
                                 <p class="card-text border-top">Total Tests waiting Results</p>
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-rejected">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-rejected">!</h5>
                                 <p class="card-text border-top">Total Tests Rejected</p>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red" id="total-tests-to-be-started">!</h5>
+                                <h5 class="card-title" style="color:black; font-size:25px;" id="total-tests-to-be-started">!</h5>
                                 <p class="card-text border-top">Total Tests to be started</p>
                             </div>
                         </div>
@@ -194,7 +194,31 @@
             }
         })
 
+        var url = "/query_lab_stats_total_orders_accepted?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-orders-accepted").text(res);
+                $("#total-orders-accepted").css('color','green');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
 
+        var url = "/query_lab_stats_total_orders_rejected?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-orders-rejected").text(res);
+                $("#total-orders-rejected").css('color','red');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
         var url = "/query_lab_stats_total_tests?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -212,6 +236,57 @@
             type: "Post",
             success: function(res){
                 $("#total-tests-verrified").text(res);
+                $("#total-tests-verrified").css('color','green');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+          var url = "/query_lab_stats_total_tests_with_results?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-with-results").text(res);
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        var url = "/query_lab_stats_total_tests_waiting_results?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-waiting-results").text(res);
+                $("#total-tests-waiting-results").css('color','yellow');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        var url = "/query_lab_stats_total_tests_rejected?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-rejected").text(res);
+                $("#total-tests-rejected").css('color','red');
+            },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+        var url = "/query_lab_stats_total_tests_to_be_started?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#total-tests-to-be-started").text(res);
             },
             error: function(err){
                 alert("error");

@@ -22,6 +22,40 @@ class HomeController < ApplicationController
         render plain: data and return
     end
 
+    def query_lab_stats_total_orders_accepted
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
+    end
+
+    def query_lab_stats_total_orders_rejected
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
+    end
+
     def query_lab_stats_total_tests
         lab  = params[:lab_name]
         period = params[:period]
@@ -30,9 +64,9 @@ class HomeController < ApplicationController
         if period != "false"
         
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_test FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}'")
             if !res.blank?
-                data = res[0]['total_test']
+                data = res[0]['total_count']
             end
         end
 
@@ -47,16 +81,84 @@ class HomeController < ApplicationController
         if period != "false"
         
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_test_verrified FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5")
             if !res.blank?
-                data = res[0]['total_test_verrified']
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
+    end
+    
+
+
+    def query_lab_stats_total_tests_with_results
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4")
+            if !res.blank?
+                data = res[0]['total_count']
             end
         end
 
         render plain: data and return
     end
 
+    def query_lab_stats_total_tests_waiting_results
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=7")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
 
+        render plain: data and return
+    end
+
+    def query_lab_stats_total_tests_rejected
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
+    end
+    
+    def query_lab_stats_total_tests_to_be_started
+        lab  = params[:lab_name]
+        period = params[:period]
+        data = "0"
+        
+        if period != "false"
+        
+        else
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=9")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
+        end
+
+        render plain: data and return
+    end
     # def qech
     #     year = params[:year]
     #     month = params[:month]
