@@ -47,9 +47,11 @@
                             <!-- Search form -->
                             <input class="form-control" id="search-lab" type="text" placeholder="Search Site" aria-label="Search">
                         </li>
-                        <li class="nav-item  ml-2 mt-2">
-                            <button class="btn" id="target" url="<%= url_for(action: 'index', controller: 'home', only_path: false) %>"></button>
-                        </li>
+                        <% @genexpert_labs.each do |genexpert_lab| %>
+                            <li class="nav-item">
+                                <button class="btn" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>
+                            </li> 
+                        <% end %> 
 
                     </ul>
                 </div>

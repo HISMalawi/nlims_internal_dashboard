@@ -3,6 +3,7 @@ require 'date'
 class HomeController < ApplicationController
     def index
         @labs = YAML.load_file "#{Rails.root}/public/molecular_labs.json"
+        @genexpert_labs = YAML.load_file "#{Rails.root}/public/genexpert_labs.json"
     end
 
     def query_lab_stats_total_orders
@@ -23,7 +24,6 @@ class HomeController < ApplicationController
                 data = res[0]['total_count']
             end
         end
-
         render plain: data and return
     end
 
@@ -123,7 +123,7 @@ class HomeController < ApplicationController
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4 OR tests.test_status_id=5")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=4 OR tests.test_status_id=5)")
             if !res.blank?
                 data = res[0]['total_count']
             end
