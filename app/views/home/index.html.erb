@@ -203,7 +203,7 @@
             type: "Post",
             success: function(res){
                 $("#total-orders-submitted").text(res);
-                $("#total-orders-submitted").style.color = "black";
+                $("#total-orders-submitted").css('color','black');
             },
             error: function(err){
                 console.log(err);
@@ -243,6 +243,7 @@
             type: "Post",
             success: function(res){
                 $("#total-tests").text(res);
+                $("#total-tests").css('color','black');
             },
             error: function(err){
                 console.log(err);
@@ -268,6 +269,7 @@
             type: "Post",
             success: function(res){
                 $("#total-tests-with-results").text(res);
+                $("#total-tests-with-results").css('color','black');
             },
             error: function(err){
                 console.log(err);
@@ -306,6 +308,7 @@
             type: "Post",
             success: function(res){
                 $("#total-tests-to-be-started").text(res);
+                $("#total-tests-to-be-started").css('color','black');
             },
             error: function(err){
                 console.log(err);
