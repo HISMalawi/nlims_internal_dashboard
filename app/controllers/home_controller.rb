@@ -24,6 +24,7 @@ class HomeController < ApplicationController
                 data = res[0]['total_count']
             end
         end
+
         render plain: data and return
     end
 
@@ -50,7 +51,6 @@ class HomeController < ApplicationController
         render plain: data and return
     end
 
-
     def query_lab_stats_total_orders_rejected
         lab  = params[:lab_name]
         period = params[:period]
@@ -69,17 +69,7 @@ class HomeController < ApplicationController
         end
 
         render plain: data and return
-
-    def query_last_sync
-        lab  = params[:lab_name]      
-        data = "0"
-        res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1")
-        if !res.blank?
-           data = res[0]['created_at']
-        end
-        render plain: data and return
     end
-
 
     def query_lab_stats_total_tests
         lab  = params[:lab_name]
@@ -134,7 +124,7 @@ class HomeController < ApplicationController
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=4 OR tests.test_status_id=5)")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4 OR tests.test_status_id=5")
             if !res.blank?
                 data = res[0]['total_count']
             end
