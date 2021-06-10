@@ -28,4 +28,6 @@ Rails.application.routes.draw do
 
   get '/query_lab_stats_total_tests_to_be_started' => "home#query_lab_stats_total_tests_to_be_started"
   post '/query_lab_stats_total_tests_to_be_started' => "home#query_lab_stats_total_tests_to_be_started"
+
+  post '/query_last_sync' => "home#query_last_sync"
 end

@@ -154,8 +154,8 @@
                     <div class="col-4 mb-2">
                         <p>Sync Status: <span class="text-success"> Online</span></p>
                     </div>
-                    <div class="col-8 mb-2">
-                        <p>Last Sync: <span class="bg-secondary text-white p-1">26/05/21 13:30</span></span>
+                    <div class="col-6 mb-2 text-center">
+                        <p>Last Sync: <span class="bg-secondary text-white p-1" id="last_sync">26/05/21 13:30</span></span>
                         </p>
                     </div>
                 </div>
@@ -233,6 +233,18 @@
             success: function(res){
                 $("#total-orders-rejected").text(res);
                 $("#total-orders-rejected").css('color','red');
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+
+        url = "/query_last_sync?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#last_sync").text(res);
             },
             error: function(err){
                 console.log(err);

@@ -50,6 +50,7 @@ class HomeController < ApplicationController
         render plain: data and return
     end
 
+
     def query_lab_stats_total_orders_rejected
         lab  = params[:lab_name]
         period = params[:period]
@@ -68,7 +69,17 @@ class HomeController < ApplicationController
         end
 
         render plain: data and return
+
+    def query_last_sync
+        lab  = params[:lab_name]      
+        data = "0"
+        res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1")
+        if !res.blank?
+           data = res[0]['created_at']
+        end
+        render plain: data and return
     end
+
 
     def query_lab_stats_total_tests
         lab  = params[:lab_name]
