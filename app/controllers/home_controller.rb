@@ -9,9 +9,11 @@ class HomeController < ApplicationController
         lab  = params[:lab_name]
         period = params[:period]
         data = "0"
-        
         if period != "false"
-        
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)=#{period}")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
         else
             res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'")
             if !res.blank?
@@ -79,7 +81,10 @@ class HomeController < ApplicationController
         data = "0"
         
         if period != "false"
-        
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5")
+            if !res.blank?
+                data = res[0]['total_count']
+            end
         else
             res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5")
             if !res.blank?
@@ -100,7 +105,7 @@ class HomeController < ApplicationController
         if period != "false"
         
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4 OR tests.test_status_id=5")
             if !res.blank?
                 data = res[0]['total_count']
             end
