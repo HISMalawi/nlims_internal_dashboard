@@ -226,6 +226,21 @@
             }
         })
 
+
+	  url = "/query_last_sync?lab_name=" + lab;
+          jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#last_sync").text(res);
+                $("#last_sync").style.color = "black";
+	      },
+            error: function(err){
+                alert("error");
+            }
+        })
+
+
         url = "/query_lab_stats_total_orders_rejected?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
             url: url,
@@ -239,17 +254,17 @@
             }
         })
 
-        // url = "/query_last_sync?lab_name=" + lab +"&period="+period;
-        // jQuery.ajax({
-        //     url: url,
-        //     type: "Post",
-        //     success: function(res){
-        //         $("#last_sync").text(res);
-        //     },
-        //     error: function(err){
-        //         console.log(err);
-        //     }
-        // })
+        url = "/query_last_sync?lab_name=" + lab +"&period="+period;
+        jQuery.ajax({
+            url: url,
+            type: "Post",
+            success: function(res){
+                $("#last_sync").text(res);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
 
         url = "/query_lab_stats_total_tests?lab_name=" + lab +"&period="+period;
         jQuery.ajax({
