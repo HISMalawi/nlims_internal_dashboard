@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '' , to: 'home#index'
 
-  post '/query_lab_stats_total_orders' => "home#query_lab_stats_total_orders"
+  post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
   
   post '/query_lab_stats_total_orders_accepted' => "home#query_lab_stats_total_orders_accepted"
   
@@ -20,5 +20,5 @@ Rails.application.routes.draw do
 
   post '/query_lab_stats_total_tests_to_be_started' => "home#query_lab_stats_total_tests_to_be_started"
 
-  post '/query_last_sync' => "home#query_last_sync"
+  post '/query_lab_stats_last_sync' => "home#query_last_sync"
 end

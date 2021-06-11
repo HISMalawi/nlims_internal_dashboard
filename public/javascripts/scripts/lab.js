@@ -1,177 +1,115 @@
-function loadData(lab) {
+var hospital
+var period;
 
-    // Set hospital name
-    hospital = $(`#${lab}`).text();
-    $('#lab').text(hospital);
+// ajax call function
+function ajaxCall(uri, color) {
+    let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
+    jQuery.ajax({
+        url: uri,
+        type: "Post",
+        success: function(res) {
+            $(`#${selector}`).text(res);
+            $(`#${selector}`).css('color', `${color}`);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}
 
-    // Get filter date
+// search filter sites
+function searchFilter() {
+    var options = {
+        valueNames: ['name']
+    };
+    var userList = new List('sites', options);
+
+}
+
+// date filter function
+function filterByDate() {
+    $("form").submit(function(e) {
+        e.preventDefault();
+        lab = url.split('?')[1].split('&')[0].split('=')[1];
+        loadData(lab);
+        $('#date').val('');
+    });
+
+}
+
+
+// get and set date
+function getSetDate() {
     period = $('#date').val()
     if (period == "") {
         period = "false";
-        d = new Date()
+        let d = new Date()
         $('#timeline').text(d.toDateString());
     } else {
-        d = new Date(period)
+        let d = new Date(period)
         $('#timeline').text(d.toDateString());
     }
+}
+
+// set hospital
+function setHospital(lab) {
+    hospital = $(`#${lab}`).text();
+    $('#lab').text(hospital);
+}
+
+
+function loadData(lab) {
+    parameters = `lab_name=${lab}&period=${period}`
+        // Set hospital name
+    setHospital(lab);
+
+    // Get filter date
+    getSetDate();
 
     // css style for header and filter
     $('.header').css('display', '');
     $('.filter').css('display', '');
 
     // total orders ajax call
-    url = "/query_lab_stats_total_orders?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-orders-submitted").text(res);
-            $("#total-orders-submitted").css('color', 'black');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_orders_submitted?${parameters}`;
+    ajaxCall(url, 'black');
 
     // total orders accepted ajax call
-    url = "/query_lab_stats_total_orders_accepted?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-orders-accepted").text(res);
-            $("#total-orders-accepted").css('color', 'green');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_orders_accepted?${parameters}`;
+    ajaxCall(url, 'green');
 
     // total orders rejected ajax call
-    url = "/query_lab_stats_total_orders_rejected?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-orders-rejected").text(res);
-            $("#total-orders-rejected").css('color', 'red');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_orders_rejected?${parameters}`;
+    ajaxCall(url, 'red');
 
     // total tests ajax call
-    url = "/query_lab_stats_total_tests?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests").text(res);
-            $("#total-tests").css('color', 'black');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_tests?${parameters}`;
+    ajaxCall(url, 'black');
 
     // total tests verrified ajax call
-    url = "/query_lab_stats_total_tests_verrified?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests-verrified").text(res);
-            $("#total-tests-verrified").css('color', 'green');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
-
+    url = `/query_lab_stats_total_tests_verrified?${parameters}`;
+    ajaxCall(url, 'green');
 
     // total tests with results ajax call
-    url = "/query_lab_stats_total_tests_with_results?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests-with-results").text(res);
-            $("#total-tests-with-results").css('color', '#2a5e52');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_tests_with_results?${parameters}`;
+    ajaxCall(url, '#2a5e52');
 
     // total tests waiting results
-    url = "/query_lab_stats_total_tests_waiting_results?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests-waiting-results").text(res);
-            $("#total-tests-waiting-results").css('color', '#f28a52');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_tests_waiting_results?${parameters}`;
+    ajaxCall(url, '#f28a52');
 
     // total tests reject ajax call
-    url = "/query_lab_stats_total_tests_rejected?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests-rejected").text(res);
-            $("#total-tests-rejected").css('color', 'red');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
+    url = `/query_lab_stats_total_tests_rejected?${parameters}`;
+    ajaxCall(url, 'red');
 
     // total tests to be started
-    url = "/query_lab_stats_total_tests_to_be_started?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#total-tests-to-be-started").text(res);
-            $("#total-tests-to-be-started").css('color', '#99a364');
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
-
+    url = `/query_lab_stats_total_tests_to_be_started?${parameters}`;
+    ajaxCall(url, '#99a364');
 
     // last sync ajax call
-    url = "/query_last_sync?lab_name=" + lab + "&period=" + period;
-    jQuery.ajax({
-        url: url,
-        type: "Post",
-        success: function(res) {
-            $("#last_sync").text(res);
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    })
-
+    url = `/query_lab_stats_last_sync?${parameters}`;
+    ajaxCall(url, '#99a364');
 }
 
-// date filter logic call
-$("form").submit(function(e) {
-    e.preventDefault();
-    lab = url.split('?')[1].split('&')[0].split('=')[1];
-    loadData(lab);
-    $('#date').val('');
-});
-
-// search filter sites
-var options = {
-    valueNames: ['name']
-};
-var userList = new List('sites', options);
+searchFilter();
+filterByDate();
