@@ -11,12 +11,14 @@ class HomeController < ApplicationController
         period = params[:period]
         data = "0"
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 3
+	   res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'") if lab.length == 3
+	   res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
