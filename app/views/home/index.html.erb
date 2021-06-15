@@ -75,9 +75,10 @@
                 </div>
                 <div class="row border-bottom p-2">
                     <div class="col-4 mb-2">
-                        <div class="card text-center">
+                        <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-submitted">!</h5>
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-orders-submitted"></span></p>
+                                <h5 class="text-center card-title" style="color:red; font-size:25px;" id="total-orders-submitted">!</h5>
                                 <p class="card-text border-top">Total Orders Submitted</p>
                             </div>
                         </div>
@@ -86,7 +87,8 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-accepted">!</h5>
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-orders-accepted"></span></p>
+                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-accepted">!</h5> 
                                 <p class="card-text border-top">Total Orders Accepted </p>
                             </div>
                         </div>
@@ -95,16 +97,29 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-orders-rejected"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-rejected">!</h5>
                                 <p class="card-text border-top">Total Orders Rejected</p>
                             </div>
                         </div>
                     </div>
+
+                     <div class="col-4 mb-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-orders-to-be-accepted"></span></p>
+                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-to-be-accepted">!</h5>
+                                <p class="card-text border-top">Total Orders To be Accepted</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="row mt-3 border-bottom">
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests"></span></p>
                                 <h5 class="card-title"  style="color:red; font-size:25px;" id="total-tests">!</h5>
                                 <p class="card-text border-top">Total Tests</p>
                             </div>
@@ -113,6 +128,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-verrified"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-verrified">!</h5>
                                 <p class="card-text border-top">Total Tests Verrified</p>
                             </div>
@@ -122,6 +138,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-with-results"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-with-results">!</h5>
                                 <p class="card-text border-top">Total Tests with Results</p>
                             </div>
@@ -130,6 +147,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-waiting-results"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-waiting-results">!</h5>
                                 <p class="card-text border-top">Total Tests waiting Results</p>
                             </div>
@@ -138,6 +156,7 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-rejected"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-rejected">!</h5>
                                 <p class="card-text border-top">Total Tests Rejected</p>
                             </div>
@@ -146,8 +165,18 @@
                     <div class="col-4 mb-2">
                         <div class="card text-center">
                             <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-to-be-started"></span></p>
                                 <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-to-be-started">!</h5>
                                 <p class="card-text border-top">Total Tests to be started</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-4 mb-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <p class="float-right mb-5 text-muted">Today: <span class="total-tests-voided-failed"></span></p>
+                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-voided-failed">!</h5>
+                                <p class="card-text border-top">Total Tests voided/failed</p>
                             </div>
                         </div>
                     </div>
