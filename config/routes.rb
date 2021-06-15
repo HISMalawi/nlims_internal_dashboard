@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
   
   post '/query_lab_stats_total_orders_accepted' => "home#query_lab_stats_total_orders_accepted"
+  post '/query_lab_stats_total_orders_to_be_accepted' => "home#query_lab_stats_total_orders_to_be_accepted"
   
   post '/query_lab_stats_total_orders_rejected' => "home#query_lab_stats_total_orders_rejected"
 
@@ -19,6 +20,8 @@ Rails.application.routes.draw do
   post '/query_lab_stats_total_tests_rejected' => "home#query_lab_stats_total_tests_rejected"
 
   post '/query_lab_stats_total_tests_to_be_started' => "home#query_lab_stats_total_tests_to_be_started"
+
+  post '/query_lab_stats_total_tests_voided_failed' => "home#query_lab_stats_total_tests_voided_failed"
 
   post '/query_lab_stats_last_sync' => "home#query_last_sync"
 end
