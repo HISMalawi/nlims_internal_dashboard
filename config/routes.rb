@@ -24,4 +24,6 @@ Rails.application.routes.draw do
   post '/query_lab_stats_total_tests_voided_failed' => "home#query_lab_stats_total_tests_voided_failed"
 
   post '/query_lab_stats_last_sync' => "home#query_last_sync"
+
+  post '/query_lab_stats_test_types' => "home#get_tests"
 end

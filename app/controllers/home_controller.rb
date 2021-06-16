@@ -344,5 +344,14 @@ class HomeController < ApplicationController
         end
         render plain: JSON.generate({data: data}) and return
     end
+
+    def get_tests
+        test_types = TestType.find_by_sql("SELECT name FROM test_types")
+        tests = []
+        for test_type in test_types
+            tests.push(test_type.name) 
+        end
+        render plain: tests and return    # render plain: JSON.generate({data: data}) and return
+    end
 end
 

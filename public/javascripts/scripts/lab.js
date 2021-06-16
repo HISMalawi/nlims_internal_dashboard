@@ -1,9 +1,27 @@
 var hospital
 var period;
 
+// ajax call for test type filter
+jQuery.ajax({
+    url: '/query_lab_stats_test_types',
+    type: "Post",
+    dataType: "json",
+    success: function(res) {
+        res.forEach(function(test) {
+            container = $('datalist');
+            container.append(`<option class="tests-options" value=${test}></option>`) // $('option').attr('value', test)
+        })
+    },
+    error: function(err) {
+        console.log(err);
+    }
+});
+
+
+
 $('.text-muted').css('display', 'none');
 // ajax call function
-function ajaxCall(uri, color) {
+function ajaxCall(uri, color = 'black') {
     let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
     jQuery.ajax({
         url: uri,
@@ -33,7 +51,7 @@ function searchFilter() {
 
 // date filter function
 function filterByDate() {
-    $("form").submit(function(e) {
+    $("#date-form").submit(function(e) {
         e.preventDefault();
         lab = url.split('?')[1].split('&')[0].split('=')[1];
         loadData(lab);
