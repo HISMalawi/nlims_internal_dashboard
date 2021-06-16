@@ -14,20 +14,18 @@ class HomeController < ApplicationController
         data = "0"
         data_today = "0"
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 3
-	        res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 2
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where (substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO' ) AND substr(date_created,1,10)='#{period}'") 
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'") if lab.length == 3
-	        res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}'") if lab.length == 2
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO`}'") #if lab.length == 3
+
             if !res.blank?
                 data = res[0]['total_count']
-            end
-        
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{date}'") if lab.length == 3
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{date}'") if lab.length == 2
+            end        
+
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where (substr(tracking_number,1,4)='X#{lab}'OR substr(tracking_number,1,3)='XTO' ) AND substr(date_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
