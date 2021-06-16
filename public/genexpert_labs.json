@@ -1,18 +1,6 @@
 {
-    "bB": "dddddddddd",
-    "KCH": "Kamuzu Central Hospital Laboratory",
-    "A18": "Area 18",
-    "A20": "Area 20",
-    "A30": "Area 30",
-    "A3": "Area 3",
-    "A13": "Area 13",
-    "A48": "Area 48",
-    "A8": "Area 8",
-    "A118": "Area 18",
-    "A120": "Area 20",
-    "A310": "Area 30",
-    "A31": "Area 3",
-    "A113": "Area 13",
-    "A418": "Area 48",
-    "A81": "Area 8"
+
+    "A18": "Area 18 Health Center", 
+    "LLH": "Lilongwe Lighthouse"
+ 
 }
