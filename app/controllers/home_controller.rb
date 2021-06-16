@@ -15,18 +15,19 @@ class HomeController < ApplicationController
         data_today = "0"
         if period != "false"
             res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 3
-	   res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 2
+	        res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
             res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}'") if lab.length == 3
-	   res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}'") if lab.length == 2
+	        res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND substr(date_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(date_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -43,17 +44,20 @@ class HomeController < ApplicationController
         data_today = "0"
             
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=2") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
 
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -70,17 +74,20 @@ class HomeController < ApplicationController
         data_today = "0"
             
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=1") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
 
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=1 AND substr(date_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -99,16 +106,19 @@ class HomeController < ApplicationController
         data_today = "0"
             
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=3") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND specimen_status_id=3 AND substr(date_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -126,16 +136,19 @@ class HomeController < ApplicationController
         data_today = "0"
 
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -151,16 +164,19 @@ class HomeController < ApplicationController
         data = "0"
         data_today = "0"
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=5") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -179,16 +195,19 @@ class HomeController < ApplicationController
         data_today = "0"
 
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=4 OR tests.test_status_id=5) AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=4 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=4 OR tests.test_status_id=5)")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=4") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=4 OR tests.test_status_id=5) AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=4 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=4 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -205,16 +224,19 @@ class HomeController < ApplicationController
         data_today = "0"
 
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=7 AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=3 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=3 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=7")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=3") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=3") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=7 AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=3 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=3 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -231,17 +253,20 @@ class HomeController < ApplicationController
         data_today = "0"
         
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=8") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -258,16 +283,19 @@ class HomeController < ApplicationController
         data_today = "0"
         
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=9 AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=2 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=2 AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=9")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=2") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=2") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=9 AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=2 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=2 AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -284,16 +312,19 @@ class HomeController < ApplicationController
         data_today = "0"
 
         if period != "false"
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10)  AND substr(tests.time_created,1,10)='#{period}'")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)  AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)  AND substr(tests.time_created,1,10)='#{period}'") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10)")
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10)  AND substr(tests.time_created,1,10)='#{date}'")
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)  AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 3
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)  AND substr(tests.time_created,1,10)='#{date}'") if lab.length == 2
             if !response.blank?
                 data_today = response[0]['total_count']
             end
@@ -305,7 +336,8 @@ class HomeController < ApplicationController
     def query_last_sync 
         lab  = params[:lab_name]
         data = "0"
-        res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1")
+        res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1") if lab.length == 3
+        res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,3)='X#{lab}' ORDER BY id DESC LIMIT 1") if lab.length == 2
         if !res.blank?
            data = res[0]['created_at']
         end
