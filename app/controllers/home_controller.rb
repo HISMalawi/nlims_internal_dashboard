@@ -289,8 +289,8 @@ class HomeController < ApplicationController
                 data = res[0]['total_count']
             end
         else
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND tests.test_status_id=2") if lab.length == 3
-            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND tests.test_status_id=2") if lab.length == 2
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,4)='X#{lab}' AND (tests.test_status_id=2 OR tests.test_status_id=9)") if lab.length == 3
+            res = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tracking_number,1,3)='X#{lab}' AND (tests.test_status_id=2 OR tests.test_status_id=9)") if lab.length == 2
             if !res.blank?
                 data = res[0]['total_count']
             end
