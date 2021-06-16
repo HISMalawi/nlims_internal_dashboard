@@ -57,7 +57,7 @@ class HomeController < ApplicationController
             end
 
             response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where substr(tracking_number,1,4)='X#{lab}' AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'") if lab != 'TDH'
-            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where (substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO') AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'") if lab != 'TDH'
+            response = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen where (substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO') AND specimen_status_id=2 AND substr(date_created,1,10)='#{date}'") if lab == 'TDH'
             if !response.blank?
                 data_today = response[0]['total_count']
             end
