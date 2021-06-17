@@ -1,25 +1,9 @@
-var hospital
+var hospital;
 var period;
-
-// ajax call for test type filter
-jQuery.ajax({
-    url: '/query_lab_stats_test_types',
-    type: "Post",
-    dataType: "json",
-    success: function(res) {
-        res.forEach(function(test) {
-            container = $('datalist');
-            container.append(`<option class="tests-options" value=${test}></option>`) // $('option').attr('value', test)
-        })
-    },
-    error: function(err) {
-        console.log(err);
-    }
-});
+var test_type = "";
 
 
-
-$('.text-muted').css('display', 'none');
+$('.today').css('display', 'none');
 // ajax call function
 function ajaxCall(uri, color = 'black') {
     let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
@@ -32,7 +16,16 @@ function ajaxCall(uri, color = 'black') {
             $(`#${selector}`).text(res.data);
             $(`.${selector}`).text(res.today);
             $(`#${selector}`).css('color', `${color}`);
-            console.log($(`#${selector}`));
+
+            // handle data list for test types
+            if (Array.isArray(res)) {
+                $('.today').css('display', 'none');
+                tests = [...new Set(res)];
+                tests.forEach(function(test) {
+                    container = $('datalist');
+                    container.append(`<option class="tests-options" value="${test}"></option>`) // $('option').attr('value', test)
+                })
+            }
         },
         error: function(err) {
             console.log(err);
@@ -41,7 +34,7 @@ function ajaxCall(uri, color = 'black') {
 }
 
 // search filter sites
-function searchFilter() {
+function searchLabs() {
     var options = {
         valueNames: ['name']
     };
@@ -50,12 +43,13 @@ function searchFilter() {
 }
 
 // date filter function
-function filterByDate() {
-    $("#date-form").submit(function(e) {
+function loadByFilter() {
+    $("form").submit(function(e) {
         e.preventDefault();
         lab = url.split('?')[1].split('&')[0].split('=')[1];
         loadData(lab);
         $('#date').val('');
+        $('#test-type').val('');
     });
 
 }
@@ -74,6 +68,17 @@ function getSetDate() {
     }
 }
 
+function setTestType() {
+    test_type = $('#test-type').val();
+    test_type = test_type.toString();
+    if (test_type.length > 0) {
+        $('#ttype').text(test_type);
+        $('#test-type-title').css('display', 'initial');
+    } else {
+        $('#test-type-title').css('display', 'none');
+    }
+}
+
 // set hospital
 function setHospital(lab) {
     hospital = $(`#${lab}`).text();
@@ -82,14 +87,12 @@ function setHospital(lab) {
 
 
 function loadData(lab) {
-    // Set hospital name
     setHospital(lab);
-
-    // Get filter date
+    setTestType();
     getSetDate();
 
-    parameters = `lab_name=${lab}&period=${period}`
-
+    let parameters = `lab_name=${lab}&period=${period}&test_type=${test_type}`;
+    console.log(parameters);
     // css style for header and filter
     $('.header').css('display', '');
     $('.filter').css('display', '');
@@ -142,5 +145,9 @@ function loadData(lab) {
     ajaxCall(url, '#99a364');
 }
 
-searchFilter();
-filterByDate();
+// data list tests types ajax call
+let url = '/query_lab_stats_test_types';
+ajaxCall(url);
+
+searchLabs();
+loadByFilter();
