@@ -11,7 +11,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
         if period != "false"
@@ -99,7 +99,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
             
@@ -186,7 +186,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
             
@@ -273,7 +273,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"  
         if period != "false"
@@ -357,7 +357,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
 
@@ -447,7 +447,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
         if period != "false"
@@ -537,7 +537,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
 
@@ -628,7 +628,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
 
@@ -718,7 +718,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
         
@@ -809,7 +809,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
         
@@ -904,7 +904,7 @@ class HomeController < ApplicationController
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
-        test_type = params[:test_type]
+        test_type = params[:test_type].gsub('Aand','&')
         data = "0"
         data_today = "0"
         

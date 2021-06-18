@@ -77,6 +77,7 @@ function setTestType() {
     } else {
         $('#test-type-title').css('display', 'none');
     }
+    test_type = test_type.toString().replace('&', 'Aand');
 }
 
 // set hospital
