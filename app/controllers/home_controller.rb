@@ -197,4 +197,6 @@ class HomeController < ApplicationController
         end
         render plain: data and return
     end
+
+    
 end
