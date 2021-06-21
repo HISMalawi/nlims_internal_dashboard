@@ -36,45 +36,6 @@
 
     <div class="container">
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Data Type</th>
-                <th scope="col">Data</th>
-                <th scope="col">Site</th>
-                <th scope="col">Tracking Number</th>
-                <th scope="col">Couch ID</th>
-                <th scope="col">Date Created</th>
-                <th scope="col">Status</th>
-                <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <% if !@anomaries.blank? %>
-                  <% for item in @anomaries %>
-                    
-                        <tr>
-
-                            <td><%= item.data_type %></td>
-                            <td><%= item.data%></td>
-                            <td><%= item.site_name%></td>
-                            <td><%= item.tracking_number%></td>
-                            <td><%= item.couch_id%></td>
-                            <td><%= item.date_created%></td>
-                            <td><%= item.status%></td>
-                            <td><a href="/resolve/<%= item.id%>">View</a></td>
-                          
-                        </tr>
-                   
-                    
-                  <% end %>
-                <% else %>
-                <%end%>
-                
-            </tbody>
-        </table>
-       
     </div>
     
     
