@@ -7,6 +7,7 @@ $('.today').css('display', 'none');
 // ajax call function
 function ajaxCall(uri, color = 'black') {
     let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
+    $(`#${selector}`).text('!');
     jQuery.ajax({
         url: uri,
         type: "Post",
@@ -93,7 +94,6 @@ function loadData(lab) {
     getSetDate();
 
     let parameters = `lab_name=${lab}&period=${period}&test_type=${test_type}`;
-    console.log(parameters);
     // css style for header and filter
     $('.header').css('display', '');
     $('.filter').css('display', '');
