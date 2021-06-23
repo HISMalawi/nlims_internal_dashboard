@@ -100,7 +100,7 @@ class DataResolvesController < ApplicationController
 
         for item in search_data
             
-            if item.percentage < 50.0
+            if item.percentage < 25.0
 
                 puts (item.percentage)
             else
