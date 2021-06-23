@@ -1,4 +1,4 @@
-require 'fuzzystringmatch'
+require 'similar_text'
 
 class DataResolvesController < ApplicationController
 
@@ -8,77 +8,111 @@ class DataResolvesController < ApplicationController
 
     def show
 
-        out_array_limit = 10
-        match_value = 0.6
+        def search(anomaly_id,out_array_limit,match_percent)
+
+            puts("match percentage: " + match_percent.to_s)
+
+            anomaly = DataAnomaly.find(anomaly_id)
+          
+            data_type = anomaly.data_type.downcase
+
+            datar = Array.new()
+
+            result_trimmed = Array.new()
+
+            puts "----------------------------"
+            puts "In"
+
+            if data_type == 'test_type' 
+
+                puts "----------------------------"
+                puts "Type : Test Type"
+
+                results_types = TestType.all
+    
+                for type in results_types do
+    
+                    if (anomaly.data.downcase.similar(type.name.downcase).to_d >= match_percent)
+    
+                        puts (anomaly.data.similar(type.name))
+    
+                        class << type
+                            attr_accessor :percentage
+                        end
+    
+                        type.percentage = anomaly.data.similar(type.name).to_d 
+    
+                        datar.append(type)
+    
+                    end
+                    
+                end 
+    
+                result_trimmed = datar.sort_by(&:percentage).reverse()
+
+                return possibles = result_trimmed[0,out_array_limit]
+    
+    
+            elsif data_type == 'specimen_type'
+
+                puts "----------------------------"
+                puts "Type : Specimen Type"
+    
+                results_types = SpecimenType.all
+    
+                for type in results_types do
+                    
+                    if (anomaly.data.downcase.similar(type.name.downcase).to_d >= match_percent)
+    
+                        puts (anomaly.data.similar(type.name))
+    
+                        class << type
+                            attr_accessor :percentage
+                        end
+    
+                        type.percentage = anomaly.data.similar(type.name).to_d 
+    
+                        datar.append(type)
+                    
+    
+                    end
+                    
+                end 
+                
+                result_trimmed = datar.sort_by(&:percentage).reverse()
+
+                return possibles = result_trimmed[0,out_array_limit]
+    
+            end
+
+            puts "----------------------------"
+            puts "End"
+        end
 
         @anomaly = DataAnomaly.find(params[:id])
 
-        jarow = FuzzyStringMatch::JaroWinkler.create( :pure )
+        out_array_limit = 10
+        match_percent = 100.0
 
-        data_type = @anomaly.data_type.downcase
+        search_data = search(params[:id],out_array_limit,match_percent)
 
-        if data_type == "test_type"
+        puts search_data.length()
 
-            datar = Array.new()
+        counter = 1
 
-            result_trimmed = Array.new()
+        while search_data.length() < 1 and counter < 100
+            puts (counter)
+            search_data = search(params[:id],out_array_limit,match_percent)
 
+            counter = counter + 1
 
-            results_types = TestType.all
-
-            for type in results_types do
-                
-                if jarow.getDistance(@anomaly.data,type.name).to_f >= match_value
-
-                    class << type
-                        attr_accessor :percentage
-                    end
-
-                    type.percentage = jarow.getDistance(@anomaly.data.downcase,type.name.downcase)
-
-                    datar.append(type)
-                    puts (type.percentage)
-
-                end
-                
-            end 
-
-            result_trimmed = datar.sort_by(&:percentage).reverse()
-            @possibles = result_trimmed[0,out_array_limit]
-
-
-        elsif data_type == "specimen_type"
+            match_percent = match_percent - 5
             
-            datar = Array.new()
-
-            result_trimmed = Array.new()
-
-            results_types = SpecimenType.all
-
-            for type in results_types do
-                
-                if jarow.getDistance(@anomaly.data,type.name).to_f >= match_value
-
-                    class << type
-                        attr_accessor :percentage
-                    end
-
-                    type.percentage = jarow.getDistance(@anomaly.data.downcase,type.name.downcase)
-
-                    datar.append(type)
-                    puts (type.percentage)
-
-                end
-                
-            end 
-            
-            result_trimmed = datar.sort_by(&:percentage).reverse()
-            @possibles = result_trimmed[0,out_array_limit]
-
-        end
+        end    
         
 
-        
+        @possibles = search_data
+
     end
 
     def merge
