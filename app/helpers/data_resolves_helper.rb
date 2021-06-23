@@ -1,0 +1,2 @@
+module DataResolvesHelper
+end

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/anomalies.merge.css">
+    <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
+ 
+
+</head>
+
+<body>
+    <nav class="mb-4 navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'data_resolves', only_path: false) %>">Data Resolves <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                    <div class="card-body">
+                        <div> 
+                            <p class="card-text d-inline">Data Type:</p> <p class="card-text d-inline"><%= @anomaly.data_type%></p>
+                        </div>
+                
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Data :</p> <p class="card-text d-inline"><%= @anomaly.data%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Site :</p> <p class="card-text d-inline"><%= @anomaly.site_name%></p>
+                        </div>
+
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Tracking Number :</p> <p class="card-text d-inline"><%= @anomaly.tracking_number%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Couch ID :</p> <p class="card-text d-inline"><%= @anomaly.couch_id%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Date Created :</p> <p class="card-text d-inline"><%= @anomaly.date_created%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Status :</p> <p class="card-text d-inline"><%= @anomaly.status%></p>
+                        </div>
+                       
+                    </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card possibility-window">
+                        <div class="card-body">
+                         <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                <th scope="col">Possible Match</th>
+                                <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% if !@possibles.blank? %>
+                                <% for item in @possibles %>
+                                    
+                                        <tr>
+                                            <td><%= item.name %></td>
+                                            <td><a href="/merge/<%= item.id%>">Merge</a></td>
+                                        </tr>
+
+                                    
+                                <% end %>
+                                <% else %>
+                                <%end%>
+                                
+                            </tbody>
+                        </table>
+       
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+    <script src="/javascripts/scripts/data-resolve.js" type="text/javascript"></script>
+</body>
+
+</html>
