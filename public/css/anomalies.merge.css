@@ -1,5 +1,5 @@
 .possibility-window {
     height: calc(100vh - 200px);
-    overflow-y: scroll;
+    overflow-y: auto;
 
 }
