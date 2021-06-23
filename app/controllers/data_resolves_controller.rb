@@ -10,7 +10,6 @@ class DataResolvesController < ApplicationController
 
         def search(anomaly_id,out_array_limit,match_percent)
 
-            puts("match percentage: " + match_percent.to_s)
 
             anomaly = DataAnomaly.find(anomaly_id)
           
@@ -20,21 +19,16 @@ class DataResolvesController < ApplicationController
 
             result_trimmed = Array.new()
 
-            puts "----------------------------"
-            puts "In"
+
 
             if data_type == 'test_type' 
 
-                puts "----------------------------"
-                puts "Type : Test Type"
 
                 results_types = TestType.all
     
                 for type in results_types do
     
                     if (anomaly.data.downcase.similar(type.name.downcase).to_d >= match_percent)
-    
-                        puts (anomaly.data.similar(type.name))
     
                         class << type
                             attr_accessor :percentage
@@ -55,16 +49,12 @@ class DataResolvesController < ApplicationController
     
             elsif data_type == 'specimen_type'
 
-                puts "----------------------------"
-                puts "Type : Specimen Type"
     
                 results_types = SpecimenType.all
     
                 for type in results_types do
                     
                     if (anomaly.data.downcase.similar(type.name.downcase).to_d >= match_percent)
-    
-                        puts (anomaly.data.similar(type.name))
     
                         class << type
                             attr_accessor :percentage
@@ -85,8 +75,6 @@ class DataResolvesController < ApplicationController
     
             end
 
-            puts "----------------------------"
-            puts "End"
         end
 
         @anomaly = DataAnomaly.find(params[:id])
@@ -96,12 +84,10 @@ class DataResolvesController < ApplicationController
 
         search_data = search(params[:id],out_array_limit,match_percent)
 
-        puts search_data.length()
-
         counter = 1
 
         while search_data.length() < 10 and counter < 100
-            puts (counter)
+           
             search_data = search(params[:id],out_array_limit,match_percent)
 
             counter = counter + 1
@@ -110,8 +96,22 @@ class DataResolvesController < ApplicationController
             
         end    
         
+        filtered_search_data = Array.new()
 
-        @possibles = search_data
+        for item in search_data
+            
+            if item.percentage < 50.0
+
+                puts (item.percentage)
+            else
+                
+                filtered_search_data.append(item)
+            end  
+            
+
+        end
+
+        @possibles = filtered_search_data
 
     end
 
