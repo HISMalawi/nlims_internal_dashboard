@@ -2,12 +2,16 @@ var hospital;
 var period;
 var test_type = "";
 
-
 $('.today').css('display', 'none');
+$('progress').css('display', 'none');
+
 // ajax call function
 function ajaxCall(uri, color = 'black') {
     let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
+
+
     $(`#${selector}`).text('!');
+    $('.today').css("display", "none");
     jQuery.ajax({
         url: uri,
         type: "Post",
@@ -16,7 +20,17 @@ function ajaxCall(uri, color = 'black') {
             $('.text-muted').css('display', 'initial');
             $(`#${selector}`).text(res.data);
             $(`.${selector}`).text(res.today);
+            $('.today').css("display", "initial");
             $(`#${selector}`).css('color', `${color}`);
+
+            var progress_value = parseInt($('progress').attr('value'));
+            if (progress_value < 110) {
+                progress_value += 10;
+                $('progress').attr('value', `${progress_value}`);
+            } else {
+                $('progress').attr('value', `${progress_value + 10}`);
+                $('progress').fadeOut(3000);
+            }
 
             // handle data list for test types
             if (Array.isArray(res)) {
@@ -27,6 +41,7 @@ function ajaxCall(uri, color = 'black') {
                     container.append(`<option class="tests-options" value="${test}"></option>`) // $('option').attr('value', test)
                 })
             }
+
         },
         error: function(err) {
             console.log(err);
@@ -97,8 +112,10 @@ function loadData(lab) {
     // css style for header and filter
     $('.header').css('display', '');
     $('.filter').css('display', '');
+    $('progress').css('display', 'initial');
 
     // total orders ajax call
+
     url = `/query_lab_stats_total_orders_submitted?${parameters}`;
     ajaxCall(url, 'black');
 
@@ -144,11 +161,16 @@ function loadData(lab) {
     // last sync ajax call
     url = `/query_lab_stats_last_sync?${parameters}`;
     ajaxCall(url, '#99a364');
+
+
+    $('progress').attr('value', '0');
+
 }
 
 // data list tests types ajax call
 let url = '/query_lab_stats_test_types';
 ajaxCall(url);
+
 
 searchLabs();
 loadByFilter();
