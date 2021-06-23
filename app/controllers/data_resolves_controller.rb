@@ -106,7 +106,7 @@ class DataResolvesController < ApplicationController
 
             counter = counter + 1
 
-            match_percent = match_percent - 5
+            match_percent = match_percent - 1
             
         end    
         
