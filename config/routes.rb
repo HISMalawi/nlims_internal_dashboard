@@ -30,5 +30,7 @@ Rails.application.routes.draw do
   get '/nlims_data_resolve' => "data_resolves#index"
 
   get '/resolve/:id' => "data_resolves#show"
+
+  get '/merge/:id' => "data_resolves#merge"
   
 end

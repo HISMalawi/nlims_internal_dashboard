@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/anomalies.merge.css">
     <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
  
@@ -35,9 +36,76 @@
 
 
     <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                    <div class="card-body">
+                        <div> 
+                            <p class="card-text d-inline">Data Type:</p> <p class="card-text d-inline"><%= @anomaly.data_type%></p>
+                        </div>
+                
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Data :</p> <p class="card-text d-inline"><%= @anomaly.data%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Site :</p> <p class="card-text d-inline"><%= @anomaly.site_name%></p>
+                        </div>
 
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Tracking Number :</p> <p class="card-text d-inline"><%= @anomaly.tracking_number%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Couch ID :</p> <p class="card-text d-inline"><%= @anomaly.couch_id%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Date Created :</p> <p class="card-text d-inline"><%= @anomaly.date_created%></p>
+                        </div>
+                        <hr>
+                        <div> 
+                            <p class="card-text d-inline">Status :</p> <p class="card-text d-inline"><%= @anomaly.status%></p>
+                        </div>
+                       
+                    </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card possibility-window">
+                        <div class="card-body">
+                         <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                <th scope="col">Possible Match</th>
+                                <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% if !@possibles.blank? %>
+                                <% for item in @possibles %>
+                                    
+                                        <tr>
+                                            <td><%= item.name %></td>
+                                            <td><a href="/merge/<%= item.id%>">Merge</a></td>
+                                        </tr>
+
+                                    
+                                <% end %>
+                                <% else %>
+                                <%end%>
+                                
+                            </tbody>
+                        </table>
+       
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
-    
     
     <script src="/javascripts/scripts/data-resolve.js" type="text/javascript"></script>
 </body>
