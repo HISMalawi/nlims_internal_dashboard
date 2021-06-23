@@ -100,7 +100,7 @@ class DataResolvesController < ApplicationController
 
         counter = 1
 
-        while search_data.length() < 1 and counter < 100
+        while search_data.length() < 10 and counter < 100
             puts (counter)
             search_data = search(params[:id],out_array_limit,match_percent)
 
