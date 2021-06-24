@@ -21,7 +21,7 @@ class DataResolvesController < ApplicationController
 
 
 
-            if data_type == 'test_type' 
+            if data_type == 'test type' 
 
 
                 results_types = TestType.all
@@ -47,7 +47,7 @@ class DataResolvesController < ApplicationController
                 return possibles = result_trimmed[0,out_array_limit]
     
     
-            elsif data_type == 'specimen_type'
+            elsif data_type == 'specimen type'
 
     
                 results_types = SpecimenType.all
