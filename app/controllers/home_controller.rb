@@ -7,6 +7,13 @@ class HomeController < ApplicationController
         @genexpert_labs = YAML.load_file "#{Rails.root}/public/genexpert_labs.json"
     end
 
+
+    def all
+        puts "-------------------All Labs-----------"
+    end
+
+    
+
     def query_lab_stats_total_orders
         date = Date.today 
         lab  = params[:lab_name]

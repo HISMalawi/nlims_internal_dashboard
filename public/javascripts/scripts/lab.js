@@ -17,7 +17,7 @@ function ajaxCall(uri, color = 'black') {
         type: "Post",
         dataType: "json",
         success: function(res) {
-            $('.text-muted').css('display', 'initial');
+            $('.test-title').css('display', 'initial');
             $(`#${selector}`).text(res.data);
             $(`.${selector}`).text(res.today);
             $('.today').css("display", "initial");
@@ -160,7 +160,7 @@ function loadData(lab) {
 
     // last sync ajax call
     url = `/query_lab_stats_last_sync?${parameters}`;
-    ajaxCall(url, '#99a364');
+    ajaxCall(url, 'black');
 
 
     $('progress').attr('value', '0');

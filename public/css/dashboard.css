@@ -2,3 +2,16 @@ progress {
     width: 97.5%;
     height: 6px;
 }
+
+.nav-tabs .nav-link {
+    color: rgb(59, 53, 53);
+    font-weight: 50;
+}
+
+.nav-tabs .active {
+    font-weight: bold!important;
+}
+
+.col-9 {
+    border-bottom: 0px!important;
+}
