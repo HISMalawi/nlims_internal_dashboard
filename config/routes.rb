@@ -26,4 +26,11 @@ Rails.application.routes.draw do
   post '/query_lab_stats_last_sync' => "home#query_last_sync"
 
   post '/query_lab_stats_test_types' => "home#get_tests"
+
+  get '/nlims_data_resolve' => "data_resolves#index"
+
+  get '/resolve/:id' => "data_resolves#show"
+
+  get '/merge/:id' => "data_resolves#merge"
+  
 end
