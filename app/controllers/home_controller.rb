@@ -9,10 +9,37 @@ class HomeController < ApplicationController
 
 
     def all
+        period = Date.today 
         puts "-------------------All Labs-----------"
+        @total_orders = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen")[0]['total_count']
+        @total_orders_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=2")[0]['total_count']
+        @total_orders_to_be_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=1")[0]['total_count']
+        @total_orders_rejected = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=3")[0]['total_count']
+        @total_tests = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id")[0]['total_count']
+        @total_tests_verrified = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=5")[0]['total_count']
+        @total_tests_with_results = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=4")[0]['total_count']
+        @total_tests_waiting_results = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=3")[0]['total_count']
+        @total_tests_to_be_started = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE  (tests.test_status_id=2 OR tests.test_status_id=9)")[0]['total_count']
+        @total_tests_rejected = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=8")[0]['total_count']
+        @total_tests_voided = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7)")[0]['total_count']
+        
+        @total_orders_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE substr(date_created,1,10)='#{period}'")[0]['total_count']
+        @total_orders_accepted_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=2 AND substr(date_created,1,10)='#{period}'")[0]['total_count']
+        @total_orders_to_be_accepted_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=1 AND substr(date_created,1,10)='#{period}'")[0]['total_count']
+        @total_orders_rejected_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=3 AND substr(date_created,1,10)='#{period}'")[0]['total_count']
+        
+        @total_tests_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_verrified_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=5 AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_with_results_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=4 AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_waiting_results_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=3 AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_to_be_started_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE  (tests.test_status_id=2 OR tests.test_status_id=9) AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_rejected_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=8 AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        @total_tests_voided_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7) AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
+        
+        render template:"home/all_labs"
     end
-
     
+  
 
     def query_lab_stats_total_orders
         date = Date.today 

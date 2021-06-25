@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '' , to: 'home#index'
 
+  get '/dashboard' , to: 'home#all'
+
   post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
   
   post '/query_lab_stats_total_orders_accepted' => "home#query_lab_stats_total_orders_accepted"

@@ -15,3 +15,8 @@ progress {
 .col-9 {
     border-bottom: 0px!important;
 }
+
+.main-dash {
+    height: 100vh;
+    overflow: hidden;
+}

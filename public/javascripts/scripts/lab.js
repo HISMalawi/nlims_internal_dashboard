@@ -18,7 +18,16 @@ function ajaxCall(uri, color = 'black') {
         dataType: "json",
         success: function(res) {
             $('.test-title').css('display', 'initial');
-            $(`#${selector}`).text(res.data);
+
+            if (selector.toString() == "last-sync") {
+                let lastSync = new Date(res.data).toISOString();
+                console.log(lastSync);
+                $(`#${selector}`).text(lastSync);
+
+            } else {
+                $(`#${selector}`).text(res.data);
+            }
+
             $(`.${selector}`).text(res.today);
             $('.today').css("display", "initial");
             $(`#${selector}`).css('color', `${color}`);

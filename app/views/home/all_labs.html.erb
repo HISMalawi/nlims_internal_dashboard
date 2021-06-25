@@ -14,108 +14,38 @@
 
 </head>
 
-<body>
+<body class="main-dash">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">Home <span class="sr-only">(current)</span></a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'data_resolves', only_path: false) %>">Data Resolves <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-        </div>
     </nav>
 
         
    
     <div class="main m-3">
-        <div class="row mt-3 border-bottom">
+        <div class="row mt-3">
             <div class="col-3 border-right">
-                <div class="m-labs">
-                    <h3 class="border-bottom text-muted">Molecular Labs</h3>
-                    <ul class="nav flex-column">
-                        <% @labs.each do |lab| %>
-                            <li class="nav-item">
-                                <button class="btn font-weight-bold text-left" onclick="loadData('<%= lab[0] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
-                            </li> 
-                        <% end %>                       
-                    </ul>
-                </div>
-                <div class="gxepert-sites mt-3">
-                    <h3 class="border-bottom text-muted">Genexepert Sites</h3>
-                    <div id="sites">
-                        <input class="search form-control" placeholder="Search site" />
-                        <div style="overflow: scroll; height:320px;">
-                            <ul class="nav flex-column list">
-                                
-                                    <% @genexpert_labs.each do |genexpert_lab| %>
-                                        <li class="nav-item">                     
-                                            <button class="btn name font-weight-bold text-left" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
-                                        </li>
-                                    <% end %> 
-                                
-                            </ul>
-                        </div>
-                    </div>
                 
-                </div>
+                <p>map</p>
+             
             </div>
             <div class="col-9 p-3 mb-5 bg-white rounded">
-                <div class="header border-bottom" style="display:none;">
-                    <h3 id="head-title">
-                        <span class="text-muted">LAB:</span><span class="text-bold" id="lab"></span><span class="ml-5"></span>
-                        <span class="text-muted">Date:</span><span id="timeline" class="text-bold">June 2021</span>
-                    </h3>
-                     <h3 id="test-type-title"><span class="text-muted">Test Type:</span> <span class="test-title text-bold" id="ttype"></span></h3>
-                </div>
-                <div class="filter mt-2 mb-4 p-2 border-bottom" style="display:none;">
-                    <form class="d-inline" id="date-form">
-                            <label for="start" class="text-muted">Filter Date:</label>
-                            <input type="date" id="date" name="date" class="text-muted">
-                            <input class="ml-5 p-1" list="tests" id="test-type" name="test-type" placeholder="Search test types"/>
-                            <datalist id="tests">
-                            </datalist>
-                            <button type="submit" class="text-muted btn border p-1">Submit</button>
-                    </form>
-
-                </div>
-
-    <div class="container">
-                <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#specimen-id">Specimen Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tests-id">Tests</a>
-                            </li>
-                </ul>
-
-
-        <div class="tab-content">
-            <progress class="mx-auto my-1" max="120" value="0"></progress> 
-
-            <div id="specimen-id" class="tab-pane active">
-                <div class="row border-bottom mt-3">
-
+            <h4>Specimen Orders</h4>
+                <div class="row mb-3 mt-3">
+                    
                     <div class="col-4 mb-4">
                         <div class="card">
                             <div class="card-body p-0">
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-orders-submitted">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:black; font-size:24px;"  id="total-orders-submitted"><%= @total_orders %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-submitted">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-submitted"><%= @total_orders_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Orders Submitted</p>
@@ -130,11 +60,11 @@
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-orders-accepted">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:green; font-size:24px;" id="total-orders-accepted"><%= @total_orders_accepted %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-accepted">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-accepted"><%= @total_orders_accepted_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Orders Accepted</p>
@@ -143,37 +73,17 @@
                     </div>
 
 
-
                     <div class="col-4 mb-4">
                         <div class="card">
                             <div class="card-body p-0">
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-orders-rejected">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:#99a364; font-size:24px;" id="total-orders-to-be-accepted"><%= @total_orders_to_be_accepted %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-rejected">!</span></h5>                                    
-                                </div>
-                            </div>                                                      
-                                <p class="card-text border-top text-center p-2">Total Orders Rejected</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-4 mb-4">
-                        <div class="card">
-                            <div class="card-body p-0">
-                            <div class="row mt-0 p-1">
-                                <div class="col-6 border-right">
-                                    <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-orders-to-be-accepted">!</h5>
-                                </div>
-                                <div class="col-6">
-                                    <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-to-be-accepted">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-to-be-accepted"><%= @total_orders_to_be_accepted_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Orders To be Accepted</p>
@@ -181,22 +91,41 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-            
-            <div id="tests-id" class="tab-pane fade">
-                <div class="row mt-3 border-bottom">
+
                     <div class="col-4 mb-4">
                         <div class="card">
                             <div class="card-body p-0">
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-orders-rejected"><%= @total_orders_rejected %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-orders-rejected"><%= @total_orders_rejected_today %></span></h5>                                    
+                                </div>
+                            </div>                                                      
+                                <p class="card-text border-top text-center p-2">Total Orders Rejected</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+           
+            <h4>Tests</h4>
+                <div class="row mt-3 border-bottom">
+                 
+                    <div class="col-4 mb-4">
+                        <div class="card">
+                            <div class="card-body p-0">
+                            <div class="row mt-0 p-1">
+                                <div class="col-6 border-right">
+                                    <p class="text-left m-0 text-muted pl-2">Cumulative</p>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:black; font-size:24px;" id="total-tests"><%= @total_tests %></h5>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-left m-0 text-muted">Today</p>
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests"><%= @total_tests_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests</p>
@@ -211,11 +140,11 @@
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-verrified">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:green; font-size:24px;" id="total-tests-verrified"><%= @total_tests_verrified %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-verrified">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-verrified"><%= @total_tests_verrified_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests Authorized</p>
@@ -230,11 +159,11 @@
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-with-results">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:#2a5e52; font-size:24px;" id="total-tests-with-results"><%= @total_tests_with_results %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-with-results">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-with-results"><%= @total_tests_with_results_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests Unauthorized</p>
@@ -249,11 +178,11 @@
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-waiting-results">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:#f28a52; font-size:24px;" id="total-tests-waiting-results"><%= @total_tests_waiting_results%></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-waiting-results">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-waiting-results"><%= @total_tests_waiting_results_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests waiting Results</p>
@@ -262,17 +191,35 @@
                     </div>
                    
 
+                     <div class="col-4 mb-4">
+                        <div class="card">
+                            <div class="card-body p-0">
+                            <div class="row mt-0 p-1">
+                                <div class="col-6 border-right">
+                                    <p class="text-left m-0 text-muted pl-2">Cumulative</p>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:#99a364; font-size:24px;" id="total-tests-to-be-started"><%= @total_tests_to_be_started %></h5>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-left m-0 text-muted">Today</p>
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-to-be-started"><%= @total_tests_to_be_started_today %></span></h5>                                    
+                                </div>
+                            </div>                                                      
+                                <p class="card-text border-top text-center p-2">Total Tests to be started</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-4 mb-4">
                         <div class="card">
                             <div class="card-body p-0">
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-rejected">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-rejected"><%= @total_tests_rejected %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-rejected">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-rejected"><%= @total_tests_rejected_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests Rejected</p>
@@ -281,37 +228,17 @@
                     </div>
 
 
-
                      <div class="col-4 mb-4">
                         <div class="card">
                             <div class="card-body p-0">
                             <div class="row mt-0 p-1">
                                 <div class="col-6 border-right">
                                     <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-to-be-started">!</h5>
+                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-voided-failed"><%= @total_tests_voided %></h5>
                                 </div>
                                 <div class="col-6">
                                     <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-to-be-started">!</span></h5>                                    
-                                </div>
-                            </div>                                                      
-                                <p class="card-text border-top text-center p-2">Total Tests to be started</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                     <div class="col-4 mb-4">
-                        <div class="card">
-                            <div class="card-body p-0">
-                            <div class="row mt-0 p-1">
-                                <div class="col-6 border-right">
-                                    <p class="text-left m-0 text-muted pl-2">Cumulative</p>
-                                    <h5 class="text-center card-title m-0 p-1" style="color:red; font-size:24px;" id="total-tests-voided-failed">!</h5>
-                                </div>
-                                <div class="col-6">
-                                    <p class="text-left m-0 text-muted">Today</p>
-                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-voided-failed">!</span></h5>                                    
+                                    <h5 class="text-center card-title m-0 p-1"><span class="total-tests-voided-failed"><%= @total_tests_voided_today %></span></h5>                                    
                                 </div>
                             </div>                                                      
                                 <p class="card-text border-top text-center p-2">Total Tests Voided/Failed/Not done</p>
@@ -319,28 +246,14 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-   
-                <div class="row mt-3">
-                    <div class="col-12 mb-4">
-                        <p><span class="text-muted">Last Sync:</span> <span class="font-weight-bold p-1" id="last-sync">26/05/21 13:30</span></span>
-                        </p>
-                    </div>
-                </div>
-
- </div>
-            </div>
-        </div>
-    </div>
-
         <div class="row mt-3">
             <div class="footer m-auto">
                <p class="text-muted">EGPAF &copy;2021</p>
             </div>
         </div>
+            </div>
+        </div>
+    </div>
 
     </div>
     </div>
@@ -349,7 +262,7 @@
     </div>
     
     
-    <script src="/javascripts/scripts/lab.js" type="text/javascript"></script>
+    <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
 </body>
 
 </html>
