@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   get '' , to: 'home#index'
 
   get '/dashboard' , to: 'home#all'
+  get '/merge/:id' => "data_resolves#merge"
+ 
+  get '/query_lab_stats_all_labs' => "home#query_lab_stats_all_labs"
 
   post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
   
