@@ -16,7 +16,35 @@ progress {
     border-bottom: 0px!important;
 }
 
-.main-dash {
-    height: 100vh;
+body {
     overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+.footer {
+    position: relative;
+    left: 26%;
+    margin-bottom: 50px;
+}
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+#sites {
+    height: 47vh;
+}
+
+.footer-specific {
+    position: absolute;
+    left: 44%;
 }

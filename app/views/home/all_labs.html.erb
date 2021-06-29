@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-     <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/map.css">
     <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
     <script src="/javascripts/list.js" type="text/javascript"></script>
+    
 
 </head>
 
@@ -24,14 +26,33 @@
 
         
    
-    <div class="main m-3">
-        <div class="row mt-3">
-            <div class="col-3 border-right">
-                
-                <p>map</p>
-             
+    <div class="main m-0">
+        <div class="row mb-2 mx-auto">
+            <div class="col-3 border-right"> 
+                <div class="row mt-3">
+                <div id="map" class="col-12 border-bottom"></div>
+                 </div>
+                 <div class="row">
+                    <div class="col-12">
+                    <div>
+                        <svg height="50" width="100">
+                            <circle cx="90" cy="23" r="7" fill="green" />
+                        </svg>
+                            <span>Last Synced within 24hrs</span>
+                    </div>
+                    <div>
+                        <svg height="50" width="100">
+                            <circle cx="90" cy="23" r="7" fill="red" />
+                        </svg>
+                            <span>Last Synced past 24hrs</span>
+                    </div>
+
+                    </div>
+                 </div>
             </div>
+            
             <div class="col-9 p-3 mb-5 bg-white rounded">
+            <p class="border-bottom mb-2 p-2 title-labels"> <span class="text-muted">Lab:</span><span class="ml-1 font-weight-bold">ALL</span>  <span class="text-muted ml-5">Date:</span><span class="ml-1 font-weight-bold"><%=@period%></span> </p>
             <h4>Specimen Orders</h4>
                 <div class="row mb-3 mt-3">
                     
@@ -247,7 +268,7 @@
                     </div>
                 </div>
         <div class="row mt-3">
-            <div class="footer m-auto">
+            <div class="footer mb-2">
                <p class="text-muted">EGPAF &copy;2021</p>
             </div>
         </div>
@@ -263,6 +284,95 @@
     
     
     <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+  
+
+    <script>
+        var loader = d3.xml("/images/Malawi.svg", function(xml) {
+            document.getElementById("map").appendChild(xml.documentElement);     
+
+            <% @sites.each do |site|
+                refPoints = [-9.331537, -17.158189, 32.674051, 35.969950];
+                offsets = [10, 295, 10, 710];
+                x = site[1][2].to_f
+                y = site[1][1].to_f
+
+                x = ((offsets[1] - offsets[0]) * ((x.abs - refPoints[2].abs) / (refPoints[3].abs - refPoints[2].abs)))
+
+                y = ((offsets[3] - offsets[2]) * ((y.abs - refPoints[0].abs) / (refPoints[1].abs - refPoints[0].abs)))
+            %>
+
+                    url = `/query_lab_stats_last_sync?lab_name="<%=site[0]%>"`;
+                    ajaxCall(url);
+
+                    $( document ).ajaxComplete(function(){
+                        d3.select("#malawi").append("circle")
+                                        .style("stroke", "white")
+                                        .style("stroke-width", "1px")
+                                        .style("fill", color)
+                                        .style("margin", "auto")
+                                        .attr("r", 6)
+                                        .attr("class", "circle")
+                                        .attr("cx", "<%= x %>")
+                                        .attr("cy", "<%= y %>")
+                                        .attr("color", color)
+                                        .attr("value", "<%=site[1][0]%>")
+                                        .attr("id","<%=site[0]%>")
+                                        .on("mouseover", function(){
+                                            d3.select(".circle").attr("r", 7);
+                                            d3.select("#title6").text("<%=site[1][0]%>");
+                                            d3.select("#" + this.id).attr("r", 12).style("z-index", "100");
+                                        })
+                                        .on("mouseout", function(){
+                                            d3.select("#" + this.id).attr("r", 7).style("z-index", "10")
+                                                    .style("fill", this.getAttribute("color"));
+                                        });
+                    })
+                
+            <% end %>
+
+        });
+
+
+
+            // ajax call function
+            function ajaxCall(uri) {
+                let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
+                jQuery.ajax({
+                    url: uri,
+                    type: "Post",
+                    dataType: "json",
+                    success: function(res) {
+                        console.log(res.data);
+                            let lastSync = new Date(res.data);
+                            color = determineSyncStatus("June 29, 2021 11:00:00");
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                })
+            }
+
+            function determineSyncStatus(lastDateSync){
+                let now = new Date();
+                console.log(now);
+                let lastSyncDate = new Date(lastDateSync)
+                console.log(lastSyncDate);
+                let syncStatus = now - lastSyncDate;
+                console.log(syncStatus);
+                syncStatus = syncStatus / (3.6e+6);
+                console.log(syncStatus);
+                let color_status = "red";
+                if (syncStatus < 24){
+                    color_status = "green"
+                }
+                console.log(color_status);
+                return color_status;
+            }
+
+    </script>
 </body>
 
 </html>
+
+

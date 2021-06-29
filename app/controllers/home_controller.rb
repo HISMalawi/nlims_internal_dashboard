@@ -5,11 +5,16 @@ class HomeController < ApplicationController
     def index
         @labs = YAML.load_file "#{Rails.root}/public/molecular_labs.json"
         @genexpert_labs = YAML.load_file "#{Rails.root}/public/genexpert_labs.json"
+       
     end
 
 
     def all
-        period = Date.today 
+        period = Date.today
+        labs = YAML.load_file "#{Rails.root}/public/molecular_labs.json"
+        genexpert_labs = YAML.load_file "#{Rails.root}/public/genexpert_labs.json"
+        @sites = labs.merge(genexpert_labs)
+        @period =period
         puts "-------------------All Labs-----------"
         @total_orders = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen")[0]['total_count']
         @total_orders_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=2")[0]['total_count']
