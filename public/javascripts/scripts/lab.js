@@ -20,7 +20,7 @@ function ajaxCall(uri, color = 'black') {
             $('.test-title').css('display', 'initial');
 
             if (selector.toString() == "last-sync") {
-                let lastSync = new Date(res.data).toISOString();
+                let lastSync = new Date(res.data).toLocaleString();
                 console.log(lastSync);
                 $(`#${selector}`).text(lastSync);
 
