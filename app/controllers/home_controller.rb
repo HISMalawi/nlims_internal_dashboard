@@ -58,7 +58,7 @@ class HomeController < ApplicationController
             total_tests_to_be_started: total_tests_to_be_started,
             total_tests_rejected: total_tests_rejected,
             total_tests_voided_failed: total_tests_voided,
-            total_orders_today: total_orders_today,
+            total_orders_submitted_today: total_orders_today,
             total_orders_accepted_today: total_orders_accepted_today,
             total_orders_to_be_accepted_today: total_orders_to_be_accepted_today,
             total_orders_rejected_today: total_orders_rejected_today,
@@ -68,7 +68,7 @@ class HomeController < ApplicationController
             total_tests_waiting_results_today: total_tests_waiting_results_today,
             total_tests_to_be_started_today: total_tests_to_be_started_today,
             total_tests_rejected_today: total_tests_rejected_today,
-            total_tests_voided_today: total_tests_voided_today
+            total_tests_voided_failed_today: total_tests_voided_today
         }   
         render plain: JSON.generate(data) and return
     end

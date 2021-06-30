@@ -28,7 +28,7 @@ function ajaxCall(uri, color = 'black') {
         success: function(res) {
             $('.test-title').css('display', 'initial');
 
-            setElementData(selector, res);
+            setElementData(selector, res, color);
             progressBar();
             testTypesList(res);
 
@@ -188,17 +188,27 @@ function testTypesList(tes_list) {
     }
 }
 
-function setElementData(sel, data) {
-    if (sel.toString() == "last-sync") {
-        let lastSync = new Date(data.data).toLocaleString();
-        console.log(lastSync);
-        $(`#${sel}`).text(lastSync);
-
+function setElementData(selector, data, color) {
+    if (selector.toString() == "last-sync") {
+        processDateData(selector, data);
     } else {
-        $(`#${sel}`).text(data.data);
+        $(`#${selector}`).text(data.data);
     }
 
-    $(`.${sel}`).text(data.today);
+    $(`.${selector}`).text(data.today);
     $('.today').css("display", "initial");
-    $(`#${sel}`).css('color', `${color}`);
+    $(`#${selector}`).css('color', `${color}`);
+}
+
+function processDateData(selector, data) {
+    let date = data.data;
+    date = date.replace(/-/g, '/');
+    let lastSync = new Date(date).toLocaleString();
+    lastSync = lastSync.split(',');
+    lastSyncDate = lastSync[0]
+    lastSyncDate = new Date(lastSyncDate);
+    lastSyncDate = lastSyncDate.toDateString();
+    lastSyncTime = lastSync[1];
+    lastSync = `${lastSyncDate}, ${lastSyncTime}`
+    $(`#${selector}`).text(lastSync);
 }

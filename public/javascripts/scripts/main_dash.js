@@ -7,11 +7,17 @@ $(document).ready(function() {
 
 function setAllLabsData(data) {
     for (const [key, value] of Object.entries(data)) {
+        // Cummulative
         let elementSelector = `${key}`.split('_').join('-');
         $(`#${elementSelector}`).text(value);
-        $(`.${elementSelector}`).text(value);
 
+        // Today
+        if (key.includes('_today')) {
+            elementSelector = elementSelector.replace('-today', '');
+            $(`.${elementSelector}`).text(value);
+        }
     }
+    progressBar();
 }
 
 
@@ -27,4 +33,8 @@ function ajaxCallAllLabs() {
             console.log(err);
         }
     })
+}
+
+function progressBar() {
+    $('progress').fadeOut(1000);
 }

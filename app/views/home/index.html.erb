@@ -1,16 +1,12 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
+        <a class="navbar-brand" href="<%= url_for(action: 'all', controller: 'home', only_path: false) %>">LIMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">Home <span class="sr-only">(current)</span></a>
-                </li>
-
                 <li class="nav-item active">
                     <a class="nav-link" href="<%= url_for(action: 'index', controller: 'data_resolves', only_path: false) %>">Data Resolves <span class="sr-only">(current)</span></a>
                 </li>
@@ -75,7 +71,7 @@
     <div class="container">
                 <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#specimen-id">Specimen Orders</a>
+                                <a class="nav-link active" data-toggle="tab" href="#specimen-id">Orders</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tests-id">Tests</a>
