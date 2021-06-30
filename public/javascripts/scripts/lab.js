@@ -7,6 +7,13 @@ var url = "";
 $('.today').css('display', 'none');
 $('progress').css('display', 'none');
 
+// data list tests types ajax call
+let Url = '/query_lab_stats_test_types';
+ajaxCall(Url);
+
+searchLabs();
+loadByFilter();
+
 // ajax call function
 function ajaxCall(uri, color = 'black') {
     let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
@@ -21,37 +28,9 @@ function ajaxCall(uri, color = 'black') {
         success: function(res) {
             $('.test-title').css('display', 'initial');
 
-            if (selector.toString() == "last-sync") {
-                let lastSync = new Date(res.data).toLocaleString();
-                console.log(lastSync);
-                $(`#${selector}`).text(lastSync);
-
-            } else {
-                $(`#${selector}`).text(res.data);
-            }
-
-            $(`.${selector}`).text(res.today);
-            $('.today').css("display", "initial");
-            $(`#${selector}`).css('color', `${color}`);
-
-            var progress_value = parseInt($('progress').attr('value'));
-            if (progress_value < 110) {
-                progress_value += 10;
-                $('progress').attr('value', `${progress_value}`);
-            } else {
-                $('progress').attr('value', `${progress_value + 10}`);
-                $('progress').fadeOut(3000);
-            }
-
-            // handle data list for test types
-            if (Array.isArray(res)) {
-                $('.today').css('display', 'none');
-                tests = [...new Set(res)];
-                tests.forEach(function(test) {
-                    container = $('datalist');
-                    container.append(`<option class="tests-options" value="${test}"></option>`) // $('option').attr('value', test)
-                })
-            }
+            setElementData(selector, res);
+            progressBar();
+            testTypesList(res);
 
         },
         error: function(err) {
@@ -178,16 +157,48 @@ function loadData(lab) {
 
 }
 
-// data list tests types ajax call
-let Url = '/query_lab_stats_test_types';
-ajaxCall(Url);
-
-searchLabs();
-loadByFilter();
 
 // Called from Main Dash JS
 let UrlWindow = window.location.href;
 if (UrlWindow.includes('?')) {
     let labName = UrlWindow.split('?')[1].split('=')[1]
     loadData(labName);
+}
+
+function progressBar() {
+    var progress_value = parseInt($('progress').attr('value'));
+    if (progress_value < 110) {
+        progress_value += 10;
+        $('progress').attr('value', `${progress_value}`);
+    } else {
+        $('progress').attr('value', `${progress_value + 10}`);
+        $('progress').fadeOut(3000);
+    }
+}
+
+// handle data list for test types
+function testTypesList(tes_list) {
+    if (Array.isArray(tes_list)) {
+        $('.today').css('display', 'none');
+        tests = [...new Set(tes_list)];
+        tests.forEach(function(test) {
+            container = $('datalist');
+            container.append(`<option class="tests-options" value="${test}"></option>`) // $('option').attr('value', test)
+        })
+    }
+}
+
+function setElementData(sel, data) {
+    if (sel.toString() == "last-sync") {
+        let lastSync = new Date(data.data).toLocaleString();
+        console.log(lastSync);
+        $(`#${sel}`).text(lastSync);
+
+    } else {
+        $(`#${sel}`).text(data.data);
+    }
+
+    $(`.${sel}`).text(data.today);
+    $('.today').css("display", "initial");
+    $(`#${sel}`).css('color', `${color}`);
 }
