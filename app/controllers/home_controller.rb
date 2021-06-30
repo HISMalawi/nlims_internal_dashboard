@@ -47,7 +47,7 @@ class HomeController < ApplicationController
         total_tests_voided_today = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE (tests.test_status_id=6 OR tests.test_status_id=10 OR tests.test_status_id=7) AND substr(tests.time_created,1,10)='#{period}'")[0]['total_count']
         
         data = {
-            total_orders: total_orders,
+            total_orders_submitted: total_orders,
             total_orders_accepted: total_orders_accepted,
             total_orders_to_be_accepted: total_orders_to_be_accepted,
             total_orders_rejected: total_orders_rejected,
@@ -57,7 +57,7 @@ class HomeController < ApplicationController
             total_tests_waiting_results: total_tests_waiting_results,
             total_tests_to_be_started: total_tests_to_be_started,
             total_tests_rejected: total_tests_rejected,
-            total_tests_voided: total_tests_voided,
+            total_tests_voided_failed: total_tests_voided,
             total_orders_today: total_orders_today,
             total_orders_accepted_today: total_orders_accepted_today,
             total_orders_to_be_accepted_today: total_orders_to_be_accepted_today,

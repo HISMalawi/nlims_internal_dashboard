@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  get '' , to: 'home#index'
+  get '/labs' , to: 'home#index'
 
-  get '/dashboard' , to: 'home#all'
+  get '' , to: 'home#all'
   get '/merge/:id' => "data_resolves#merge"
  
   get '/query_lab_stats_all_labs' => "home#query_lab_stats_all_labs"

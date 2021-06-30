@@ -1,6 +1,8 @@
 var hospital;
 var period;
 var test_type = "";
+var url = "";
+
 
 $('.today').css('display', 'none');
 $('progress').css('display', 'none');
@@ -177,9 +179,15 @@ function loadData(lab) {
 }
 
 // data list tests types ajax call
-let url = '/query_lab_stats_test_types';
-ajaxCall(url);
-
+let Url = '/query_lab_stats_test_types';
+ajaxCall(Url);
 
 searchLabs();
 loadByFilter();
+
+// Called from Main Dash JS
+let UrlWindow = window.location.href;
+if (UrlWindow.includes('?')) {
+    let labName = UrlWindow.split('?')[1].split('=')[1]
+    loadData(labName);
+}

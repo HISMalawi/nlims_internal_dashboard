@@ -1,8 +1,8 @@
-<!doctype html>
+  <!-- <!doctype html>
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
+Required meta tags 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -12,12 +12,12 @@
     <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
     <script src="/javascripts/list.js" type="text/javascript"></script>
-    <script src="/javascripts/d3.min.js" type="text/javascript"></script>
+    <script src="/javascripts/d3.min.js" type="text/javascript"></script> 
     
 
-</head>
+</head>   -->
 
-<body class="main-dash">
+<div class="main-dash">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,16 +36,22 @@
                  <div class="row">
                     <div class="col-12">
                     <div>
-                        <svg height="50" width="100">
-                            <circle cx="90" cy="23" r="7" fill="green" />
+                        <svg height="50" width="30">
+                            <circle cx="15" stroke="#b3cccc" cy="23" r="7" fill="green" />
                         </svg>
                             <span>Last Synced within 24hrs</span>
                     </div>
                     <div>
-                        <svg height="50" width="100">
-                            <circle cx="90" cy="23" r="7" fill="red" />
+                        <svg height="50" width="30">
+                            <circle stroke="#b3cccc" cx="15" cy="23" r="7" fill="#ffcc00" />
                         </svg>
-                            <span>Last Synced past 24hrs</span>
+                            <span>Last Synced past 24hrs within 48hrs</span>
+                    </div>
+                    <div>
+                        <svg height="50" width="30">
+                            <circle stroke="#b3cccc" stroke-width="1" cx="15" cy="23" r="7" fill="red" />
+                        </svg>
+                            <span>Last Synced past 48hrs</span>
                     </div>
 
                     </div>
@@ -282,10 +288,10 @@
 
     </div>
     </div>
-    
-    
+  </div>  
+ 
     <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
-  
+   
     <script>
         var loader = d3.xml("/images/Malawi.svg", function(xml) {
             document.getElementById("map").appendChild(xml.documentElement);     
@@ -325,7 +331,11 @@
                                         .on("mouseout", function(){
                                             d3.select("#" + this.id).attr("r", 7).style("z-index", "10")
                                                     .style("fill", this.getAttribute("color"));
-                                        });
+                                        })
+                                        .on("click", function(){
+                                            let url = `/labs?lab_name=<%=site[0]%>`
+                                            window.open(url, '_blank').focus();
+                                        })
                     })
                 
             <% end %>
@@ -344,7 +354,7 @@
                     success: function(res) {
                         console.log(res.data);
                             let lastSync = new Date(res.data);
-                            color = determineSyncStatus("June 29, 2021 11:00:00");
+                            color = determineSyncStatus("June 28, 2021 8:00:00");
                     },
                     error: function(err) {
                         console.log(err);
@@ -362,16 +372,21 @@
                 syncStatus = syncStatus / (3.6e+6);
                 console.log(syncStatus);
                 let color_status = "red";
-                if (syncStatus < 24){
+                if (syncStatus <= 24){
                     color_status = "green"
+                }
+                else if (syncStatus > 24 && syncStatus <= 72){
+                    color_status = "#ffcc00"
+                }
+                else{
+                    color_status = "red"
                 }
                 console.log(color_status);
                 return color_status;
             }
 
     </script>
-</body>
 
-</html>
+
 
 
