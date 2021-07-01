@@ -202,13 +202,17 @@ function setElementData(selector, data, color) {
 
 function processDateData(selector, data) {
     let date = data.data;
-    date = date.replace(/-/g, '/');
-    let lastSync = new Date(date).toLocaleString();
-    lastSync = lastSync.split(',');
-    lastSyncDate = lastSync[0]
-    lastSyncDate = new Date(lastSyncDate);
-    lastSyncDate = lastSyncDate.toDateString();
-    lastSyncTime = lastSync[1];
-    lastSync = `${lastSyncDate}, ${lastSyncTime}`
-    $(`#${selector}`).text(lastSync);
+    if (date == '0') {
+        $(`#${selector}`).text(date);
+    } else {
+        date = date.replace(/-/g, '/');
+        let lastSync = new Date(date).toLocaleString();
+        lastSync = lastSync.split(',');
+        lastSyncDate = lastSync[0]
+        lastSyncDate = new Date(lastSyncDate);
+        lastSyncDate = lastSyncDate.toDateString();
+        lastSyncTime = lastSync[1];
+        lastSync = `${lastSyncDate}, ${lastSyncTime}`
+        $(`#${selector}`).text(lastSync);
+    }
 }
