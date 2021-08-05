@@ -1488,7 +1488,7 @@ class HomeController < ApplicationController
         if !res.blank?
            data = res[0]['created_at']
         end
-        render plain: JSON.generate({data: data}) and return
+        render plain: JSON.generate({data: data, lab: lab}) and return
     end
 
     def get_tests

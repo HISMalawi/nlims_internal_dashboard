@@ -275,6 +275,7 @@
     <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
    
     <script>
+    mapConfi = []
         runMapProcess();
 
 
@@ -322,11 +323,11 @@
                                                 window.open(url, '_blank').focus();
                                             })
                         })
-                    
+                    console.log(mapConfi)
                 <% end %>
-
             });
         }
+         
             // ajax call function
             function ajaxCall(uri) {
                 let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
@@ -337,6 +338,7 @@
                     success: function(res) {
                             color = determineSyncStatus(res);
                             setDateTitle();
+                            mapConfi.push([res.lab, color])
                     },
                     error: function(err) {
                         console.log(err);
@@ -345,7 +347,7 @@
             }
 
             function runAjaxCall(param){
-                url = `/query_lab_stats_last_sync?lab_name=param`;
+                url = `/query_lab_stats_last_sync?lab_name=${param}`;
                 ajaxCall(url);
             }
 
@@ -363,21 +365,28 @@
             }
             function determineSyncStatus(response) {
                 let now = new Date();
+                console.log(response.lab)
+                
                 let date = response.data;
-                lastDateSync = date.replace(/-/g, '/');
-                let lastSyncDate = new Date(lastDateSync)
-                let syncStatus = now - lastSyncDate;
-                syncStatus = syncStatus / (3.6e+6);
-                let color_status = "red";
-                if (syncStatus <= 24){
-                    color_status = "green"
-                }
-                else if (syncStatus > 24 && syncStatus <= 72){
-                    color_status = "#ffcc00"
-                }
-                else{
+                if(date==0){
                     color_status = "red"
                 }
+                else{
+                    lastDateSync = date.replace(/-/g, '/');
+                    let lastSyncDate = new Date(lastDateSync)
+                    let syncStatus = now - lastSyncDate;
+                    syncStatus = syncStatus / (3.6e+6);
+                    let color_status = "red";
+                    if (syncStatus <= 24){
+                        color_status = "green"
+                    }
+                    else if (syncStatus > 24 && syncStatus <= 72){
+                        color_status = "#ffcc00"
+                    }
+                    else{
+                        color_status = "red"
+                    }
+                }               
                 return color_status;
             }
 
