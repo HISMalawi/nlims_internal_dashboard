@@ -275,12 +275,13 @@
     <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
    
     <script>
-    mapConfi = []
+      let mapConfigColors = []
         runMapProcess();
 
 
         
         function processMap(){
+            
             var loader = d3.xml("/images/Malawi.svg", function(xml) {
                 document.getElementById("map").appendChild(xml.documentElement);     
 
@@ -322,12 +323,21 @@
                                                 let url = `/labs?lab_name=<%=site[0]%>`
                                                 window.open(url, '_blank').focus();
                                             })
-                        })
-                    console.log(mapConfi)
+                        })            
                 <% end %>
             });
+           
         }
-         
+        // Set map sync color code
+        $(document).ajaxComplete(function(){
+                        mapConfigColors.forEach(function(fillColor){
+                            setTimeout(function(){
+                                d3.selectAll(`#${fillColor[0]}`).style('fill', `${fillColor[1]}`); 
+                                d3.selectAll(`#${fillColor[0]}`).attr('color', `${fillColor[1]}`);
+                                },3000)
+                            })
+                        });
+
             // ajax call function
             function ajaxCall(uri) {
                 let selector = uri.replace("/query_lab_stats_", "").trim().split('?')[0].split('_').join('-');
@@ -338,7 +348,7 @@
                     success: function(res) {
                             color = determineSyncStatus(res);
                             setDateTitle();
-                            mapConfi.push([res.lab, color])
+                            mapConfigColors.push([res.lab, color])
                     },
                     error: function(err) {
                         console.log(err);
@@ -352,7 +362,7 @@
             }
 
             function runMapProcess(){
-                processMap();
+                processMap();              
                 setInterval(function() {
                 $('#map').remove();
                 let div = document.createElement('div');
@@ -365,8 +375,6 @@
             }
             function determineSyncStatus(response) {
                 let now = new Date();
-                console.log(response.lab)
-                
                 let date = response.data;
                 if(date==0){
                     color_status = "red"
@@ -397,7 +405,6 @@
                 datePeriod = datePeriod.toDateString();
                 $('#date-today').text(datePeriod)
             }
-
     </script>
 
 
