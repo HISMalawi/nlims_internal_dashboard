@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  
   get '' , to: 'home#index'
 
   post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
@@ -33,4 +34,5 @@ Rails.application.routes.draw do
 
   get '/merge/:id' => "data_resolves#merge"
   
+  root 'home#index'
 end
