@@ -2,8 +2,10 @@
 
     "A18": "Area 18 Health Center", 
     "LLH": "Lilongwe Lighthouse",
-    "UFC": "Umodzi Family Center (Lighthouse)",
+    "QEC": "Umodzi Family Center (Lighthouse)",
     "CRD": "Chiradzulu District Hospital",
     "MJD": "Mulanje District Hospital",
-    "ND": "Ndirande Health Center"
+    "ND": "Ndirande Health Center",
+    "CKW": "Chikwawa District Hospital",
+    "ZCH": "Tisungane Clinic (Zomba Lighthouse)"
 }
