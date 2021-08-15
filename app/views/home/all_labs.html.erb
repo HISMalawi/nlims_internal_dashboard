@@ -275,7 +275,7 @@
     <script src="/javascripts/scripts/main_dash.js" type="text/javascript"></script>
    
     <script>
-    mapConfi = []
+    mapConfigColors = []
         runMapProcess();
 
 
@@ -323,10 +323,19 @@
                                                 window.open(url, '_blank').focus();
                                             })
                         })
-                    console.log(mapConfi)
+                    
                 <% end %>
             });
         }
+		// Set map sync color code
+		$(document).ajaxComplete(function(){
+                        mapConfigColors.forEach(function(fillColor){
+                            setTimeout(function(){
+                                d3.selectAll(`#${fillColor[0]}`).style('fill', `${fillColor[1]}`);
+				d3.selectAll(`#${fillColor[0]}`).attr('color', `${fillColor[1]}`);  
+                                },3000)
+                            })
+                        });
          
             // ajax call function
             function ajaxCall(uri) {
@@ -338,7 +347,7 @@
                     success: function(res) {
                             color = determineSyncStatus(res);
                             setDateTitle();
-                            mapConfi.push([res.lab, color])
+                            mapConfigColors.push([res.lab, color])
                     },
                     error: function(err) {
                         console.log(err);
@@ -365,8 +374,6 @@
             }
             function determineSyncStatus(response) {
                 let now = new Date();
-                console.log(response.lab)
-                
                 let date = response.data;
                 if(date==0){
                     color_status = "red"
@@ -376,7 +383,7 @@
                     let lastSyncDate = new Date(lastDateSync)
                     let syncStatus = now - lastSyncDate;
                     syncStatus = syncStatus / (3.6e+6);
-                    let color_status = "red";
+                 
                     if (syncStatus <= 24){
                         color_status = "green"
                     }
