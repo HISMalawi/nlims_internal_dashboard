@@ -1,9 +1,10 @@
 {
     "A18": ["Area 18 Health Center", "-13.82", "33.6201"],
     "LLH": ["Lilongwe Lighthouse", "-13.922", "33.7201"],
-    "UFC": ["Umodzi Family Center (Lighthouse)", "-15.882711", "35.021770"],
+    "QEC": ["Umodzi Family Center (Lighthouse)", "-15.882711", "35.021770"],
     "CRD": ["Chiradzulu District Hospital", "-15.709638", "35.210"],
     "MJD": ["Mulanje District Hospital", "-16.025551", "35.508515"],
     "CKW": ["Chikwawa District Hospital", "-16.023356", "34.792361"],
-    "NHC": ["Ndirande Health Center", "-15.6456", "35"]
+    "ND": ["Ndirande Health Center", "-15.6456", "35"],
+    "ZCH": ["Tisungane Clinic (Zomba Lighthouse)", "-15.396379", "35.21594"]
 }
