@@ -6,5 +6,9 @@
     "MJD": ["Mulanje District Hospital", "-16.025551", "35.508515"],
     "CKW": ["Chikwawa District Hospital", "-16.023356", "34.792361"],
     "ND": ["Ndirande Health Center", "-15.6456", "35"],
-    "ZCH": ["Tisungane Clinic (Zomba Lighthouse)", "-15.396379", "35.21594"]
+    "ZCH": ["Tisungane Clinic (Zomba Lighthouse)", "-15.396379", "35.21594"],
+    "MH": ["Mangochi District Hospital", "-14.481662", "35.265238"],
+    "MBC": ["Monkey Bay Community Hospital", "-14.084578", "34.911054"],
+    "MAC": ["Machinga District Hospital", "-15.061565", "35226045"],
+
 }
