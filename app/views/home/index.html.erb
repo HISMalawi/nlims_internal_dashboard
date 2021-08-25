@@ -20,7 +20,7 @@
         <div class="row mt-3 border-bottom">
             <div class="col-3 border-right">
                 <div class="m-labs">
-                    <h3 class="border-bottom text-muted">Molecular Labs</h3>
+                    <h3 class="border-bottom text-muted">Molecular Labs(<%= @labs.length %>)</h3>
                     <ul class="nav flex-column">
                         <% @labs.each do |lab| %>
                             <li class="nav-item">
@@ -30,7 +30,7 @@
                     </ul>
                 </div>
                 <div class="gxepert-sites mt-3">
-                    <h3 class="text-muted">Genexpert Sites</h3>
+                  <h3 class="text-muted">Genexpert Sites(<%= @genexpert_labs.length %>) </h3>
                     <div id="sites">
                         <input class="search form-control" placeholder="Search site" />
                         <div style="overflow: scroll; height:320px;">
