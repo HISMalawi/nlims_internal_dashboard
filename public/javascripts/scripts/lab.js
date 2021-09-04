@@ -90,6 +90,7 @@ function setTestType() {
 function setHospital(lab) {
     hospital = $(`#${lab}`).text();
     $('#lab').text(hospital);
+    $('#bde_lab_name').text(hospital);
 }
 
 
@@ -97,7 +98,7 @@ function loadData(lab) {
     setHospital(lab);
     setTestType();
     getSetDate();
-
+    LoadBackDataEntryData(lab)
     let parameters = `lab_name=${lab}&period=${period}&test_type=${test_type}`;
     // css style for header and filter
     $('.header').css('display', '');
@@ -154,6 +155,7 @@ function loadData(lab) {
 
 
     $('progress').attr('value', '0');
+
 
 }
 
@@ -215,4 +217,17 @@ function processDateData(selector, data) {
         lastSync = `${lastSyncDate}, ${lastSyncTime}`
         $(`#${selector}`).text(lastSync);
     }
+}
+
+function LoadBackDataEntryData(lab){
+    $('#bde_table').DataTable( {
+        ajax: `/get_bde_data?lab_name=${lab}`,
+        columns: [
+            { data: 'tracking_number' },
+            { data: 'date_created' },
+            { data: 'sample_type' },
+            { data: 'test_type' }
+        ],
+        destroy: true
+    } );
 }

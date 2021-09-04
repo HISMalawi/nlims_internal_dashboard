@@ -35,4 +35,6 @@ Rails.application.routes.draw do
   get '/merge/:id' => "data_resolves#merge"
   
   root 'home#index'
+
+  get "/get_bde_data" => "backlog_data_entry#get_bde_data"
 end
