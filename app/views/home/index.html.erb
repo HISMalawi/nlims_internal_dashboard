@@ -227,23 +227,35 @@
     <div class="modal-dialog modal-full">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Back Data Entry for <span id="bde_lab_name"></span></h5>
+          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Backlog Data Entry for <span id="bde_lab_name"></span></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        
         <div class="modal-body">
-            <table id="bde_table" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Tracking Number</th>
-                        <th>Date Created</th>
-                        <th>Sample Type</th>
-                        <th>Test Type</th>
-                    </tr>
-                </thead>
-            </table>
-            
+            <div class="row">
+                <div class="col-8">
+                <table id="bde_table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Tracking Number</th>
+                            <th>Date Created</th>
+                            <th>Sample Type</th>
+                            <th>Test Type</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-4s mt-5">
+                <h2 class="mr-auto"> <u>STATISTICS</u></h2>
+                <h3><span>Total Data: <span id="bde_total"></span></span></h3>
+                <h3 class="sars" style="display: none;"><span>1. SARS COV-2 Antigen: <span id="bde_sars">0</span></span></h3><br>
+                <h3 class="tb"  style="display: none;"><span>2. TB Tests: <span id="bde_tb">0</span></span></h3><br>
+                <h3 class="vl"  style="display: none;"><span>3. Viral Load: <span id="bde_vl">0</span></span></h3><br>
+                <h3 class="eid" style="display: none;"><span>4. EID: <span id="bde_eid">0</span></span></h3><br>
+            </div>
+            </div>
         </div>
       </div>
     </div>

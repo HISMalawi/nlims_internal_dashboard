@@ -220,14 +220,52 @@ function processDateData(selector, data) {
 }
 
 function LoadBackDataEntryData(lab){
-    $('#bde_table').DataTable( {
-        ajax: `/get_bde_data?lab_name=${lab}`,
-        columns: [
-            { data: 'tracking_number' },
-            { data: 'date_created' },
-            { data: 'sample_type' },
-            { data: 'test_type' }
-        ],
-        destroy: true
-    } );
+    $('#bde_sars').text(0)
+    $('#bde_tb').text(0)
+    $('#bde_vl').text(0)
+    $('#bde_eid').text(0)
+    jQuery.ajax({
+        url: `/get_bde_data?lab_name=${lab}`,
+        type: "GET",
+        dataType: "json",
+        success: function(res) {
+            count_tests = CountTests(res.data)
+            $('#bde_total').text(res.data.length)
+            $('#bde_table').DataTable( {
+                // ajax: `/get_bde_data?lab_name=${lab}`,
+                data: res.data,
+                columns: [
+                    { data: 'tracking_number' },
+                    { data: 'date_created' },
+                    { data: 'sample_type' },
+                    { data: 'test_type' }
+                ],
+                destroy: true
+            } );
+            $('#bde_sars').text(count_tests["SARS COV-2 Rapid Antigen"])
+            $('.sars').css("display", "initial");
+            $('#bde_tb').text(count_tests["TB Tests"])
+            $('.tb').css("display", "initial");
+            $('#bde_vl').text(count_tests["Viral Load"])
+            $('.vl').css("display", "initial");
+            $('#bde_eid').text(count_tests["EID"])
+            $('.eid').css("display", "initial");
+           
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}
+function CountTests(bde_data){
+    let bde_test_count = {}
+    bde_data.forEach(n => {
+        if (!(n.test_type in bde_test_count)){
+            bde_test_count[n.test_type] = 1
+        }
+        else{
+            bde_test_count[n.test_type] += 1
+        }
+    })
+    return bde_test_count
 }
