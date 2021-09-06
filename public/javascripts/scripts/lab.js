@@ -207,9 +207,8 @@ function processDateData(selector, data) {
     if (date == '0') {
         $(`#${selector}`).text(date);
     } else {
-        date = date.replace(/-/g, '/');
-        let lastSync = new Date(date).toLocaleString();
-        lastSync = lastSync.split(',');
+        let lastSync = date.replace(/-/g, '/');
+        lastSync = lastSync.split(' ');
         lastSyncDate = lastSync[0]
         lastSyncDate = new Date(lastSyncDate);
         lastSyncDate = lastSyncDate.toDateString();
