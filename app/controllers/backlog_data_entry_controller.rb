@@ -40,14 +40,14 @@ class BacklogDataEntryController < ApplicationController
         bde_data.each do |data|
            bde_hash_data = {
                :tracking_number => data["tracking_number"],
-               :date_created => data["date_created"],
+               :date_created => data["date_created"].to_s.split(' ')[0],
                :sample_type => data['sample_type'],
                :test_type => data["test_type"]
             }
             bde_arr.push(bde_hash_data)
-            bde_hash[data["tracking_number"]] = [data["date_created"],data['sample_type'], data["test_type"]]
+            # bde_hash[data["tracking_number"]] = [data["date_created"],data['sample_type'], data["test_type"]]
         end
-        puts bde_arr
+        # puts bde_arr
         render plain: JSON.generate({data:bde_arr}) and return
     end
 end
