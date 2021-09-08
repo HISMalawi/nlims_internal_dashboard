@@ -121,6 +121,10 @@ function loadData(lab) {
     url = `/query_lab_stats_total_orders_rejected?${parameters}`;
     ajaxCall(url, 'red');
 
+    // total orders collected ajax call
+    url = `/query_lab_stats_total_orders_collected?${parameters}`;
+    ajaxCall(url, '#f28a52');
+
     // total tests ajax call
     url = `/query_lab_stats_total_tests?${parameters}`;
     ajaxCall(url, 'black');
