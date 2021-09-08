@@ -10,8 +10,6 @@ Rails.application.routes.draw do
   
   post '/query_lab_stats_total_orders_rejected' => "home#query_lab_stats_total_orders_rejected"
 
-  post '/query_lab_stats_total_orders_collected' => "home#query_lab_stats_total_orders_collected"
-
   post '/query_lab_stats_total_tests' => "home#query_lab_stats_total_tests"
 
   post '/query_lab_stats_total_tests_verrified' => "home#query_lab_stats_total_tests_verrified"
