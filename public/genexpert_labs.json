@@ -25,8 +25,15 @@
     "NCHH": ["Ntchisi District Hospital","-13.36331637050226", "33.91021372541794"],
     "MPEM": ["Mpemba Health Centre","-15.974538454683634, 34.95640876963835"],
     "SL": ["South Lunzu Health Center","-15.726614099353693", "35.054603337110635"],
-    "LMB": ["Limbe Health Centre","-15.816323866384339", "35.051693429516135"]
+    "LMB": ["Limbe Health Centre","-15.816323866384339", "35.051693429516135"],
+    "KKHO": ["Nkhotakota District Hospital","-12.924025921864294", "34.27833108123559"],
+    "MDMH": ["Madisi Mission Hospital","-13.407030507460647", "33.60785731007864"],
+    "BHC": ["Bangwe Health Centre","-15.823873099678906", "35.080289854297455"],
+    "GW": ["Gateway Clinic (Blantyre)", "-15.803014615902448", "35.02075046779207"]
 }
+
+
+
 
 
     
