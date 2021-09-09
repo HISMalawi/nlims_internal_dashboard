@@ -22,6 +22,10 @@ body {
     width: 100vw;
 }
 
+.footer-row{
+    margin-top: 300px;
+}
+
 .footer {
     position: relative;
     left: 26%;

@@ -17,7 +17,7 @@
         
    
     <div class="main m-3">
-        <div class="row mt-3 border-bottom">
+        <div class="row mt-3">
             <div class="col-3 border-right">
                 <div class="m-labs">
                     <h3 class="border-bottom text-muted">Molecular Labs(<%= @labs.length %>)</h3>
@@ -33,7 +33,7 @@
                   <h3 class="text-muted">Genexpert Sites(<%= @genexpert_labs.length %>) </h3>
                     <div id="sites">
                         <input class="search form-control" placeholder="Search site" />
-                        <div style="overflow: scroll; height:320px;">
+                        <div style="overflow: scroll; height:500px;">
                             <ul class="nav flex-column list">
                                 
                                     <% @genexpert_labs.each do |genexpert_lab| %>
@@ -310,18 +310,19 @@
                         </p>
                     </div>
                 </div>
+                <div class="row footer-row mb-3 border-top">
+                    <div class="footer-specific">
+                    <p class="text-muted text-center">EGPAF &copy;2021</p>
+                    </div>
+                </div>
 
+              
     </div>
             </div>
         </div>
     </div>
 
-        <div class="row mt-3">
-            <div class="footer-specific">
-               <p class="text-muted text-center">EGPAF &copy;2021</p>
-            </div>
-        </div>
-
+        
     </div>
     </div>
 

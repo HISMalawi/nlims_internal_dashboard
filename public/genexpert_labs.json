@@ -1,6 +1,6 @@
 {
     "A18": ["Area 18 Health Center", "-13.82", "33.6201"],
-    "LLH": ["Lilongwe Lighthouse", "-13.922", "33.7201"],
+    "LLH": ["Lilongwe Lighthouse", "-13.922", "33.5201"],
     "QEC": ["Umodzi Family Center (Lighthouse)", "-15.882711", "35.021770"],
     "CRD": ["Chiradzulu District Hospital", "-15.709638", "35.210"],
     "MJD": ["Mulanje District Hospital", "-16.025551", "35.508515"],
@@ -9,6 +9,36 @@
     "ZCH": ["Tisungane Clinic (Zomba Lighthouse)", "-15.396379", "35.21594"],
     "MH": ["Mangochi District Hospital", "-14.481662", "35.265238"],
     "MBC": ["Monkey Bay Community Hospital", "-14.084578", "34.911054"],
-    "MAC": ["Machinga District Hospital", "-15.061565", "35226045"],
-
+    "MAC": ["Machinga District Hospital", "-15.061565", "35.226062"],
+    "BLK": ["Balaka District Hospital", "-14.983530", "34.949672"],
+    "DMH": ["Dzenza Mission Hospital", "-13.87657617734685", "33.74700152611093"],
+    "CLKA": ["Chileka Health Centre", "-15.682242235618546", "34.97036591196461"],
+    "KW":  ["Kawale Health Centre","-13.999114","33.717936"],
+    "LIK": ["Likuni Mission Hosptial","-14.126641669767267", "33.509502229148676"],
+    "NMT": ["St Gabriels Hospital", "-13.980981840137394", "33.35143443047676"],
+    "CTDZ": ["Chitedze Health center", "-13.976592580123894", "33.64531509158104"],
+    "APC": ["Area30 Police Despensary", "-13.929352804576629", "33.7797910762939"],
+    "MTCH": ["Mitundu Health Centre","-14.241019141278", "33.76847902175824"],
+    "NCH": ["Ntcheu District Hospital","-14.817189076364558", "34.63843878126856"],
+    "KAP": ["Kapiri Mission Hospital","-13.561607959094538", "33.173621454256235"],
+    "DOW": ["Dowa District Hospital","-13.655138051110995", "33.9366629254228"],
+    "NCHH": ["Ntchisi District Hospital","-13.36331637050226", "33.91021372541794"],
+    "MPEM": ["Mpemba Health Centre","-15.974538454683634, 34.95640876963835"],
+    "SL": ["South Lunzu Health Center","-15.726614099353693", "35.054603337110635"],
+    "LMB": ["Limbe Health Centre","-15.816323866384339", "35.051693429516135"]
 }
+
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+   
+    
+

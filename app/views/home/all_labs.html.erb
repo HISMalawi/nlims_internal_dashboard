@@ -302,7 +302,7 @@
                                             .style("stroke-width", "1px")
                                             .style("fill", color)
                                             .style("margin", "auto")
-                                            .attr("r", 6)
+                                            .attr("r", 4)
                                             .attr("class", "circle")
                                             .attr("cx", "<%= x %>")
                                             .attr("cy", "<%= y %>")
@@ -310,12 +310,12 @@
                                             .attr("value", "<%=site[1][0]%>")
                                             .attr("id","<%=site[0]%>")
                                             .on("mouseover", function(){
-                                                d3.select(".circle").attr("r", 7);
+                                                d3.select(".circle").attr("r", 5);
                                                 d3.select("#title6").text("<%=site[1][0]%>");
-                                                d3.select("#" + this.id).attr("r", 12).style("z-index", "100");
+                                                d3.select("#" + this.id).attr("r", 6).style("z-index", "100");
                                             })
                                             .on("mouseout", function(){
-                                                d3.select("#" + this.id).attr("r", 7).style("z-index", "10")
+                                                d3.select("#" + this.id).attr("r", 4).style("z-index", "10")
                                                         .style("fill", this.getAttribute("color"));
                                             })
                                             .on("click", function(){
