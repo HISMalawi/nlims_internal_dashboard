@@ -1,6 +1,5 @@
 {
-
-    "A18": "Area 18 Health Center", 
+    "A18": "Area 18 Health Center",
     "LLH": "Lilongwe Lighthouse",
     "QEC": "Umodzi Family Center (Lighthouse)",
     "CRD": "Chiradzulu District Hospital",
@@ -9,5 +8,26 @@
     "CKW": "Chikwawa District Hospital",
     "ZCH": "Tisungane Clinic (Zomba Lighthouse)",
     "MAC": "Machinga District Hospital",
-    "MH": "Mangochi District Hospital"
+    "MH": "Mangochi District Hospital",
+    "MBC": "MonkeyBay Community Hospital",
+    "BLK": "Balaka District Hospital",
+    "DMH": "Dzenza Mission Hospital",
+    "CLKA": "Chileka Health Centre",
+    "KW":  "Kawale Health Centre",
+    "LIK": "Likuni Mission Hosptial",
+    "NMT": "St Gabriels Hospital",
+    "CTDZ": "Chitedze Health center",
+    "APC": "Area30 Police Despensary",
+    "MTCH": "Mitundu Health Centre",
+    "NCH": "Ntcheu District Hospital",
+    "KAP": "Kapiri Mission Hospital",
+    "DOW": "Dowa District Hospital",
+    "MPO": "Mponela Health Centre",
+    "MPEM": "Mpemba Health Centre",
+    "SL": "South Lunzu Health Center",
+    "LMB": "Limbe Health Centre",
+    "KKHO": "Nkhotakota District Hospital",
+    "MDMH": "Madisi Mission Hospital",
+    "BHC": "Bangwe Health Centre",
+    "GW": "Gateway Clinic (Blantyre)"
 }
