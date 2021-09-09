@@ -23,7 +23,7 @@ class HomeController < ApplicationController
         period = Date.today
         total_orders = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen")[0]['total_count']
         total_orders_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=2")[0]['total_count']
-        total_orders_to_be_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=1")[0]['total_count']
+        total_orders_to_be_accepted = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE (specimen_status_id=1 OR specimen_status_id=4)")[0]['total_count']
         total_orders_rejected = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen WHERE specimen_status_id=3")[0]['total_count']
         total_tests = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id")[0]['total_count']
         total_tests_verrified = Speciman.find_by_sql("SELECT count(*) AS total_count FROM specimen INNER JOIN tests ON tests.specimen_id=specimen.id WHERE tests.test_status_id=5")[0]['total_count']
