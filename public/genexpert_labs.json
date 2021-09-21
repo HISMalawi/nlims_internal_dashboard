@@ -53,7 +53,10 @@
     "NGLRR": ["Ngwelero Health Centre", "-15.630199723914924", "35.41559458915057"],
     "SAL": ["Salima District Hospital","-13.755593841051402", "34.42135076117413"],
     "MBH": ["Mulibwanji Health centre", "-14.511145138224654", "35.58760699003112"],
-    "SMH": ["St Martins Hospital", "-14.314285423764444", "35.3091557248348"]
+    "SMH": ["St Martins Hospital", "-14.314285423764444", "35.3091557248348"],
+    "THUNG":[ "Thunga Health Centre", "-16.06957665424261", "35.137941912192545"],
+    "SUC": ["Sucoma Health Centre (ILLOVO)", "-16.03212225346478", "34.78726326684299"],
+    "CLKA": ["Chileka Health Centre","-13.954554", "33.795726"]
 }
 
 
