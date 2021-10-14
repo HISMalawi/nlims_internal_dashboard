@@ -41,7 +41,7 @@
         <div class="row mt-3 border-bottom">
             <div class="col-3 border-right">
                 <div class="m-labs">
-                    <h3 class="border-bottom">Molecular Labs</h3>
+                    <h3 class="border-bottom">Molecular Labs: <%= @labs.length %></h3>
                     <ul class="nav flex-column">
                         <% @labs.each do |lab| %>
                             <li class="nav-item text-left">
@@ -51,7 +51,7 @@
                     </ul>
                 </div>
                 <div class="gxepert-sites mt-3">
-                    <h3 class="border-bottom">Genexepert Sites</h3>
+                    <h3 class="border-bottom">Genexepert Sites: <%= @genexpert_labs.length %></h3>
                     <div id="sites">
                         <input class="search form-control" placeholder="Search site" />
                         <div style="overflow: scroll; height:430px;">
@@ -260,21 +260,26 @@
                     <tbody>
                       <tr>
                         <th scope="row">1</th>
-                        <td>Sars Cov-2 Rapid Antigen</td>
-                        <td id="bde_sars">0</td>
+                        <td id="bde_sars_antigen">Sars Cov-2 Rapid Antigen</td>
+                        <td id="bde_sars-antigen">0</td>
                       </tr>
                       <tr>
                         <th scope="row">2</th>
+                        <td id="bde_sars_cov-2">Sars Cov 2</td>
+                        <td id="bde_sars_cov2">0</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
                         <td>TB Tests</td>
                         <td id="bde_tb">0</td>
                       </tr>
                       <tr>
-                        <th scope="row">3</th>
+                        <th scope="row">4</th>
                         <td>Viral Load</td>
                         <td id="bde_vl">0</td>
                       </tr>
                       <tr>
-                        <th scope="row">4</th>
+                        <th scope="row">5</th>
                         <td>EID</td>
                         <td id="bde_eid">0</td>
                       </tr>
@@ -288,7 +293,7 @@
   </div>
   
     
-    <script src="/javascripts/scripts/lab.js" type="text/javascript"></script>
+    <script src="/javascripts/scripts/lab.js?version=1" type="text/javascript"></script>
     <script type="text/javascript" src="/javascripts/DataTables/datatables.min.js"></script>
 </body>
 

@@ -242,12 +242,18 @@ function LoadBackDataEntryData(lab){
                 ],
                 destroy: true
             } );
-            $('#bde_sars').text(count_tests["SARS COV-2 Rapid Antigen"])
+            $('#bde_sars-antigen').text(0)
+            $('#bde_sars-antigen').text(count_tests["SARS COV-2 Rapid Antigen"]) 
+	    $('#bde_sars_cov2').text(0)
+            $('#bde_sars_cov2').text(count_tests["SARS Cov 2"])
             $('.sars').css("display", "initial");
+            $('#bde_tb').text(0)
             $('#bde_tb').text(count_tests["TB Tests"])
             $('.tb').css("display", "initial");
+            $('#bde_vl').text(0)
             $('#bde_vl').text(count_tests["Viral Load"])
             $('.vl').css("display", "initial");
+            $('#bde_eid').text(0)
             $('#bde_eid').text(count_tests["EID"])
             $('.eid').css("display", "initial");
            
