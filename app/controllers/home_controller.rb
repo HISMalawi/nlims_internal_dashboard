@@ -1,7 +1,9 @@
 require 'date'
 require 'json'
+require 'test_data_querying'
 
 class HomeController < ApplicationController
+    include TestDataQuerying
     def index
         @labs = YAML.load_file "#{Rails.root}/public/molecular_labs.json"
         @genexpert_labs = YAML.load_file "#{Rails.root}/public/genexpert_labs.json"
@@ -76,6 +78,19 @@ class HomeController < ApplicationController
 
 
     def query_lab_stats_total_orders
+        sql_query = tests_orders_sql_query(params,status="",queried_in="orders")
+        res_today = Speciman.find_by_sql(sql_query[:query_for_today_data])[0]['total_count']
+        res_periodic = Speciman.find_by_sql(sql_query[:query_for_periodic_data])[0]['total_count']
+        5.times do |count|
+            puts "=========================="
+            puts "orders totaal"
+            puts res_today
+            puts res_periodic
+        end
+        puts tests_orders_sql_query(params,status="",queried_in="orders")
+        5.times do |count|
+            puts "=========================="
+        end
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
@@ -352,6 +367,20 @@ class HomeController < ApplicationController
 
 
     def query_lab_stats_total_orders_accepted
+        status = "AND specimen_status_id=2"
+        sql_query = tests_orders_sql_query(params,status=status,queried_in="orders")
+        res_today = Speciman.find_by_sql(sql_query[:query_for_today_data])[0]['total_count']
+        res_periodic = Speciman.find_by_sql(sql_query[:query_for_periodic_data])[0]['total_count']
+        5.times do |count|
+            puts "=========================="
+            puts "orders accepted"
+            puts res_today
+            puts res_periodic
+        end
+        puts tests_orders_sql_query(params,status="",queried_in="orders")
+        5.times do |count|
+            puts "=========================="
+        end
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
@@ -1188,6 +1217,19 @@ class HomeController < ApplicationController
 
 
     def query_lab_stats_total_tests
+        sql_query = tests_orders_sql_query(params,status="")
+        res_today = Speciman.find_by_sql(sql_query[:query_for_today_data])[0]['total_count']
+        res_periodic = Speciman.find_by_sql(sql_query[:query_for_periodic_data])[0]['total_count']
+        5.times do |count|
+            puts "=========================="
+            puts "total tests"
+            puts res_today
+            puts res_periodic
+        end
+        puts tests_orders_sql_query(params,status="")
+        5.times do |count|
+            puts "=========================="
+        end
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
@@ -1484,6 +1526,20 @@ class HomeController < ApplicationController
 
         #  authorized
     def query_lab_stats_total_tests_verrified
+        status = "AND tests.test_status_id=5"
+        sql_query = tests_orders_sql_query(params,status=status)
+        res_today = Speciman.find_by_sql(sql_query[:query_for_today_data])[0]['total_count']
+        res_periodic = Speciman.find_by_sql(sql_query[:query_for_periodic_data])[0]['total_count']
+        5.times do |count|
+            puts "=========================="
+            puts "tests verified"
+            puts res_today
+            puts res_periodic
+        end
+        puts tests_orders_sql_query(params,status=status)
+        5.times do |count|
+            puts "=========================="
+        end
         date = Date.today 
         lab  = params[:lab_name]
         period = params[:period]
