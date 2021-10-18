@@ -1,6 +1,4 @@
 module TestDataQuerying
-    
-
     def tests_orders_sql_query(params, status="",queried_in="tests")
         select_sql_query =  "SELECT count(*) AS total_count FROM specimen"
         inner_join_tests_with_specimen = "INNER JOIN tests ON tests.specimen_id=specimen.id"
@@ -44,7 +42,7 @@ module TestDataQuerying
                 end
                 sql_query = join_select_and_condition_query(innerjoin_and_select_query, condition)
             else
-                "test type available"
+                puts "test type available"
                 condition = partial_sql_condition(params,period_condition = "", test_type_condition=test_type_condition, status_condition=status,time_date_column=time_column)
                 innerjoin_and_select_query = select_and_innerjoin_query(select_sql_query,inner_join_tests_with_specimen,inner_join_tests_with_test_types)
                 sql_query = join_select_and_condition_query(innerjoin_and_select_query, condition)
