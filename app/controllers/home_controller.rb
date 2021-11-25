@@ -75,8 +75,6 @@ class HomeController < ApplicationController
         render plain: JSON.generate(data) and return
     end
 
-
-
     def query_lab_stats_total_orders
         sql_query = tests_orders_sql_query(params,status="",queried_in="orders")
         res_today = Speciman.find_by_sql(sql_query[:query_for_today_data])[0]['total_count']
