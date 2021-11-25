@@ -1,4 +1,4 @@
-{
+{  
     "A18": "Area 18 Health Center",
     "LLH": "Lilongwe Lighthouse",
     "QEC": "Umodzi Family Center (Lighthouse)",
@@ -51,10 +51,17 @@
     "NMTH": "Namitambo Health Centre",
     "MUA": "Mua Mission Hospital",
     "NKM": "NKMoma Mission Hospital",
-    "NGLRR": "Ngwelero Health Centre",
+    "NGLR": "Ngwelero Health Centre",
     "CHCB": "Chileka Health Centre (Blantyre)",
     "THUNG": "Thunga Health Centre",
     "SAL": "Salima District Hospital",
     "MBH": "MUlibwanji Health centre",
-    "SMH": "St Martins Hospital"
+    "SMH": "St Martins Hospital",
+    "CODE": "Chonde Health Centre",
+    "NGU": "Nguludi St Joseph Hospital",
+    "DZA": "Dedza District Hospital",
+    "KAS": "Kasungu District Hospital",
+    "KCCH": "Koche Community Hospital",
+    "TDHC": "Thondwe Health Centre",
+    "PHC": "Phalombe Health Centre"
 }
