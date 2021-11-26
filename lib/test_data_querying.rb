@@ -61,7 +61,7 @@ module TestDataQuerying
             data_today_condition =  "WHERE substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(tracking_number,1,4)!='XNDH' AND substr(#{time_date_column},1,10)='#{date}' "+ status_condition +" " + test_type_condition
             data_periodic_condition =  "WHERE substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(tracking_number,1,4)!='XNDH' " + period_condition + " "+ status_condition +" " + test_type_condition
         elsif lab_length ==3
-            if lab != 'TDH'
+            if (lab != 'TDH' or lab != 'NMT')
                 puts "lenght of 3"
                 data_today_condition = "WHERE substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(#{time_date_column},1,10)='#{date}' "+ status_condition +" " + test_type_condition
                 puts "today today of 3"
@@ -70,6 +70,10 @@ module TestDataQuerying
             if lab == 'TDH'
                 data_today_condition = "WHERE (substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' OR substr(tracking_number,1,3)='XTO') AND substr(#{time_date_column},1,10)='#{date}' "+ status_condition +" " + test_type_condition
                 data_periodic_condition = "WHERE (substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' OR substr(tracking_number,1,3)='XTO') " + period_condition + " "+ status_condition +" " + test_type_condition
+            end
+            if lab == 'NMT'
+                data_today_condition = "WHERE (substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(tracking_number,1,#{sql_substr_index_end+1})!='XNMTH') AND substr(#{time_date_column},1,10)='#{date}' "+ status_condition +" " + test_type_condition
+                data_periodic_condition = "WHERE (substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(tracking_number,1,#{sql_substr_index_end+1})!='XNMTH') " + period_condition + " "+ status_condition +" " + test_type_condition
             end
         else
             data_today_condition = "WHERE substr(tracking_number,1,#{sql_substr_index_end})='X#{lab}' AND substr(#{time_date_column},1,10)='#{date}' "+ status_condition +" " + test_type_condition

@@ -14,15 +14,27 @@ class BacklogDataEntryController < ApplicationController
             )
         
         elsif lab.length == 3
-            bde_data = Speciman.find_by_sql("
-                SELECT specimen.tracking_number, specimen.date_created, specimen_types.name AS sample_type,
-                test_types.name AS test_type FROM specimen
-                INNER JOIN specimen_types ON specimen_types.id = specimen.specimen_type_id
-                INNER JOIN tests ON tests.specimen_id = specimen.id
-                INNER JOIN test_types ON test_types.id = tests.test_type_id
-                WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tracking_number,-3)='BDE'
-                "
-            )
+            if lab != 'NMT'
+                bde_data = Speciman.find_by_sql("
+                    SELECT specimen.tracking_number, specimen.date_created, specimen_types.name AS sample_type,
+                    test_types.name AS test_type FROM specimen
+                    INNER JOIN specimen_types ON specimen_types.id = specimen.specimen_type_id
+                    INNER JOIN tests ON tests.specimen_id = specimen.id
+                    INNER JOIN test_types ON test_types.id = tests.test_type_id
+                    WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tracking_number,-3)='BDE'
+                    "
+                )
+            else
+                bde_data = Speciman.find_by_sql("
+                    SELECT specimen.tracking_number, specimen.date_created, specimen_types.name AS sample_type,
+                    test_types.name AS test_type FROM specimen
+                    INNER JOIN specimen_types ON specimen_types.id = specimen.specimen_type_id
+                    INNER JOIN tests ON tests.specimen_id = specimen.id
+                    INNER JOIN test_types ON test_types.id = tests.test_type_id
+                    WHERE substr(tracking_number,1,4)='X#{lab}' AND substr(tracking_number,1,5)!='XNMTH' AND substr(tracking_number,-3)='BDE'
+                    "
+                )
+            end
         else
             bde_data = Speciman.find_by_sql("
                 SELECT specimen.tracking_number, specimen.date_created, specimen_types.name AS sample_type,
