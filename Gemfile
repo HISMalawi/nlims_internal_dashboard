@@ -24,6 +24,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'rack-cors'
 gem 'similar_text', '~> 0.0.4'
 
+gem 'net-ping', '~> 1.7', '>= 1.7.8'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
