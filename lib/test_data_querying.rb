@@ -106,7 +106,7 @@ module TestDataQuerying
         }
     end
 
-    def last_sync_date(lab)
+    def self.last_sync_date(lab)
         data = "0"
         if lab.length == 2
             res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(tracking_number,1,4)!='XNDH' ORDER BY id DESC LIMIT 1")
