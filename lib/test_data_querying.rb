@@ -4,14 +4,17 @@ module TestDataQuerying
         inner_join_tests_with_specimen = "INNER JOIN tests ON tests.specimen_id=specimen.id"
         inner_join_tests_with_test_types = "INNER JOIN test_types ON test_types.id=tests.test_type_id"
         period = params[:period]
+        lab_x = params[:lab_name]
         test_type = params[:test_type].gsub('Aand','&')
         test_type_condition="AND test_types.name='#{test_type}'"
         period_condition = "AND substr(date_created,1,10)='#{period}'"
         queried_in = queried_in
         if queried_in=="tests"
             time_column = "tests.time_created"
+            time_column = "tests.created_at" if lab_x == "CHSU"
         else
             time_column ="date_created"
+            time_column = "specimen.created_at" if lab_x == "CHSU"
         end
         if period != "false"
             puts "period provided"
