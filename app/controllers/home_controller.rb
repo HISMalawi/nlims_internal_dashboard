@@ -172,26 +172,27 @@ class HomeController < ApplicationController
 
     def query_last_sync 
         lab  = params[:lab_name]
-        data = "0"
-        if lab.length == 2
-            res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(tracking_number,1,4)!='XNDH' ORDER BY id DESC LIMIT 1")
-        elsif lab.length == 3
-            if lab != 'TDH'
-                res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1") 
-            end
-            if lab == 'TDH'
-                res = Speciman.find_by_sql("SELECT * FROM specimen where (substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO') ORDER BY id DESC LIMIT 1") 
-            end
-        elsif lab.length == 4
-            res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,5)='X#{lab}' ORDER BY id DESC LIMIT 1") 
-        else
-            res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,6)='X#{lab}' ORDER BY id DESC LIMIT 1") 
-        end
+        # data = "0"
+        # if lab.length == 2
+        #     res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,3)='X#{lab}' AND substr(tracking_number,1,4)!='XNDH' ORDER BY id DESC LIMIT 1")
+        # elsif lab.length == 3
+        #     if lab != 'TDH'
+        #         res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,4)='X#{lab}' ORDER BY id DESC LIMIT 1") 
+        #     end
+        #     if lab == 'TDH'
+        #         res = Speciman.find_by_sql("SELECT * FROM specimen where (substr(tracking_number,1,4)='X#{lab}' OR substr(tracking_number,1,3)='XTO') ORDER BY id DESC LIMIT 1") 
+        #     end
+        # elsif lab.length == 4
+        #     res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,5)='X#{lab}' ORDER BY id DESC LIMIT 1") 
+        # else
+        #     res = Speciman.find_by_sql("SELECT * FROM specimen where substr(tracking_number,1,6)='X#{lab}' ORDER BY id DESC LIMIT 1") 
+        # end
     
-        if !res.blank?
-           data = res[0]['created_at']
-        end
-        render plain: JSON.generate({data: data, lab: lab}) and return
+        # if !res.blank?
+        #    data = res[0]['created_at']
+        # end
+        date_synced = last_sync_date(lab)
+        render plain: JSON.generate({data: date_synced, lab: lab}) and return
     end
 
     def get_tests
