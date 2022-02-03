@@ -37,4 +37,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   get "/get_bde_data" => "backlog_data_entry#get_bde_data"
+
+  get '/add_new_site' => 'monitor_sync_status#add_site'
+  post '/add_new_site' => 'monitor_sync_status#add_site'
 end
