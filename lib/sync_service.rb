@@ -17,19 +17,22 @@ module SyncService
             else
                 date = date_last_synced.strftime("%Y-%m-%d")
             end
-            ipaddress = site[:host_address]
-            puts "Checking last synced date for #{site[:name]}"
+            ipaddress = site[:ip_address]
+            Rails.logger.info "Checking last synced date for #{site[:name]}"
             if date == @current_datetime
                 SiteSyncFrequency.create(site_id: site[:id], last_sync: date_last_synced,remark_id: @data_synced)
             else
-                puts "==>Last sync not today"
-                puts "==>Checking Connectivity"
+                Rails.logger.info "Last sync not today"
+                Rails.logger.info "Checking Connectivity"
                 if up?(ipaddress)
+                    Rails.logger.info "Connection available"
                     SiteSyncFrequency.create(site_id: site[:id], last_sync: date_last_synced,remark_id: @net_available_data_not_synced)
                 else
+                    Rails.logger.info "Connection unavailable"
                     SiteSyncFrequency.create(site_id: site[:id], last_sync: date_last_synced,remark_id: @net_not_available)
                 end
             end  
+            Rails.logger.info "\n\n"
         end
     end
 
