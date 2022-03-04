@@ -1,300 +1,250 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-     <link rel="stylesheet" href="/css/dashboard.css">
-     <link rel="stylesheet" type="text/css" href="/javascripts/DataTables/datatables.min.css"/>
-    <script src="/javascripts/jquery-3.5.1.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/javascripts/list.js" type="text/javascript"></script>
-
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">LIMS</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'home', only_path: false) %>">Home <span class="sr-only">(current)</span></a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="<%= url_for(action: 'index', controller: 'data_resolves', only_path: false) %>">Data Resolves <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-        
-   
-    <div class="main m-3">
-        <div class="row mt-3 border-bottom">
-            <div class="col-3 border-right">
-                <div class="m-labs">
-                    <h3 class="border-bottom">Molecular Labs: <%= @labs.length %></h3>
-                    <ul class="nav flex-column">
-                        <% @labs.each do |lab| %>
-                            <li class="nav-item text-left">
-                                <button class="btn text-left" onclick="loadData('<%= lab[0] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
-                            </li> 
-                        <% end %>                       
-                    </ul>
+<div class="main m-3">
+    <div class="row mt-3 border-bottom">
+        <div class="col-3 border-right">
+            <div class="m-labs">
+                <h3 class="border-bottom">Molecular Labs: <%= @labs.length %></h3>
+                <ul class="nav flex-column">
+                    <% @labs.each do |lab| %>
+                        <li class="nav-item text-left">
+                            <button class="btn text-left" onclick="loadData('<%= lab[0] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
+                        </li> 
+                    <% end %>                       
+                </ul>
+            </div>
+            <div class="gxepert-sites mt-3">
+                <h3 class="border-bottom">Genexepert Sites: <%= @genexpert_labs.length %></h3>
+                <div id="sites">
+                    <input class="search form-control" placeholder="Search site" />
+                    <div style="overflow: scroll; height:430px;">
+                        <ul class="nav flex-column list">
+                            
+                                <% @genexpert_labs.each do |genexpert_lab| %>
+                                    <li class="nav-item text-left">                     
+                                        <button class="btn text-left name" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
+                                    </li>
+                                <% end %> 
+                        </ul>
+                    </div>
                 </div>
-                <div class="gxepert-sites mt-3">
-                    <h3 class="border-bottom">Genexepert Sites: <%= @genexpert_labs.length %></h3>
-                    <div id="sites">
-                        <input class="search form-control" placeholder="Search site" />
-                        <div style="overflow: scroll; height:430px;">
-                            <ul class="nav flex-column list">
-                                
-                                    <% @genexpert_labs.each do |genexpert_lab| %>
-                                        <li class="nav-item text-left">                     
-                                            <button class="btn text-left name" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
-                                        </li>
-                                    <% end %> 
-                            </ul>
+            
+            </div>
+        </div>
+        <div class="col-9 p-3 mb-5 bg-white rounded">
+            <div class="header border-bottom" style="display:none;">
+                <h3 id="head-title">LAB: <span class="text-muted" id="lab"></span><span class="ml-5"></span>Date:<span id="timeline" class="text-muted">June 2021</span></h3>
+                    <h3 id="test-type-title">Test Type: <span class="text-muted" id="ttype"></span></h3>
+            </div>
+            <div class="filter mt-2 mb-2 border-bottom" style="display:none;">
+                <form class="d-inline" id="date-form">
+                        <label for="start">Filter Date:</label>
+                        <input type="date" id="date" name="date">
+                        <input class="ml-5" list="tests" id="test-type" name="test-type" placeholder="Search test types"/>
+                        <datalist id="tests">
+                        </datalist>
+                        <button type="submit">Submit</button>
+                </form>
+                <button type="button" class="btn btn-primary p-1 float-lg-right" data-toggle="modal" data-target="#exampleModal">
+                    View BDE Orders
+                </button>
+            </div>
+    
+
+            <div class="row border-bottom">
+            <progress class="mx-auto my-1" max="120" value="0"></progress>
+                <div class="col-4 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-submitted"></span></p>
+                            <h5 class="text-center card-title" style="color:red; font-size:25px;" id="total-orders-submitted">!</h5>
+                            <p class="card-text border-top text-center">Total Orders Submitted</p>
                         </div>
                     </div>
+                </div>
                 
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-accepted"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-accepted">!</h5> 
+                            <p class="card-text border-top">Total Orders Accepted </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-rejected"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-rejected">!</h5>
+                            <p class="card-text border-top">Total Orders Rejected</p>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-to-be-accepted"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-to-be-accepted">!</h5>
+                            <p class="card-text border-top">Total Orders To be Accepted</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                
+            <div class="row mt-3 border-bottom">
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests"></span></p>
+                            <h5 class="card-title"  style="color:red; font-size:25px;" id="total-tests">!</h5>
+                            <p class="card-text border-top">Total Tests</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-verrified"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-verrified">!</h5>
+                            <p class="card-text border-top">Total Tests Authorized</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-with-results"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-with-results">!</h5>
+                            <p class="card-text border-top">Total Tests Unauthorized</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-waiting-results"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-waiting-results">!</h5>
+                            <p class="card-text border-top">Total Tests waiting Results</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-rejected"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-rejected">!</h5>
+                            <p class="card-text border-top">Total Tests Rejected</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-to-be-started"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-to-be-started">!</h5>
+                            <p class="card-text border-top">Total Tests to be started</p>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-4 mb-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-voided-failed"></span></p>
+                            <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-voided-failed">!</h5>
+                            <p class="card-text border-top">Total Tests Voided/Failed/Not done</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-9 p-3 mb-5 bg-white rounded">
-                <div class="header border-bottom" style="display:none;">
-                    <h3 id="head-title">LAB: <span class="text-muted" id="lab"></span><span class="ml-5"></span>Date:<span id="timeline" class="text-muted">June 2021</span></h3>
-                     <h3 id="test-type-title">Test Type: <span class="text-muted" id="ttype"></span></h3>
-                </div>
-                <div class="filter mt-2 mb-2 border-bottom" style="display:none;">
-                    <form class="d-inline" id="date-form">
-                            <label for="start">Filter Date:</label>
-                            <input type="date" id="date" name="date">
-                            <input class="ml-5" list="tests" id="test-type" name="test-type" placeholder="Search test types"/>
-                            <datalist id="tests">
-                            </datalist>
-                            <button type="submit">Submit</button>
-                    </form>
-                    <button type="button" class="btn btn-primary p-1 float-lg-right" data-toggle="modal" data-target="#exampleModal">
-                        View BDE Orders
-                    </button>
-                </div>
-        
 
-                <div class="row border-bottom">
-                <progress class="mx-auto my-1" max="120" value="0"></progress>
-                    <div class="col-4 mb-2">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-submitted"></span></p>
-                                <h5 class="text-center card-title" style="color:red; font-size:25px;" id="total-orders-submitted">!</h5>
-                                <p class="card-text border-top text-center">Total Orders Submitted</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-accepted"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-accepted">!</h5> 
-                                <p class="card-text border-top">Total Orders Accepted </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-rejected"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-rejected">!</h5>
-                                <p class="card-text border-top">Total Orders Rejected</p>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-orders-to-be-accepted"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-orders-to-be-accepted">!</h5>
-                                <p class="card-text border-top">Total Orders To be Accepted</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                    
-                <div class="row mt-3 border-bottom">
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests"></span></p>
-                                <h5 class="card-title"  style="color:red; font-size:25px;" id="total-tests">!</h5>
-                                <p class="card-text border-top">Total Tests</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-verrified"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-verrified">!</h5>
-                                <p class="card-text border-top">Total Tests Authorized</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-with-results"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-with-results">!</h5>
-                                <p class="card-text border-top">Total Tests Unauthorized</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-waiting-results"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-waiting-results">!</h5>
-                                <p class="card-text border-top">Total Tests waiting Results</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-rejected"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-rejected">!</h5>
-                                <p class="card-text border-top">Total Tests Rejected</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-to-be-started"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-to-be-started">!</h5>
-                                <p class="card-text border-top">Total Tests to be started</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-4 mb-2">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <p class="float-right mb-5 text-muted today">Today: <span class="total-tests-voided-failed"></span></p>
-                                <h5 class="card-title" style="color:red; font-size:25px;" id="total-tests-voided-failed">!</h5>
-                                <p class="card-text border-top">Total Tests Voided/Failed/Not done</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3 border-bottom">
-                    <div class="col-6 mb-2">
-                        <p>Last Sync: <span class="bg-secondary text-white p-1" id="last-sync">26/05/21 13:30</span></span>
-                        </p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="footer m-auto">
-                        <p class="text-muted">EGPAF &copy;2021</p>
-                    </div>
+            <div class="row mt-3 border-bottom">
+                <div class="col-6 mb-2">
+                    <p>Last Sync: <span class="bg-secondary text-white p-1" id="last-sync">26/05/21 13:30</span></span>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    </div>
-    </div>
+</div>
+</div>
 
-    </div>
-    </div>
+</div>
+</div>
 
 
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-full">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Backlog Data Entry for <span id="bde_lab_name"></span></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-8">
-                <table id="bde_table" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Tracking Number</th>
-                            <th>Date Created</th>
-                            <th>Sample Type</th>
-                            <th>Test Type</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="col-4 mt-5">
-                <h2 class="mr-auto"> <u>STATISTICS</u></h2>
-                <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Test</th>
-                        <th scope="col">Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td id="bde_sars_antigen">Sars Cov-2 Rapid Antigen</td>
-                        <td id="bde_sars-antigen">0</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td id="bde_sars_cov-2">Sars Cov 2</td>
-                        <td id="bde_sars_cov2">0</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>TB Tests</td>
-                        <td id="bde_tb">0</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">4</th>
-                        <td>Viral Load</td>
-                        <td id="bde_vl">0</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">5</th>
-                        <td>EID</td>
-                        <td id="bde_eid">0</td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
-            </div>
-        </div>
-      </div>
+<div class="modal-dialog modal-full">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Backlog Data Entry for <span id="bde_lab_name"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-  </div>
-  
     
-    <script src="/javascripts/scripts/lab.js?version=1" type="text/javascript"></script>
-    <script type="text/javascript" src="/javascripts/DataTables/datatables.min.js"></script>
-</body>
-
-</html>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-8">
+            <table id="bde_table" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Tracking Number</th>
+                        <th>Date Created</th>
+                        <th>Sample Type</th>
+                        <th>Test Type</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-4 mt-5">
+            <h2 class="mr-auto"> <u>STATISTICS</u></h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Test</th>
+                    <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <th scope="row">1</th>
+                    <td id="bde_sars_antigen">Sars Cov-2 Rapid Antigen</td>
+                    <td id="bde_sars-antigen">0</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">2</th>
+                    <td id="bde_sars_cov-2">Sars Cov 2</td>
+                    <td id="bde_sars_cov2">0</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">3</th>
+                    <td>TB Tests</td>
+                    <td id="bde_tb">0</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">4</th>
+                    <td>Viral Load</td>
+                    <td id="bde_vl">0</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">5</th>
+                    <td>EID</td>
+                    <td id="bde_eid">0</td>
+                    </tr>
+                </tbody>
+                </table>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+<script src="/javascripts/scripts/lab.js?version=1" type="text/javascript"></script>

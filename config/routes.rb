@@ -40,4 +40,7 @@ Rails.application.routes.draw do
 
   get '/add_new_site' => 'monitor_sync_status#add_site'
   post '/add_new_site' => 'monitor_sync_status#add_site'
+  get '/site_status' => 'monitor_sync_status#sync_statuses'
+  get '/site_details/:site_name/:site_code' => 'monitor_sync_status#site_sync_details'
+  post '/site_details' => 'monitor_sync_status#site_sync_details'
 end

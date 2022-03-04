@@ -1,0 +1,154 @@
+<style>
+  .my-custom-scrollbar {
+position: relative;
+height: 300px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+table{
+    font-size: 10px;
+}
+</style>
+<div class="card container mt-5">
+  <div class="filter">
+    <form class="d-inline" method="post">
+        <label for="month">Filter Month:</label>
+        <input type="month" id="month" name="month">
+        <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="header-info">
+    <h2>Viewing data for <%= @site_name %> of the past 30 days</h2>
+  </div>
+
+  <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="row p-2">
+            <div class="col-6 synced">
+              <p class="offset-2">Sync Status</p>
+              <div class="card" style="width: 50%;">
+                  <div><canvas id="stats"></canvas></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @per_site_sync_statuses_past_x_days.each do |data| %>
+                      <tr>
+                        <td><%= data[:date] %></td>
+                        <td><%= data[:status] %></td>
+                      </tr>
+                      <% end %>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+        <div class="card mt-3">
+          <div class="row p-2">
+              
+            <div class="col-6 synced">
+                <p class="offset-2">Reasons</p>
+              <div class="card" style="width: 50%;">
+                  <div><canvas id="reason"></canvas></div>
+              </div>
+            </div>
+            <div class="col-6">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Date</th> 
+                          <th scope="col">Reason</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @per_site_sync_remarks.each do |data| %>
+                          <tr>
+                            <td><%= data[:date] %></td>
+                            <td><%= data[:remark] %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+              
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+  let sync_statuses = JSON.parse('<%=raw(@per_site_sync_status.to_json)%>');
+  let sync_statuses_remark_count = JSON.parse('<%=raw(@per_site_sync_statuses_overview_x_days.to_json)%>');
+  console.log(sync_statuses_remark_count);
+  const data = {
+    labels: [
+      'Not Synced',
+      'Synced',
+    ],
+    datasets: [{
+      label: 'Sync status Jan 22022',
+      data: [sync_statuses['unsynced'], sync_statuses['synced']],
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(91, 194, 54)'
+      ],
+      hoverOffset: 4
+    }]
+};
+const config = {
+  type: 'doughnut',
+  data: data,
+};
+const myChart = new Chart(
+    document.getElementById('stats'),
+    config
+  );
+
+const reasons = {
+    labels: [
+      'Network Unvailable',
+      'Net avail',
+      'Synced'
+    ],
+    datasets: [{
+      label: 'Sync status Jan 22022',
+      data: [
+          sync_statuses_remark_count['no_network'],
+          sync_statuses_remark_count['net_avail_no_sync'],
+          sync_statuses_remark_count['synced']
+        ],
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(91, 194, 54)'
+      ],
+      hoverOffset: 4
+    }]
+};
+const rconfig = {
+  type: 'doughnut',
+  data: reasons,
+};
+  const XChart = new Chart(
+    document.getElementById('reason'),
+    rconfig
+  );
+});
+</script>

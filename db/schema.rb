@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_11_175333) do
+ActiveRecord::Schema.define(version: 2022_02_03_082001) do
 
-  create_table "drug_susceptibilities", charset: "utf8mb3", force: :cascade do |t|
+  create_table "data_anomalies", charset: "latin1", force: :cascade do |t|
+    t.string "data_type"
+    t.string "data"
+    t.string "site_name"
+    t.string "tracking_number"
+    t.string "couch_id"
+    t.datetime "date_created"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "drug_susceptibilities", charset: "latin1", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "test_id"
     t.bigint "organisms_id"
@@ -27,14 +39,14 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["user_id"], name: "index_drug_susceptibilities_on_user_id"
   end
 
-  create_table "drugs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "drugs", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "measure_ranges", charset: "utf8mb3", force: :cascade do |t|
+  create_table "measure_ranges", charset: "latin1", force: :cascade do |t|
     t.bigint "measures_id"
     t.integer "age_min"
     t.integer "age_max"
@@ -48,13 +60,13 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["measures_id"], name: "index_measure_ranges_on_measures_id"
   end
 
-  create_table "measure_types", charset: "utf8mb3", force: :cascade do |t|
+  create_table "measure_types", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "measures", charset: "utf8mb3", force: :cascade do |t|
+  create_table "measures", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "unit"
     t.bigint "measure_type_id"
@@ -64,28 +76,28 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["measure_type_id"], name: "index_measures_on_measure_type_id"
   end
 
-  create_table "organism_drugs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "organism_drugs", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "organisms", charset: "utf8mb3", force: :cascade do |t|
+  create_table "organisms", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "panel_types", charset: "utf8mb3", force: :cascade do |t|
+  create_table "panel_types", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false
     t.string "short_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "panels", charset: "utf8mb3", force: :cascade do |t|
+  create_table "panels", charset: "latin1", force: :cascade do |t|
     t.bigint "panel_type_id"
     t.bigint "test_type_id"
     t.datetime "created_at", null: false
@@ -94,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_type_id"], name: "index_panels_on_test_type_id"
   end
 
-  create_table "patients", charset: "utf8mb3", force: :cascade do |t|
+  create_table "patients", charset: "latin1", force: :cascade do |t|
     t.string "patient_number"
     t.string "name"
     t.string "email"
@@ -108,7 +120,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "referrals", charset: "utf8mb3", force: :cascade do |t|
+  create_table "referrals", charset: "latin1", force: :cascade do |t|
     t.integer "status"
     t.bigint "site_id"
     t.string "person"
@@ -120,20 +132,27 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["user_id"], name: "index_referrals_on_user_id"
   end
 
-  create_table "rejection_reasons", charset: "utf8mb3", force: :cascade do |t|
+  create_table "rejection_reasons", charset: "latin1", force: :cascade do |t|
     t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "site_sync_frequencies", charset: "utf8mb3", force: :cascade do |t|
-    t.string "site"
-    t.boolean "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "remarks", charset: "latin1", force: :cascade do |t|
+    t.string "remark"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "sites", charset: "utf8mb3", force: :cascade do |t|
+  create_table "site_sync_frequencies", charset: "latin1", force: :cascade do |t|
+    t.string "site_id"
+    t.datetime "last_sync"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "remark_id"
+  end
+
+  create_table "sites", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "district"
     t.float "x"
@@ -141,21 +160,17 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.string "region"
     t.string "description"
     t.boolean "enabled"
-    t.boolean "sync_status"
     t.string "site_code"
-    t.string "application_port"
-    t.string "host_address"
-    t.string "couch_username"
-    t.string "couch_password"
+    t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "specimen", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "specimen_type_id"
-    t.bigint "specimen_status_id"
-    t.bigint "ward_id"
-    t.string "tracking_number"
+  create_table "specimen", charset: "latin1", force: :cascade do |t|
+    t.integer "specimen_type_id", null: false
+    t.integer "specimen_status_id", null: false
+    t.integer "ward_id", null: false
+    t.string "tracking_number", null: false
     t.string "couch_id"
     t.datetime "date_created"
     t.string "priority", null: false
@@ -172,10 +187,11 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["specimen_status_id"], name: "index_specimen_on_specimen_status_id"
     t.index ["specimen_type_id"], name: "index_specimen_on_specimen_type_id"
     t.index ["tracking_number"], name: "index_specimen_on_tracking_number"
+    t.index ["tracking_number"], name: "tracking_number", unique: true
     t.index ["ward_id"], name: "index_specimen_on_ward_id"
   end
 
-  create_table "specimen_dispatches", charset: "utf8mb3", force: :cascade do |t|
+  create_table "specimen_dispatches", charset: "latin1", force: :cascade do |t|
     t.string "tracking_number"
     t.string "dispatcher_name"
     t.datetime "date_dispatched"
@@ -183,7 +199,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "specimen_status_trails", charset: "utf8mb3", force: :cascade do |t|
+  create_table "specimen_status_trails", charset: "latin1", force: :cascade do |t|
     t.bigint "specimen_id"
     t.bigint "specimen_status_id"
     t.datetime "time_updated"
@@ -196,27 +212,34 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["specimen_status_id"], name: "index_specimen_status_trails_on_specimen_status_id"
   end
 
-  create_table "specimen_statuses", charset: "utf8mb3", force: :cascade do |t|
+  create_table "specimen_statuses", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "specimen_types", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "test_categories", charset: "utf8mb3", force: :cascade do |t|
+  create_table "specimen_types", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "test_organisms", charset: "utf8mb3", force: :cascade do |t|
+  create_table "specimenstatus", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "name", limit: 1, null: false
+    t.integer "created_at", limit: 1, null: false
+    t.integer "updated_at", limit: 1, null: false
+  end
+
+  create_table "test_categories", charset: "latin1", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "test_organisms", charset: "latin1", force: :cascade do |t|
     t.bigint "test_id"
     t.bigint "organism_id"
     t.bigint "result_id"
@@ -227,23 +250,23 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_id"], name: "index_test_organisms_on_test_id"
   end
 
-  create_table "test_panels", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_panels", charset: "latin1", force: :cascade do |t|
     t.bigint "panel_types_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["panel_types_id"], name: "index_test_panels_on_panel_types_id"
   end
 
-  create_table "test_phases", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_phases", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "test_results", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_results", charset: "latin1", force: :cascade do |t|
     t.bigint "test_id"
     t.bigint "measure_id"
-    t.string "result", limit: 5000
+    t.string "result", limit: 60000
     t.datetime "time_entered"
     t.string "device_name"
     t.datetime "created_at", null: false
@@ -252,7 +275,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_id"], name: "index_test_results_on_test_id"
   end
 
-  create_table "test_status_trails", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_status_trails", charset: "latin1", force: :cascade do |t|
     t.bigint "test_id"
     t.bigint "test_status_id"
     t.datetime "time_updated"
@@ -265,7 +288,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_status_id"], name: "index_test_status_trails_on_test_status_id"
   end
 
-  create_table "test_statuses", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_statuses", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "test_phase_id"
     t.datetime "created_at", null: false
@@ -273,7 +296,46 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_phase_id"], name: "index_test_statuses_on_test_phase_id"
   end
 
-  create_table "test_types", charset: "utf8mb3", force: :cascade do |t|
+  create_table "test_testresult", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "test_id", limit: 1, null: false
+    t.integer "result", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+  end
+
+  create_table "test_testype", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "specimen_id", limit: 1, null: false
+    t.integer "test_status_id", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+    t.integer "patient_id", limit: 1, null: false
+    t.integer "test_timecreated", limit: 1, null: false
+    t.integer "name", limit: 1, null: false
+    t.integer "targetTAT", limit: 1, null: false
+  end
+
+  create_table "test_type_ViralLoad", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "specimen_id", limit: 1, null: false
+    t.integer "test_status_id", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+    t.integer "patient_id", limit: 1, null: false
+    t.integer "test_timecreated", limit: 1, null: false
+    t.integer "name", limit: 1, null: false
+    t.integer "targetTAT", limit: 1, null: false
+  end
+
+  create_table "test_type_covid", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "specimen_id", limit: 1, null: false
+    t.integer "test_status_id", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+    t.integer "patient_id", limit: 1, null: false
+    t.integer "test_timecreated", limit: 1, null: false
+    t.integer "name", limit: 1, null: false
+    t.integer "targetTAT", limit: 1, null: false
+  end
+
+  create_table "test_types", charset: "utf8", force: :cascade do |t|
     t.bigint "test_category_id"
     t.string "name", null: false
     t.string "short_name", limit: 200
@@ -285,10 +347,17 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_category_id"], name: "index_test_types_on_test_category_id"
   end
 
-  create_table "tests", charset: "utf8mb3", force: :cascade do |t|
+  create_table "testresult_named", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "test_id", limit: 1, null: false
+    t.integer "result", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+    t.integer "test_type", limit: 1, null: false
+  end
+
+  create_table "tests", charset: "latin1", force: :cascade do |t|
     t.bigint "specimen_id"
-    t.bigint "test_type_id"
-    t.bigint "test_status_id"
+    t.integer "test_type_id", null: false
+    t.integer "test_status_id", null: false
     t.bigint "patient_id"
     t.string "created_by"
     t.bigint "panel_id"
@@ -302,7 +371,15 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_type_id"], name: "index_tests_on_test_type_id"
   end
 
-  create_table "testtype_measures", charset: "utf8mb3", force: :cascade do |t|
+  create_table "teststatuses", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "name", limit: 1, null: false
+    t.integer "test_phase_id", limit: 1, null: false
+    t.integer "created_at", limit: 1, null: false
+    t.integer "updated_at", limit: 1, null: false
+  end
+
+  create_table "testtype_measures", charset: "utf8", force: :cascade do |t|
     t.bigint "test_type_id"
     t.bigint "measure_id"
     t.datetime "created_at", null: false
@@ -311,7 +388,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_type_id"], name: "index_testtype_measures_on_test_type_id"
   end
 
-  create_table "testtype_organisms", charset: "utf8mb3", force: :cascade do |t|
+  create_table "testtype_organisms", charset: "latin1", force: :cascade do |t|
     t.bigint "test_type_id"
     t.bigint "organism_id"
     t.datetime "created_at", null: false
@@ -320,7 +397,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_type_id"], name: "index_testtype_organisms_on_test_type_id"
   end
 
-  create_table "testtype_specimentypes", charset: "utf8mb3", force: :cascade do |t|
+  create_table "testtype_specimentypes", charset: "utf8", force: :cascade do |t|
     t.bigint "test_type_id"
     t.bigint "specimen_type_id"
     t.datetime "created_at", null: false
@@ -329,7 +406,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["test_type_id"], name: "index_testtype_specimentypes_on_test_type_id"
   end
 
-  create_table "users", charset: "utf8mb3", force: :cascade do |t|
+  create_table "users", charset: "latin1", force: :cascade do |t|
     t.string "app_name", null: false
     t.string "partner", null: false
     t.string "location", null: false
@@ -341,13 +418,33 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "visit_types", charset: "utf8mb3", force: :cascade do |t|
+  create_table "viraload_table", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", limit: 1, null: false
+    t.integer "test_name", limit: 1, null: false
+    t.integer "test_timecreated", limit: 1, null: false
+    t.integer "specimen_id", limit: 1, null: false
+    t.integer "test_status_id", limit: 1, null: false
+    t.integer "test_type_id", limit: 1, null: false
+    t.integer "patient_id", limit: 1, null: false
+    t.integer "test_targetTAT", limit: 1, null: false
+    t.integer "gender", limit: 1, null: false
+    t.integer "patient_dob", limit: 1, null: false
+    t.integer "result", limit: 1, null: false
+    t.integer "result_timecreated", limit: 1, null: false
+    t.integer "sending_facility", limit: 1, null: false
+    t.integer "target_lab", limit: 1, null: false
+    t.integer "specimen_datecreated", limit: 1, null: false
+    t.integer "district", limit: 1, null: false
+    t.integer "specimen_status_id", limit: 1, null: false
+  end
+
+  create_table "visit_types", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "visits", charset: "utf8mb3", force: :cascade do |t|
+  create_table "visits", charset: "latin1", force: :cascade do |t|
     t.bigint "patient_id"
     t.bigint "visit_type_id"
     t.bigint "ward_id"
@@ -358,7 +455,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["ward_id"], name: "index_visits_on_ward_id"
   end
 
-  create_table "visittype_wards", charset: "utf8mb3", force: :cascade do |t|
+  create_table "visittype_wards", charset: "latin1", force: :cascade do |t|
     t.bigint "ward_id"
     t.bigint "visit_type_id"
     t.datetime "created_at", null: false
@@ -367,7 +464,7 @@ ActiveRecord::Schema.define(version: 2019_01_11_175333) do
     t.index ["ward_id"], name: "index_visittype_wards_on_ward_id"
   end
 
-  create_table "wards", charset: "utf8mb3", force: :cascade do |t|
+  create_table "wards", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
