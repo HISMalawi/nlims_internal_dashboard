@@ -18,7 +18,7 @@ module SyncService
             else
                 date = date_last_synced.strftime("%Y-%m-%d")
             end
-            ipaddress = site[:ip_address]
+            ipaddress = site[:host_address]
             site_name = site[:name]
             sync_freq_today = check_today_service_run(site_code, site_name, @current_datetime)
             Rails.logger.info sync_freq_today
