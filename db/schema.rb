@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_03_082001) do
+ActiveRecord::Schema.define(version: 2022_02_02_180432) do
 
   create_table "data_anomalies", charset: "latin1", force: :cascade do |t|
     t.string "data_type"
@@ -160,8 +160,12 @@ ActiveRecord::Schema.define(version: 2022_02_03_082001) do
     t.string "region"
     t.string "description"
     t.boolean "enabled"
+    t.boolean "sync_status"
     t.string "site_code"
-    t.string "ip_address"
+    t.string "application_port"
+    t.string "host_address"
+    t.string "couch_username"
+    t.string "couch_password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
