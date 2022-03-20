@@ -1,47 +1,47 @@
 <style>
-table {
+  table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      display: block;
+      position: relative;
+      height: 500px;
+      overflow: auto;
+    }
+
+  td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  }
+  .container{
     font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    display: block;
-    position: relative;
-    height: 500px;
+    font-size: 10px;
+  }
+  .main{
+    height: 620px;
+  }
+  .problematic{
+    height: 600px;
     overflow: auto;
   }
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-.container{
-  font-family: arial, sans-serif;
-  font-size: 10px;
-}
-.main{
-  height: 620px;
-}
-.problematic{
-  height: 600px;
-  overflow: auto;
-}
-.card-title{
-  font-weight: bold;
-  font-size: 12px;
-}
-a.problematic-links{
-  text-decoration: none;
-  color: black;
-}
-a.problematic-links:hover{
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-[data-href],[data-href]:hover{
-    cursor: pointer;
-}
-[data-href]:hover{
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+  .card-title{
+    font-weight: bold;
+    font-size: 12px;
+  }
+  a.problematic-links{
+    text-decoration: none;
+    color: black;
+  }
+  a.problematic-links:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  [data-href],[data-href]:hover{
+      cursor: pointer;
+  }
+  [data-href]:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
 </style>
 
 
@@ -103,6 +103,13 @@ a.problematic-links:hover{
                       <p class="card-title text-center">Today's sync stats breakdown</p>
                       <div><canvas id="stats"></canvas></div>
                     </div>
+
+                    <div class="card p-2 mt-3" style="width: 100%;">
+                      <p class="card-title text-center">Trend</p>
+                      <div><canvas id="line-chart" width="80" height="40"></canvas></div>
+                    </div>
+                    
+
 
                   </div>
 
@@ -171,4 +178,52 @@ a.problematic-links:hover{
     const dateToday = document.getElementById("date-today");
     dateToday.innerHTML = getTodayDate();
 });
+</script>
+<script>
+$(document).ready(function(){
+    const days = JSON.parse('<%= raw(@days.to_json) %>') 
+    const no_network = JSON.parse('<%= raw(@no_network.to_json) %>')
+    const synced = JSON.parse('<%= raw(@synced.to_json) %>')
+    const no_data = JSON.parse('<%= raw(@no_data.to_json) %>')
+    const target = JSON.parse('<%= raw(@target.to_json) %>')
+    console.log(no_network);
+    new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: Object.keys(no_network),
+                datasets: [{ 
+                    data: target,
+                    label: "Target",
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    trendlineLinear: {
+                        style: "#3e95cd",
+                        lineStyle: "line",
+                        width: 1
+                    }
+                }, { 
+                    data: Object.values(no_network),
+                    label: "No Network",
+                    borderColor: "#8e5ea2",
+                    fill: false,
+                    trendlineLinear: {
+                        style: "#8e5ea2",
+                        lineStyle: "line",
+                        width: 1
+                    }
+                }, { 
+                    data: Object.values(synced),
+                    label: "Synced",
+                    borderColor: "#3cba9f",
+                    fill: false
+                }, { 
+                    data: Object.values(no_data),
+                    label: "Network but no data",
+                    borderColor: "#e8c3b9",
+                    fill: false
+                }
+                ]
+            }
+            });
+    });
 </script>
