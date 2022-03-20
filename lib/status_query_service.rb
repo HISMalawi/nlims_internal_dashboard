@@ -99,36 +99,111 @@ module StatusQueryService
         end      
     end
 
-
-
-    def self.all_sync_statuses
-        sql = "SELECT site_sync_frequencies.id AS id, sites.*, remarks.remark, site_sync_frequencies.last_sync,site_sync_frequencies.created_at AS recent_check
-                FROM site_sync_frequencies
-                INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-                INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-                WHERE sites.enabled=1"
-        SiteSyncFrequency.find_by_sql(sql)
+    def self.trend_no_network(day)
+        sql = "SELECT site_sync_frequencies.id, count(site_sync_frequencies.id) AS count, DATE(site_sync_frequencies.updated_at) AS date
+            FROM site_sync_frequencies
+            INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+            INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+            WHERE sites.enabled=1 AND remarks.id= 3 AND (DATE(site_sync_frequencies.updated_at) = (?))"
+        SiteSyncFrequency.find_by_sql([sql,"#{day}"])
     end
+
+    def self.trend_network_no_data(day)
+        sql = "SELECT site_sync_frequencies.id, count(site_sync_frequencies.id) AS count, DATE(site_sync_frequencies.updated_at) AS date
+            FROM site_sync_frequencies
+            INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+            INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+            WHERE sites.enabled=1 AND remarks.id= 2 AND (DATE(site_sync_frequencies.updated_at) = (?))"
+        SiteSyncFrequency.find_by_sql([sql,"#{day}"])
+    end
+
+    def self.trend_synced(day)
+        sql = "SELECT site_sync_frequencies.id, count(site_sync_frequencies.id) AS count, DATE(site_sync_frequencies.updated_at) AS date
+            FROM site_sync_frequencies
+            INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+            INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+            WHERE sites.enabled=1 AND remarks.id= 1 AND (DATE(site_sync_frequencies.updated_at) = (?))"
+        SiteSyncFrequency.find_by_sql([sql,"#{day}"])
+    end
+
+    def self.trend_with_no_network(x_days)
+        hash = Hash.new
+        days = get_past_days(x_days)
+        days.each do |day|
+            trend = trend_no_network(day)[0]
+            if trend.nil?
+                hash[day] = 0
+            else
+                hash[day] = trend[:count]
+            end
+        end
+        hash
+    end
+
+    def self.trend_network_but_no_data(x_days)
+        hash = Hash.new
+        days = get_past_days(x_days)
+        days.each do |day|
+            trend = trend_network_no_data(day)[0]
+            if trend.nil?
+                hash[day] = 0
+            else
+                hash[day] = trend[:count]
+            end
+        end
+        hash
+    end
+
+    def self.trend_synced_data(x_days)
+        hash = Hash.new
+        days = get_past_days(x_days)
+        days.each do |day|
+            trend = trend_synced(day)[0]
+            if trend.nil?
+                hash[day] = 0
+            else
+                hash[day] = trend[:count]
+            end
+        end
+        hash
+    end
+
+
+
+    # def self.all_sync_statuses
+    #     sql = "SELECT site_sync_frequencies.id AS id, sites.*, remarks.remark, site_sync_frequencies.last_sync,site_sync_frequencies.created_at AS recent_check
+    #             FROM site_sync_frequencies
+    #             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+    #             INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+    #             WHERE sites.enabled=1"
+    #     SiteSyncFrequency.find_by_sql(sql)
+    # end
+    # {
+        # no_data: [],
+        # no_network: [],
+        # synced: []
+    # }
+    #  
 
 
     
     
 
-    def self.remark_counts
-        sql = "SELECT count(site_sync_frequencies.id) AS count, remarks.remark FROM site_sync_frequencies
-                INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-                INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-                WHERE sites.enabled=1
-                GROUP BY remarks.remark"
-        SiteSyncFrequency.find_by_sql(sql)
-    end
+    # def self.remark_counts
+    #     sql = "SELECT count(site_sync_frequencies.id) AS count, remarks.remark FROM site_sync_frequencies
+    #             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+    #             INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+    #             WHERE sites.enabled=1
+    #             GROUP BY remarks.remark"
+    #     SiteSyncFrequency.find_by_sql(sql)
+    # end
 
-    def self.monthly_sync_status(month,year)
-        sql = "SELECT count(site_sync_frequencies.id) AS count, remarks.remark FROM site_sync_frequencies
-                INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-                INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-                WHERE sites.enabled=1 AND substr(site_sync_frequencies.updated_at,1,4) = '#{year}' AND substr(site_sync_frequencies.updated_at,6,2) ='#{month}'
-                GROUP BY remarks.remark"
-        SiteSyncFrequency.find_by_sql(sql)
-    end
+    # def self.monthly_sync_status(month,year)
+    #     sql = "SELECT count(site_sync_frequencies.id) AS count, remarks.remark FROM site_sync_frequencies
+    #             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
+    #             INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
+    #             WHERE sites.enabled=1 AND substr(site_sync_frequencies.updated_at,1,4) = '#{year}' AND substr(site_sync_frequencies.updated_at,6,2) ='#{month}'
+    #             GROUP BY remarks.remark"
+    #     SiteSyncFrequency.find_by_sql(sql)
+    # end
 end
