@@ -51,16 +51,15 @@ class MonitorSyncStatusController < ApplicationController
 			@no_data = StatusQueryService.trend_network_but_no_data(30)
 			@synced = StatusQueryService.trend_synced_data(30)
 			@target = []
-			@days.each do |day|
-				@target.push(@sites.length)
+			@days.each_with_index do |day,index|
+				@target.push(@no_network.values[index] + @no_data.values[index] + @synced.values[index])
 			end
-			
 			render template: 'monitor_sync_status/site_status'       
     end
 
     def site_sync_details
 			site_name = request.path_parameters[:site_name]
-				site_code = request.path_parameters[:site_code]
+			site_code = request.path_parameters[:site_code]
 			month = ''
 			year = ''
 			x_days = 30
