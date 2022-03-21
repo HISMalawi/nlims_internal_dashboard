@@ -5,7 +5,7 @@
       width: 100%;
       display: block;
       position: relative;
-      height: 500px;
+      height: 550px;
       overflow: auto;
     }
 
@@ -19,10 +19,10 @@
     font-size: 10px;
   }
   .main{
-    height: 620px;
+    height: 680px;
   }
   .problematic{
-    height: 600px;
+    height: 370px;
     overflow: auto;
   }
   .card-title{
@@ -84,49 +84,48 @@
                     </div>
                   </div>
 
-                  <div class="col-4 synced">
-                    <div class="card p-2" style="width: 100%;">
-                      <p class="card-title text-center">Today's sync stats</p>
-                      <div class="d-flex flex-row">
-                        <div class="card" style="width: 9rem;">
-                          <p class="card-title text-center">Sites synced</p>
-                          <p class="card-text text-center font-weight-bold"><%= @today_stats[:synced] %></p>
+                  <div class="col-8 synced">
+                  <div class="card p-2 mt-1" style="width: 100%;">
+                      <p class="card-title text-center">Trend past 30 days</p>
+                      <div><canvas id="line-chart" width="800" height="250"></canvas></div>
+                    </div>
+                    <div class="row p-2">
+                      <div class="col-4">
+                        <div class="card p-2" style="width: 100%;">
+                          <p class="card-title text-center">Today's sync stats</p>
+                          <div class="d-flex flex-row">
+                            <div class="card" style="width: 9rem;">
+                              <p class="card-title text-center">Sites synced</p>
+                              <p class="card-text text-center font-weight-bold"><%= @today_stats[:synced] %></p>
+                            </div>
+                            <div class="card ml-1" style="width: 9rem;">
+                              <p class="card-title text-center">Unsynced sites</p>
+                              <p class="card-text text-center font-weight-bold"><%= @today_stats[:unsynced] %></p>
+                            </div>
+                          </div>
                         </div>
-                        <div class="card ml-1" style="width: 9rem;">
-                          <p class="card-title text-center">Unsynced sites</p>
-                          <p class="card-text text-center font-weight-bold"><%= @today_stats[:unsynced] %></p>
+                        <div class="card p-2 mt-3" style="width: 14rem;">
+                          <p class="card-title text-center">Today's sync stats breakdown</p>
+                          <div><canvas id="stats"></canvas></div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="card p-2 mt-3" style="width: 100%;">
-                      <p class="card-title text-center">Today's sync stats breakdown</p>
-                      <div><canvas id="stats"></canvas></div>
-                    </div>
-
-                    <div class="card p-2 mt-3" style="width: 100%;">
-                      <p class="card-title text-center">Trend</p>
-                      <div><canvas id="line-chart" width="80" height="40"></canvas></div>
-                    </div>
-                    
-
-
-                  </div>
-
-
-                   <div class="col-4 problematic">
-                    <div class="card p-2" style="width: 100%;">
-                      <p class="card-title text-center">15 problematic sites past 30 days</p>
-                      <% @x_problematic_sites.each do |site| %>
-                      <a class="problematic-links" href='<%= "/site_details/#{site.name}/#{site.site_code}" %>'>
-                        <div class="card m-1" style="width: 100%;">
-                          <p class="text-center">
-                            <%= site.name %>
-                          </p>
-                          <p class="card-text text-center font-weight-bold"><%= site.count %></p>
+                        <div class="col-8 problematic">
+                          <div class="card p-2" style="width: 100%;">
+                            <p class="card-title text-center">15 problematic sites past 30 days</p>
+                            <% @x_problematic_sites.each do |site| %>
+                            <a class="problematic-links" href='<%= "/site_details/#{site.name}/#{site.site_code}" %>'>
+                              <div class="card m-1" style="width: 100%;">
+                                <p class="text-center">
+                                  <%= site.name %>
+                                </p>
+                                <p class="card-text text-center font-weight-bold"><%= site.count %></p>
+                              </div>
+                              </a>
+                            <% end %>
                         </div>
-                        </a>
-                      <% end %>
+                      </div>
+
                   </div>
 
                 </div>
@@ -186,23 +185,22 @@ $(document).ready(function(){
     const synced = JSON.parse('<%= raw(@synced.to_json) %>')
     const no_data = JSON.parse('<%= raw(@no_data.to_json) %>')
     const target = JSON.parse('<%= raw(@target.to_json) %>')
-    console.log(no_network);
     new Chart(document.getElementById("line-chart"), {
             type: 'line',
             data: {
-                labels: Object.keys(no_network),
+                labels: Object.keys(no_network).reverse(),
                 datasets: [{ 
-                    data: target,
-                    label: "Target",
+                    data: target.reverse(),
+                    label: "Consolidated",
                     borderColor: "#3e95cd",
                     fill: false,
                     trendlineLinear: {
                         style: "#3e95cd",
                         lineStyle: "line",
-                        width: 1
+                        width: 0.05
                     }
                 }, { 
-                    data: Object.values(no_network),
+                    data: Object.values(no_network).reverse(),
                     label: "No Network",
                     borderColor: "#8e5ea2",
                     fill: false,
@@ -212,12 +210,12 @@ $(document).ready(function(){
                         width: 1
                     }
                 }, { 
-                    data: Object.values(synced),
+                    data: Object.values(synced).reverse(),
                     label: "Synced",
                     borderColor: "#3cba9f",
                     fill: false
                 }, { 
-                    data: Object.values(no_data),
+                    data: Object.values(no_data).reverse(),
                     label: "Network but no data",
                     borderColor: "#e8c3b9",
                     fill: false
