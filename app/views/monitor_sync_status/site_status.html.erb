@@ -42,12 +42,22 @@
   [data-href]:hover{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
+  #myInput {
+  background-image: url('/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 3px 20px 3px 40px;
+  border: 1px solid black;
+  margin-bottom: 12px;
+}
 </style>
 
 
 <div class="container mt-2" style="height: 40px !important;">
        <div class="header">
-         <h2><span>Connectivity Monitering Tool</span>  <span class="float-right">Today's date: <span id="date-today"></span> </span></h2>
+         <h2><span>Connectivity Monitoring Tool</span>  <span class="float-right">Today's date: <span id="date-today"></span> </span></h2>
         
        </div>
         <div class="row">
@@ -60,9 +70,10 @@
                       <p class="card-text text-center font-weight-bold"><%= @sites.count %></p>
                     </div>
                     <div style="width: 100%;" class="mt-4">
-                      <p class="card-title text-center">Sites with unsuccessful sync past 30 days</p>
+                      <p class="card-title text-center">Sites with their sync status for past 30 days</p>
                       <div class="sites">
-                        <table>
+                      <input type="text" id="myInput" onkeyup="searchFilter()" placeholder="Search for site name.." title="Type in a name">
+                        <table id="sync-statuses">
                           <thead>
                             <tr>
                               <th>Date</th>
@@ -105,21 +116,25 @@
                           </div>
                         </div>
                         <div class="card p-2 mt-3" style="width: 14rem;">
-                          <p class="card-title text-center">Today's sync stats breakdown</p>
+                          <p class="card-title text-center">Past 30 days problems</p>
                           <div><canvas id="stats"></canvas></div>
                         </div>
                       </div>
 
                         <div class="col-8 problematic">
                           <div class="card p-2" style="width: 100%;">
-                            <p class="card-title text-center">15 problematic sites past 30 days</p>
+                            <p class="card-title text-center">15 persistent unsync sites for the past 30 days(unsync days/30days)</p>
                             <% @x_problematic_sites.each do |site| %>
                             <a class="problematic-links" href='<%= "/site_details/#{site.name}/#{site.site_code}" %>'>
                               <div class="card m-1" style="width: 100%;">
                                 <p class="text-center">
                                   <%= site.name %>
                                 </p>
-                                <p class="card-text text-center font-weight-bold"><%= site.count %></p>
+                                <p class="card-text text-center">
+                                  <span class="">No. days unsynced:</span>
+                                  <span class="font-weight-bold"><%= site.count %></span>
+                                </p>
+                                <p class="card-text text-center font-weight-bold">Click to view more</p>
                               </div>
                               </a>
                             <% end %>
@@ -141,17 +156,20 @@
       console.log(overview_status_data)
       const data = {
         labels: [
-          'No Network-Not Synced',
-          'Network available-Not Synced',
-          'Synced'
+          'No Network',
+          'No data',
+          // 'Synced'
         ],
         datasets: [{
           label: 'Sync status Jan 22022',
-          data: [overview_status_data['no_network'], overview_status_data['net_avail_no_sync'],overview_status_data['synced']],
+          data: [overview_status_data['no_network'], 
+                overview_status_data['net_avail_no_sync'],
+                // overview_status_data['synced']
+                ],
           backgroundColor: [
         'rgb(255, 99, 132)',
         'rgb(54, 162, 235)',
-        'rgb(91, 194, 54)'
+        // 'rgb(91, 194, 54)'
       ],
           hoverOffset: 4
         }]
@@ -181,47 +199,78 @@
 <script>
 $(document).ready(function(){
     const days = JSON.parse('<%= raw(@days.to_json) %>') 
-    const no_network = JSON.parse('<%= raw(@no_network.to_json) %>')
+    // const no_network = JSON.parse('<%= raw(@no_network.to_json) %>')
+    const unsynced = JSON.parse('<%= raw(@unsynced.to_json) %>')
     const synced = JSON.parse('<%= raw(@synced.to_json) %>')
-    const no_data = JSON.parse('<%= raw(@no_data.to_json) %>')
+    // const no_data = JSON.parse('<%= raw(@no_data.to_json) %>')
     const target = JSON.parse('<%= raw(@target.to_json) %>')
     new Chart(document.getElementById("line-chart"), {
             type: 'line',
             data: {
-                labels: Object.keys(no_network).reverse(),
-                datasets: [{ 
-                    data: target.reverse(),
-                    label: "Consolidated",
-                    borderColor: "#3e95cd",
-                    fill: false,
-                    trendlineLinear: {
-                        style: "#3e95cd",
-                        lineStyle: "line",
-                        width: 0.05
-                    }
-                }, { 
-                    data: Object.values(no_network).reverse(),
-                    label: "No Network",
-                    borderColor: "#8e5ea2",
-                    fill: false,
-                    trendlineLinear: {
-                        style: "#8e5ea2",
-                        lineStyle: "line",
-                        width: 1
-                    }
-                }, { 
+                labels: Object.keys(synced).reverse(),
+                datasets: [
+                //   { 
+                //     data: target.reverse(),
+                //     label: "Consolidated",
+                //     borderColor: "#3e95cd",
+                //     fill: false,
+                //     trendlineLinear: {
+                //         style: "#3e95cd",
+                //         lineStyle: "line",
+                //         width: 0.05
+                //     }
+                // }, 
+                // { 
+                //     data: Object.values(no_network).reverse(),
+                //     label: "No Network",
+                //     borderColor: "#8e5ea2",
+                //     fill: false,
+                //     trendlineLinear: {
+                //         style: "#8e5ea2",
+                //         lineStyle: "line",
+                //         width: 1
+                //     }
+                // },
+                 { 
                     data: Object.values(synced).reverse(),
                     label: "Synced",
                     borderColor: "#3cba9f",
                     fill: false
-                }, { 
-                    data: Object.values(no_data).reverse(),
-                    label: "Network but no data",
-                    borderColor: "#e8c3b9",
+                },
+                { 
+                    data: Object.values(unsynced).reverse(),
+                    label: "Unsynced",
+                    borderColor: "red",
                     fill: false
                 }
+                //  { 
+                //     data: Object.values(no_data).reverse(),
+                //     label: "Network but no data",
+                //     borderColor: "#e8c3b9",
+                //     fill: false
+                // }
                 ]
             }
             });
     });
+</script>
+<script>
+  function searchFilter() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("sync-statuses");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }  
+    }
+  }
 </script>
