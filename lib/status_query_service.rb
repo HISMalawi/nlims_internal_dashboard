@@ -108,20 +108,25 @@ module StatusQueryService
         SiteSyncFrequency.find_by_sql([sql,get_past_days(x_days)])
      end
 
-    def self.trend_record(day, remark_id)
+    def self.trend_record(day, remark_id, remark_id2)
+        if remark_id2 == 1
+            condition = "WHERE sites.enabled=1 AND remarks.id=#{remark_id} AND (DATE(site_sync_frequencies.updated_at) = (?))"
+        else
+            condition ="WHERE sites.enabled=1 AND (remarks.id=#{remark_id} OR remarks.id=#{remark_id2}) AND (DATE(site_sync_frequencies.updated_at) = (?))"
+        end
         sql = "SELECT site_sync_frequencies.id, count(site_sync_frequencies.id) AS count, DATE(site_sync_frequencies.updated_at) AS date
             FROM site_sync_frequencies
             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-            INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-            WHERE sites.enabled=1 AND remarks.id= #{remark_id} AND (DATE(site_sync_frequencies.updated_at) = (?))"
+            INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id "
+        sql = sql + condition
         SiteSyncFrequency.find_by_sql([sql,"#{day}"])
     end
 
-    def self.format_trend(x_days, remark_id, callback)
+    def self.format_trend(x_days, remark_id, remark_id2, callback)
         hash = Hash.new
         days = get_past_days(x_days)
         days.each do |day|
-            trend = callback.call(day, remark_id)[0]
+            trend = callback.call(day, remark_id, remark_id2)[0]
             if trend.nil?
                 hash[day] = 0
             else
@@ -133,43 +138,20 @@ module StatusQueryService
 
     def self.trends
         hash = Hash.new
-        no_network = format_trend(30, 3, method(:trend_record))
-        no_data = format_trend(30, 2, method(:trend_record))
-        synced = format_trend(30, 1, method(:trend_record))
-        hash[:no_network] = no_network
-        hash[:no_data] = no_data
+        sync = 1
+        net_no_data = 2
+        no_net = 3
+        days = 30
+        # no_network = format_trend(30, 3, method(:trend_record))
+        # no_data = format_trend(30, 2, method(:trend_record))
+        # synced = format_trend(30, 1, method(:trend_record))
+        unsynced = format_trend(days, net_no_data, no_net, method(:trend_record))
+        synced = format_trend(days, sync, sync, method(:trend_record))
+        hash[:unsynced] = unsynced
         hash[:synced] = synced
+        # hash[:no_network] = no_network
+        # hash[:no_data] = no_data
+        # hash[:synced] = synced
         hash
     end
-
-
-    # def self.all_sync_statuses
-    #     sql = "SELECT site_sync_frequencies.id AS id, sites.*, remarks.remark, site_sync_frequencies.last_sync,site_sync_frequencies.created_at AS recent_check
-    #             FROM site_sync_frequencies
-    #             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-    #             INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-    #             WHERE sites.enabled=1"
-    #     SiteSyncFrequency.find_by_sql(sql)
-    # end
-    # {
-        # no_data: [],
-        # no_network: [],
-        # synced: []
-    # }
-    #  
-
-
-    
-    
-
-   
-
-    # def self.monthly_sync_status(month,year)
-    #     sql = "SELECT count(site_sync_frequencies.id) AS count, remarks.remark FROM site_sync_frequencies
-    #             INNER JOIN sites on sites.id=site_sync_frequencies.site_id
-    #             INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id
-    #             WHERE sites.enabled=1 AND substr(site_sync_frequencies.updated_at,1,4) = '#{year}' AND substr(site_sync_frequencies.updated_at,6,2) ='#{month}'
-    #             GROUP BY remarks.remark"
-    #     SiteSyncFrequency.find_by_sql(sql)
-    # end
 end

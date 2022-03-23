@@ -19,7 +19,8 @@ class MonitorSyncStatusController < ApplicationController
 			@x_problematic_sites = StatusQueryService.x_problematic_sites(15,30)
 			today_sync_stats = StatusQueryService.today_sync_stats
 			@get_sync_statuses_past_30_days = StatusQueryService.sync_statuses_past_x_days(30)
-			get_sync_statuses_overview_for_today = StatusQueryService.sync_statuses_overview_today
+			# get_sync_statuses_overview_for_today = StatusQueryService.sync_statuses_overview_today
+			get_sync_statuses_overview_past_xdays = StatusQueryService.remark_past_xdays(30)
 			@today_stats = {
 					synced: 0,
 					unsynced: 0
@@ -36,7 +37,7 @@ class MonitorSyncStatusController < ApplicationController
 					no_network: 0,
 					net_avail_no_sync: 0
 			}
-			get_sync_statuses_overview_for_today.each do |status|
+			get_sync_statuses_overview_past_xdays.each do |status|
 					if status.remark_id == 1
 							@overview_stats[:synced] = @overview_stats[:synced] + status.count
 					elsif status.remark_id == 2
@@ -45,14 +46,16 @@ class MonitorSyncStatusController < ApplicationController
 							@overview_stats[:no_network] = @overview_stats[:no_network] + status.count
 					end
 			end
-
 			# Trend
-			@no_network = StatusQueryService.trend_with_no_network(30)
-			@no_data = StatusQueryService.trend_network_but_no_data(30)
-			@synced = StatusQueryService.trend_synced_data(30)
+			trends = StatusQueryService.trends
+			# @no_network = trends[:no_network]
+			# @no_data = trends[:no_data]
+			@synced = trends[:synced]
+			@unsynced = trends[:unsynced]
 			@target = []
 			@days.each_with_index do |day,index|
-				@target.push(@no_network.values[index] + @no_data.values[index] + @synced.values[index])
+				# @target.push(@no_network.values[index] + @no_data.values[index] + @synced.values[index])
+				@target.push(@unsynced.values[index] + @synced.values[index])
 			end
 			render template: 'monitor_sync_status/site_status'       
     end
