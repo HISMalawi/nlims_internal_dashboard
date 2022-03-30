@@ -83,7 +83,7 @@
                         </thead>
                           <tbody>
                           <% @get_sync_statuses_past_30_days.each do |site_sync_details|%>
-                            <tr data-href='<%= "/site_details/#{site_sync_details[:site_name]}/#{site_sync_details[:site_code]}" %>'>
+                            <tr data-href='<%= "/site_details/#{site_sync_details[:site_name]}/#{site_sync_details[:site_code]}" %>' data-toggle="tooltip" data-placement="top" title="Click to view more">
                               <td><%= site_sync_details[:date] %>  </td>
                               <td> <%= site_sync_details[:site_name] %></td>
                               <td><%= site_sync_details[:remark] %></td>
