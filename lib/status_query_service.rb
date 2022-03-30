@@ -69,13 +69,13 @@ module StatusQueryService
                 INNER JOIN remarks on remarks.id=site_sync_frequencies.remark_id "
         if month != '' and year != ''
             condition = "WHERE sites.enabled=1 AND substr(site_sync_frequencies.updated_at,1,4) = '#{year}' AND substr(site_sync_frequencies.updated_at,6,2) ='#{month}'
-                AND (sites.name='#{site_name}' AND sites.site_code='#{site_code}')
+                AND (sites.name='#{site_name}' AND sites.site_code='#{site_code}') AND remarks.id<>1
                 ORDER BY DATE(site_sync_frequencies.updated_at) DESC"
             sql += condition
             SiteSyncFrequency.find_by_sql(sql)
         else
             condition = "WHERE sites.enabled=1 AND (DATE(site_sync_frequencies.updated_at) IN (?)) AND (sites.name='#{site_name}' AND sites.site_code='#{site_code}')
-            ORDER BY DATE(site_sync_frequencies.updated_at) DESC"
+                AND remarks.id<>1 ORDER BY DATE(site_sync_frequencies.updated_at) DESC"
             sql += condition
             SiteSyncFrequency.find_by_sql([sql,get_past_days(x_days)])
         end

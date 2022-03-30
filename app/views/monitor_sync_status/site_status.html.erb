@@ -123,9 +123,9 @@
 
                         <div class="col-8 problematic">
                           <div class="card p-2" style="width: 100%;">
-                            <p class="card-title text-center">15 persistent unsync sites for the past 30 days(unsync days/30days)</p>
+                            <p class="card-title text-center">15 persistent unsync sites for the past 30 days</p>
                             <% @x_problematic_sites.each do |site| %>
-                            <a class="problematic-links" href='<%= "/site_details/#{site.name}/#{site.site_code}" %>'>
+                            <a class="problematic-links" href='<%= "/site_details/#{site.name}/#{site.site_code}" %>' data-toggle="tooltip" data-placement="top" title="Click to view more">
                               <div class="card m-1" style="width: 100%;">
                                 <p class="text-center">
                                   <%= site.name %>
@@ -134,7 +134,6 @@
                                   <span class="">No. days unsynced:</span>
                                   <span class="font-weight-bold"><%= site.count %></span>
                                 </p>
-                                <p class="card-text text-center font-weight-bold">Click to view more</p>
                               </div>
                               </a>
                             <% end %>
