@@ -1,7 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'add_site_service'
+
+# Remarks
+Remark.create(remark: 'Data Synced')
+Remark.create(remark: 'Network Available Data Not Synced')
+Remark.create(remark: 'Network UnAvailable')
+
+# Sites enabled
+file_sites = JSON.parse(File.read(Rails.root.join('public','labs.json')))
+AddSiteService.seed_sites(file_sites)
