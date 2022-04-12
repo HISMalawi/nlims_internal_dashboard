@@ -36,7 +36,7 @@ class HomeController < ApplicationController
                 sp_id = data['sp_id']
                 test_status = data['test_status'] 
                 tracking_number = data['tracking_number']
-                date_created = data['date_created']
+                date_created = data['date_created'].to_date
                 sending_facility = data['sending_facility'] 
                 test_id = data['test_id']
                 accepted_time = {
@@ -53,7 +53,7 @@ class HomeController < ApplicationController
                                                     ON specimen_statuses.id = specimen_status_trails.specimen_status_id
                                                     WHERE specimen_status_trails.specimen_id ='#{sp_id}' group by specimen_status_trails.id asc limit 1")
                 if !specimen_status.blank?
-                    accepted_time["time_updated"] = specimen_status[0]['time_updated']
+                    accepted_time["time_updated"] = specimen_status[0]['time_updated'].to_date if !specimen_status[0]['time_updated'].blank?
                     accepted_time["specimen_status"] = specimen_status[0]['status']
                 end 
 
@@ -61,7 +61,7 @@ class HomeController < ApplicationController
                                             FROM test_results WHERE test_results.test_id = #{test_id}            
                     ")
                 if !test_results.blank?
-                    results['date_result_available'] = test_results[0]['time_entered']
+                    results['date_result_available'] = test_results[0]['time_entered'].to_date if !test_results[0]['time_entered'].blank?
                     results['result'] = test_results[0]['result']
                 end
 
