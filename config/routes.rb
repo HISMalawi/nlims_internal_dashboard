@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   get '/resolve/:id' => "data_resolves#show"
 
   get '/merge/:id' => "data_resolves#merge"
+
+  get '/get_viral_data' => "home#get_viral_data"
   
   root 'home#index'
 

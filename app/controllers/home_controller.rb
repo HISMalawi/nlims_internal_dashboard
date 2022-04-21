@@ -10,6 +10,76 @@ class HomeController < ApplicationController
        
     end
 
+    def get_viral_data
+        info = []
+        lab_name = params[:lab_name].split("-")[1]
+        lab_code = params[:lab_name].split("-")[0]
+        if lab_name.include?("Laboratory")
+            last_name = lab_name.gsub("Laboratory","")
+            rs = Speciman.find_by_sql("SELECT tests.id AS test_id, specimen.id AS sp_id, test_statuses.name AS test_status, specimen.tracking_number, specimen.date_created, specimen.sending_facility FROM specimen
+                                INNER JOIN tests ON tests.specimen_id = specimen.id
+                                INNER JOIN test_statuses ON test_statuses.id = tests.test_status_id
+                                WHERE tests.test_type_id = 71 AND (specimen.target_lab ='#{lab_name}' OR  specimen.target_lab ='#{last_name}'
+                                OR substring(specimen.tracking_number,2,'#{lab_code.length}')='#{lab_code}') order by specimen.id DESC
+                            ")
+        else
+            rs = Speciman.find_by_sql("SELECT tests.id AS test_id, specimen.id AS sp_id, test_statuses.name AS test_status, specimen.tracking_number, specimen.date_created, specimen.sending_facility FROM specimen
+                INNER JOIN tests ON tests.specimen_id = specimen.id
+                INNER JOIN test_statuses ON test_statuses.id = tests.test_status_id
+                WHERE tests.test_type_id = 71 AND (specimen.sending_facility ='#{lab_name}' 
+                OR substring(specimen.tracking_number,2,'#{lab_code.length}') ='#{lab_code}') order by specimen.id DESC
+            ")
+        end
+
+        if !rs.blank?
+            rs.each do |data| 
+                sp_id = data['sp_id']
+                test_status = data['test_status'] 
+                tracking_number = data['tracking_number']
+                date_created = data['date_created'].to_date
+                sending_facility = data['sending_facility'] 
+                test_id = data['test_id']
+                accepted_time = {
+                    time_updated: 'N/A',
+                    specimen_status: 'N/A'
+                }
+                results = {
+                    date_result_available: 'N/A',
+                    result: 'N/A'
+                }
+                specimen_status = Speciman.find_by_sql("SELECT specimen_status_trails.time_updated, specimen_statuses.name AS status
+                                                    FROM specimen_status_trails
+                                                    INNER JOIN specimen_statuses 
+                                                    ON specimen_statuses.id = specimen_status_trails.specimen_status_id
+                                                    WHERE specimen_status_trails.specimen_id ='#{sp_id}' group by specimen_status_trails.id asc limit 1")
+                if !specimen_status.blank?
+                    accepted_time["time_updated"] = specimen_status[0]['time_updated'].to_date if !specimen_status[0]['time_updated'].blank?
+                    accepted_time["specimen_status"] = specimen_status[0]['status']
+                end 
+
+                test_results = Speciman.find_by_sql("SELECT DISTINCT test_results.time_entered, test_results.result
+                                            FROM test_results WHERE test_results.test_id = #{test_id}            
+                    ")
+                if !test_results.blank?
+                    results['date_result_available'] = test_results[0]['time_entered'].to_date if !test_results[0]['time_entered'].blank?
+                    results['result'] = test_results[0]['result']
+                end
+
+                info_ = { 
+                    "tracking_number": tracking_number,
+                    "test_status": test_status,
+                    "date_created": date_created,
+                    "sending_facility": sending_facility,
+                    "specimen_status": accepted_time,
+                    "test_results": results
+                 }
+                 info.push(info_)
+            end
+        end
+
+        render plain: JSON.generate(info)
+        
+    end
 
     def all
         period = Date.today

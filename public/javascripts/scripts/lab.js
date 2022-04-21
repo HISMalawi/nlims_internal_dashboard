@@ -53,7 +53,7 @@ function loadByFilter() {
     $("form").submit(function(e) {
         e.preventDefault();
         lab = url.split('?')[1].split('&')[0].split('=')[1];
-        loadData(lab);
+        loadData(lab,"");
         $('#date').val('');
         $('#test-type').val('');
     });
@@ -91,14 +91,17 @@ function setHospital(lab) {
     hospital = $(`#${lab}`).text();
     $('#lab').text(hospital);
     $('#bde_lab_name').text(hospital);
+    $('#eidvl_lab_name').text(hospital);
 }
 
 
-function loadData(lab) {
+function loadData(lab,labName) {
     setHospital(lab);
     setTestType();
     getSetDate();
-    LoadBackDataEntryData(lab)
+    LoadViralData(lab,labName);
+    LoadBackDataEntryData(lab);
+    
     let parameters = `lab_name=${lab}&period=${period}&test_type=${test_type}`;
     // css style for header and filter
     $('.header').css('display', '');
@@ -165,7 +168,7 @@ function loadData(lab) {
 let UrlWindow = window.location.href;
 if (UrlWindow.includes('?')) {
     let labName = UrlWindow.split('?')[1].split('=')[1]
-    loadData(labName);
+    loadData(labName,"");
 }
 
 function progressBar() {
@@ -229,6 +232,7 @@ function LoadBackDataEntryData(lab){
         type: "GET",
         dataType: "json",
         success: function(res) {
+            console.log(res);
             count_tests = CountTests(res.data)
             $('#bde_total').text(res.data.length)
             $('#bde_table').DataTable( {
@@ -263,6 +267,34 @@ function LoadBackDataEntryData(lab){
         }
     })
 }
+
+function LoadViralData(lab,labName){
+    jQuery.ajax({
+        url: `/get_viral_data?lab_name=${lab}`+"-"+labName,
+        type: "GET",
+        dataType: "json",
+        success: function(res) {
+            console.log(res);
+            //console.log('hrer')
+            $('#eidvl_table').DataTable( {
+                data: res,
+                columns: [
+                    { data: 'tracking_number' },
+                    { data: 'date_created' },
+                    { data: 'specimen_status.time_updated' },
+                    { data: 'test_status' },
+                    { data: 'test_results.result' },
+                    { data: 'test_results.date_result_available' },
+                ],
+                destroy: true
+            } );
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}
+
 function CountTests(bde_data){
     let bde_test_count = {}
     bde_data.forEach(n => {

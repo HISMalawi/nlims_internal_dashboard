@@ -6,7 +6,7 @@
                 <ul class="nav flex-column">
                     <% @labs.each do |lab| %>
                         <li class="nav-item text-left">
-                            <button class="btn text-left" onclick="loadData('<%= lab[0] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
+                            <button class="btn text-left" onclick="loadData('<%= lab[0] %>','<%= lab[1] %>')" id="<%= lab[0] %>"><%= lab[1] %> </button>
                         </li> 
                     <% end %>                       
                 </ul>
@@ -20,7 +20,7 @@
                             
                                 <% @genexpert_labs.each do |genexpert_lab| %>
                                     <li class="nav-item text-left">                     
-                                        <button class="btn text-left name" onclick="loadData('<%= genexpert_lab[0] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
+                                        <button class="btn text-left name" onclick="loadData('<%= genexpert_lab[0] %>','<%= genexpert_lab[1] %>')" id="<%= genexpert_lab[0] %>"><%= genexpert_lab[1] %> </button>              
                                     </li>
                                 <% end %> 
                         </ul>
@@ -44,7 +44,7 @@
                         <button type="submit">Submit</button>
                 </form>
                <div class="modal-btn float-lg-right">
-                    <button type="button" class="btn btn-primary p-1 ml-2" data-toggle="modal" data-target="#eidvlModal">
+                    <button type="button" class="btn btn-primary p-1 ml-2" data-toggle="modal" data-target="#exampleModal">
                         View BDE Orders
                     </button>
                     <button type="button" class="btn btn-primary p-1" data-toggle="modal" data-target="#eidvl">
@@ -258,7 +258,7 @@
     <div class="modal-dialog modal-full">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="eidvlModalLabel">EID/VL data <span id="eidvl-lab_name"></span></h5>
+                <h5 class="modal-title font-weight-bold" id="eidvlModalLabel">Viral Load data for <span id="eidvl_lab_name"></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -267,17 +267,16 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <table id="eidvl-table" class="table table-striped table-bordered" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Sending Facility</th>
-                                    <th>Testing Facility </th>
-                                    <th>Tracking Number</th>
-                                    <th>Test Type</th>
-                                    <th>Date Collected</th>
-                                    <th>Result date</th>
-                                    <th>Gender</th>
-                                </tr>
+                        <table id="eidvl_table" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Tracking Number</th>
+                                <th>Date Created</th>
+                                <th>Date Accepted At Lab</th>
+                                <th>Test Status</th>
+                                <th>Result value</th>
+                                <th>Date Result Available</th>
+                            </tr>
                             </thead>
                         </table>
                     </div>
@@ -286,4 +285,4 @@
         </div>
     </div>
 </div>
-<script src="/javascripts/scripts/lab.js?version=1" type="text/javascript"></script>
+<script src="/javascripts/scripts/lab.js?version=1.1" type="text/javascript"></script>
