@@ -263,7 +263,32 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+            <div style="margin-top:9px; border-bottom:thin solid lightgrey;padding-bottom:9px;" class="row">
+                <div class="col-sp-4 col-sm-8" style="margin-left:1%;">
+                    <span> <label>From: </label>     <input type="date" id="date_from" name="date_from"> </span>
+                    <span style="margin-left:5%"> <label>To: </label>     <input type="date" id="date_to" name="date_to"> </span>
+                
+                    <span style="margin-left:5%"> <label>Filter By Test Status: </label>     
+                        <select name="test_status" id="test_status"> 
+                            <option value="none"> ---select status---</option>
+                            <option value="drawn"> Drawn</option>
+                            <option value="pending"> Pending</option>
+                            <option value="started"> Started</option>
+                            <option value="completed"> Completed</option>
+                            <option value="verified"> Verified</option>
+                            <option value="rejected"> Rejected</option>
+                            <option value="void"> Voided</option>
+                            <option value="not done"> Not done</option>
+                        </select>
+                    </span>
+                    <span style="margin-left:5%">
+                        <input type="text" placeholder="search by tracking number" id="tracking_number" name="tracking_number" >
+                    </span>
+                    <span style="margin-left:5%">
+                        <input type="button" value="search"   class="btn btn-primary" onclick="searchData()">
+                    </span>
+                </div>
+            </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
@@ -271,6 +296,7 @@
                         <thead>
                             <tr>
                                 <th>Tracking Number</th>
+                                <th>Sending Facility</th>
                                 <th>Date Created</th>
                                 <th>Date Accepted At Lab</th>
                                 <th>Test Status</th>

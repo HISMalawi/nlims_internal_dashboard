@@ -2,7 +2,8 @@ var hospital;
 var period;
 var test_type = "";
 var url = "";
-
+var glabName = "";
+var glabCode = "";
 
 $('.today').css('display', 'none');
 $('progress').css('display', 'none');
@@ -101,6 +102,8 @@ function loadData(lab,labName) {
     getSetDate();
     LoadViralData(lab,labName);
     LoadBackDataEntryData(lab);
+    glabCode = lab;
+    glabName = labName;
     
     let parameters = `lab_name=${lab}&period=${period}&test_type=${test_type}`;
     // css style for header and filter
@@ -280,6 +283,7 @@ function LoadViralData(lab,labName){
                 data: res,
                 columns: [
                     { data: 'tracking_number' },
+                    { data: 'sending_facility' },
                     { data: 'date_created' },
                     { data: 'specimen_status.time_updated' },
                     { data: 'test_status' },
@@ -291,6 +295,41 @@ function LoadViralData(lab,labName){
         },
         error: function(err) {
             console.log(err);
+        }
+    })
+}
+
+function searchData()
+{
+   var from_ = $('#date_from').val();
+   var to = $('#date_to').val(); 
+   var testStatus = $('#test_status').val();
+   var trackingNumber = $('#tracking_number').val();
+
+   var url = "/search_eid_viral_data?from="+from_+"&to="+to+"&status="+testStatus+"&tracking_number=" +trackingNumber+"&lab_name=" + glabCode+"-"+glabName;
+
+    jQuery.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function(res){
+            console.log(res);
+            //console.log('hrer')
+            $('#eidvl_table').DataTable( {
+                data: res,
+                columns: [
+                    { data: 'tracking_number' },
+                    { data: 'date_created' },
+                    { data: 'specimen_status.time_updated' },
+                    { data: 'test_status' },
+                    { data: 'test_results.result' },
+                    { data: 'test_results.date_result_available' },
+                ],
+                destroy: true
+            } );
+        },
+        error: function(err){
+
         }
     })
 }
