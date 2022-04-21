@@ -20,14 +20,14 @@ class HomeController < ApplicationController
                                 INNER JOIN tests ON tests.specimen_id = specimen.id
                                 INNER JOIN test_statuses ON test_statuses.id = tests.test_status_id
                                 WHERE tests.test_type_id = 71 AND (specimen.target_lab ='#{lab_name}' OR  specimen.target_lab ='#{last_name}'
-                                OR substring(specimen.tracking_number,2,'#{lab_code.length}')='#{lab_code}') order by specimen.id DESC
+                                OR substring(specimen.tracking_number,2,'#{lab_code.length}')='#{lab_code}') order by specimen.id DESC LIMIT 1000
                             ")
         else
             rs = Speciman.find_by_sql("SELECT tests.id AS test_id, specimen.id AS sp_id, test_statuses.name AS test_status, specimen.tracking_number, specimen.date_created, specimen.sending_facility FROM specimen
                 INNER JOIN tests ON tests.specimen_id = specimen.id
                 INNER JOIN test_statuses ON test_statuses.id = tests.test_status_id
                 WHERE tests.test_type_id = 71 AND (specimen.sending_facility ='#{lab_name}' 
-                OR substring(specimen.tracking_number,2,'#{lab_code.length}') ='#{lab_code}') order by specimen.id DESC
+                OR substring(specimen.tracking_number,2,'#{lab_code.length}') ='#{lab_code}') order by DATE(specimen.date_created) DESC LIMIT 1000
             ")
         end
 

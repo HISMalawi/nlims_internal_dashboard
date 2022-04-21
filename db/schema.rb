@@ -229,13 +229,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180432) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "specimenstatus", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "name", limit: 1, null: false
-    t.integer "created_at", limit: 1, null: false
-    t.integer "updated_at", limit: 1, null: false
-  end
-
   create_table "test_categories", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -300,45 +293,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180432) do
     t.index ["test_phase_id"], name: "index_test_statuses_on_test_phase_id"
   end
 
-  create_table "test_testresult", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "test_id", limit: 1, null: false
-    t.integer "result", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-  end
-
-  create_table "test_testype", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "specimen_id", limit: 1, null: false
-    t.integer "test_status_id", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-    t.integer "patient_id", limit: 1, null: false
-    t.integer "test_timecreated", limit: 1, null: false
-    t.integer "name", limit: 1, null: false
-    t.integer "targetTAT", limit: 1, null: false
-  end
-
-  create_table "test_type_ViralLoad", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "specimen_id", limit: 1, null: false
-    t.integer "test_status_id", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-    t.integer "patient_id", limit: 1, null: false
-    t.integer "test_timecreated", limit: 1, null: false
-    t.integer "name", limit: 1, null: false
-    t.integer "targetTAT", limit: 1, null: false
-  end
-
-  create_table "test_type_covid", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "specimen_id", limit: 1, null: false
-    t.integer "test_status_id", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-    t.integer "patient_id", limit: 1, null: false
-    t.integer "test_timecreated", limit: 1, null: false
-    t.integer "name", limit: 1, null: false
-    t.integer "targetTAT", limit: 1, null: false
-  end
-
   create_table "test_types", charset: "utf8", force: :cascade do |t|
     t.bigint "test_category_id"
     t.string "name", null: false
@@ -349,13 +303,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["test_category_id"], name: "index_test_types_on_test_category_id"
-  end
-
-  create_table "testresult_named", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "test_id", limit: 1, null: false
-    t.integer "result", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-    t.integer "test_type", limit: 1, null: false
   end
 
   create_table "tests", charset: "latin1", force: :cascade do |t|
@@ -373,14 +320,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180432) do
     t.index ["specimen_id"], name: "index_tests_on_specimen_id"
     t.index ["test_status_id"], name: "index_tests_on_test_status_id"
     t.index ["test_type_id"], name: "index_tests_on_test_type_id"
-  end
-
-  create_table "teststatuses", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "name", limit: 1, null: false
-    t.integer "test_phase_id", limit: 1, null: false
-    t.integer "created_at", limit: 1, null: false
-    t.integer "updated_at", limit: 1, null: false
   end
 
   create_table "testtype_measures", charset: "utf8", force: :cascade do |t|
@@ -420,26 +359,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_180432) do
     t.datetime "token_expiry_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "viraload_table", id: false, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "id", limit: 1, null: false
-    t.integer "test_name", limit: 1, null: false
-    t.integer "test_timecreated", limit: 1, null: false
-    t.integer "specimen_id", limit: 1, null: false
-    t.integer "test_status_id", limit: 1, null: false
-    t.integer "test_type_id", limit: 1, null: false
-    t.integer "patient_id", limit: 1, null: false
-    t.integer "test_targetTAT", limit: 1, null: false
-    t.integer "gender", limit: 1, null: false
-    t.integer "patient_dob", limit: 1, null: false
-    t.integer "result", limit: 1, null: false
-    t.integer "result_timecreated", limit: 1, null: false
-    t.integer "sending_facility", limit: 1, null: false
-    t.integer "target_lab", limit: 1, null: false
-    t.integer "specimen_datecreated", limit: 1, null: false
-    t.integer "district", limit: 1, null: false
-    t.integer "specimen_status_id", limit: 1, null: false
   end
 
   create_table "visit_types", charset: "latin1", force: :cascade do |t|
