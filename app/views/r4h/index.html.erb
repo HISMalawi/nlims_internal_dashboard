@@ -1,0 +1,78 @@
+<div class="container mt-5">
+ <h5>R4H Visualization Dashboard</h5>
+    <div class="row">
+        <a href="<%= url_for(action: 'total_orders', controller: 'r4h', only_path: false) %>">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Total Orders</h6>
+                    <p class="card-text"><%= @orders %></p>
+                </div>
+            </div>
+        </a>
+        <a href="<%= url_for(action: 'orders_collected', controller: 'r4h', only_path: false) %>">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Orders Collected</h6>
+                    <p class="card-text"><%= @orders_collected %></p>
+                </div>
+            </div>
+        </a>
+         <a href="<%= url_for(action: 'orders_delivered_at_dho', controller: 'r4h', only_path: false) %>">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Orders Delivered At District Hub</h6>
+                    <p class="card-text"><%= @orders_delivered_at_dho %></p>
+                </div>
+            </div>
+        </a>
+        <a href="<%= url_for(action: 'orders_delivered_at_molecular_lab', controller: 'r4h', only_path: false) %>">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Orders Delivered At Molecular Lab</h6>
+                    <p class="card-text"><%= @orders_delivered_at_molecular %></p>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Results Ready At Molecular Lab</h6>
+                    <p class="card-text">20</p>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Dispatched Results At Molecular Lab</h6>
+                    <p class="card-text"><%= @dispatch_results_at_molecular %></p>
+                </div>
+            </div>
+        </a>
+        <a href="">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Results Delivered At Facilities</h6>
+                    <p class="card-text">5</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<style>
+    a{
+      color: black;  
+    }
+    a:hover {
+        text-decoration: none;
+        color: black;
+    }
+    h6,p{
+        text-align: center;
+    }
+    p{
+        font-weight: bold;
+        font-size: 20px;
+    }
+</style>
