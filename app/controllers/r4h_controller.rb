@@ -13,6 +13,10 @@ class R4hController < ApplicationController
         @dispatch_results_at_molecular = Speciman.find_by_sql("SELECT COUNT(*) AS dispatch_results_at_molecular FROM specimen_dispatches sd
             INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id
             WHERE sdt.name='delivering_results_to_facility'")[0][:dispatch_results_at_molecular]
+        @results_ready_at_molecular = Speciman.find_by_sql("SELECT COUNT(*) AS results_ready_at_molecular FROM specimen_dispatches sd
+            INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id WHERE
+            sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)")[0][:results_ready_at_molecular]
     end
 
     def total_orders
@@ -38,6 +42,21 @@ class R4hController < ApplicationController
         @orders_delivered_at_molecular_lab = Speciman.find_by_sql("SELECT sp.target_lab AS target_lab, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_molecular_lab
             FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
             specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'delivering_samples_to_molecular_lab'
+            GROUP BY (sp.sending_facility)")
+    end
+
+    def results_ready_at_molecular
+        @results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS results_ready_at_molecular FROM specimen_dispatches sd
+            INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id WHERE
+            sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
+            GROUP BY (sp.sending_facility)")
+    end
+
+    def dispatched_results_at_molecular
+        @dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS dispatched_results_at_molecular
+            FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+            specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'delivering_results_to_facility'
             GROUP BY (sp.sending_facility)")
     end
 end

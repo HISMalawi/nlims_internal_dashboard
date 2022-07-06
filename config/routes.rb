@@ -41,15 +41,19 @@ Rails.application.routes.draw do
   get "/get_bde_data" => "backlog_data_entry#get_bde_data"
   get "/search_eid_viral_data" => "home#search_eid_viral_data"
 
+  # Monitoring status
   get '/add_new_site' => 'monitor_sync_status#add_site'
   post '/add_new_site' => 'monitor_sync_status#add_site'
   get '/site_status' => 'monitor_sync_status#sync_statuses'
   get '/site_details/:site_name/:site_code' => 'monitor_sync_status#site_sync_details'
   post '/site_details/:site_name/:site_code' => 'monitor_sync_status#site_sync_details'
 
+  # R4H
   get '/r4h_dashboard' => 'r4h#index'
   get '/r4h_dashboard/total_orders' => 'r4h#total_orders'
   get '/r4h_dashboard/orders_collected' => 'r4h#orders_collected'
   get '/r4h_dashboard/orders_delivered_at_dho' => 'r4h#orders_delivered_at_dho'
   get '/r4h_dashboard/orders_delivered_at_molecular_lab' => 'r4h#orders_delivered_at_molecular_lab'
+  get '/r4h_dashboard/results_ready_at_molecular' => 'r4h#results_ready_at_molecular'
+  get '/r4h_dashboard/dispatched_results_at_molecular' => 'r4h#dispatched_results_at_molecular'
 end

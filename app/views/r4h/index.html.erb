@@ -33,15 +33,15 @@
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="<%= url_for(action: 'results_ready_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
                     <h6 class="card-title">Results Ready At Molecular Lab</h6>
-                    <p class="card-text">20</p>
+                    <p class="card-text"><%= @results_ready_at_molecular %></p>
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
                     <h6 class="card-title">Dispatched Results At Molecular Lab</h6>
