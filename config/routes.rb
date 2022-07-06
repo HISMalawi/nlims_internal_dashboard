@@ -46,4 +46,10 @@ Rails.application.routes.draw do
   get '/site_status' => 'monitor_sync_status#sync_statuses'
   get '/site_details/:site_name/:site_code' => 'monitor_sync_status#site_sync_details'
   post '/site_details/:site_name/:site_code' => 'monitor_sync_status#site_sync_details'
+
+  get '/r4h_dashboard' => 'r4h#index'
+  get '/r4h_dashboard/total_orders' => 'r4h#total_orders'
+  get '/r4h_dashboard/orders_collected' => 'r4h#orders_collected'
+  get '/r4h_dashboard/orders_delivered_at_dho' => 'r4h#orders_delivered_at_dho'
+  get '/r4h_dashboard/orders_delivered_at_molecular_lab' => 'r4h#orders_delivered_at_molecular_lab'
 end
