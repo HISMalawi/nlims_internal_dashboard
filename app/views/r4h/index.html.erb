@@ -49,11 +49,11 @@
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
                     <h6 class="card-title">Results Delivered At Facilities</h6>
-                    <p class="card-text">5</p>
+                    <p class="card-text"><%= @dispatch_results_at_molecular %> </p>
                 </div>
             </div>
         </a>

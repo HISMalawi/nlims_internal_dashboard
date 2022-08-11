@@ -1,6 +1,13 @@
 class R4hController < ApplicationController
+    $central_hospitals = ['Kamuzu Central Hospital','Kamuzu Central Hospital Laboratory', 'Mzuzu Central Hospital',
+        'Mzuzu Central Hospital Laboratory', 'Queen Elizabeth Central Hospital', 'Queen Elizabeth Central Hospital Laboratory',
+        'Queen Elizabeth (QECH) Central Hospital', 'Zomba Central Hospital']
     def index 
-        @orders = Speciman.find_by_sql("SELECT COUNT(*) AS total_orders FROM specimen")[0][:total_orders]
+        @orders = Speciman.find_by_sql("SELECT COUNT(*) AS total_orders FROM specimen sp
+            INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+            ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE
+            (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+        ")[0][:total_orders]
         @orders_collected = Speciman.find_by_sql("SELECT COUNT(*) AS orders_collected FROM specimen_dispatches sd
             INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id
             WHERE sdt.name='sample_dispatched_from_facility'")[0][:orders_collected]
@@ -20,43 +27,168 @@ class R4hController < ApplicationController
     end
 
     def total_orders
-        @total_orders = Speciman.find_by_sql("SELECT sending_facility AS facility,  COUNT(*) AS total_orders FROM
-              specimen GROUP BY(sending_facility)")
+        if params[:site_name]
+            site_name = params[:site_name]
+            total_orders = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, 
+                tt.name AS test_type FROM specimen sp INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                ")
+            @data = {
+                type: 'drillDown',
+                orders: total_orders
+            }
+        else
+            total_orders = Speciman.find_by_sql("SELECT sp.sending_facility AS facility,  COUNT(*) AS total_orders FROM
+                    specimen sp INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                    ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE
+                    (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}') GROUP BY(sending_facility)
+                ")
+            @data = {
+                type: 'topLevel',
+                orders: total_orders
+            }
+        end
     end
     
     def orders_collected
-        @orders_collected = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS orders_collected FROM
-            specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-            specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'sample_dispatched_from_facility'
-            GROUP BY(sp.sending_facility);")
+        if params[:site_name]
+            site_name = params[:site_name]
+            orders_collected = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'sample_dispatched_from_facility'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: orders_collected
+            }
+        else
+            orders_collected = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS orders_collected FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'sample_dispatched_from_facility'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'topLevel',
+                orders: orders_collected
+            }
+        end
     end
     
     def orders_delivered_at_dho
-        @orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_dho
-            FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-            specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'delivering_samples_to_district_hub'
-            GROUP BY (sp.sending_facility)")
+        if params[:site_name]
+            site_name = params[:site_name]
+            orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: orders_delivered_at_dho
+            }
+        else
+            orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_dho FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'topLevel',
+                orders: orders_delivered_at_dho
+            }
+        end
     end
 
     def orders_delivered_at_molecular_lab
-        @orders_delivered_at_molecular_lab = Speciman.find_by_sql("SELECT sp.target_lab AS target_lab, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_molecular_lab
-            FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-            specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'delivering_samples_to_molecular_lab'
-            GROUP BY (sp.sending_facility)")
+        if params[:site_name]
+            site_name = params[:site_name]
+            orders_delivered_at_molecular_lab = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_molecular_lab'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: orders_delivered_at_molecular_lab
+            }
+        else
+            orders_delivered_at_molecular_lab = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_molecular_lab FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_molecular_lab'
+                GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'topLevel',
+                orders: orders_delivered_at_molecular_lab
+            }
+        end
     end
 
     def results_ready_at_molecular
-        @results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS results_ready_at_molecular FROM specimen_dispatches sd
-            INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id WHERE
-            sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
-            GROUP BY (sp.sending_facility)")
+        if params[:site_name]
+            site_name = params[:site_name]
+            results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+                INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: results_ready_at_molecular
+            }
+        else
+            results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS results_ready_at_molecular FROM
+            specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+            INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id INNER JOIN testtype_specimentypes ttspt ON
+            ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+            AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL) GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'topLevel',
+                orders: results_ready_at_molecular
+            }
+        end
     end
 
     def dispatched_results_at_molecular
-        @dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS dispatched_results_at_molecular
-            FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-            specimen sp ON sp.tracking_number = sd.tracking_number WHERE sdt.name = 'delivering_results_to_facility'
-            GROUP BY (sp.sending_facility)")
+        if params[:site_name]
+            site_name = params[:site_name]
+            dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
+                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+                INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+                ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE sp.sending_facility='#{site_name}' AND
+                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_results_to_facility'
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: dispatched_results_at_molecular
+            }
+        else
+            dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS dispatched_results_at_molecular FROM
+            specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+            INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
+            ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+            AND sdt.name = 'delivering_results_to_facility' GROUP BY(sp.sending_facility)
+            ")
+            @data = {
+                type: 'topLevel',
+                orders: dispatched_results_at_molecular
+            }
+        end
     end
 end

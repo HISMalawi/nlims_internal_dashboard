@@ -3,12 +3,24 @@
     <div class="row">
         <div class="col-12">
             <table id="orders_collected_table" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Facility</th>
-                    <th>Total Orders Collected</th>
-                </tr>
-                </thead>
+                <%if @data[:type] == 'topLevel'%>
+                    <thead>
+                        <tr>
+                            <th>Facility</th>
+                            <th>Total Orders Collected</th>
+                        </tr>
+                    </thead>
+                <%else%>
+                    <thead>
+                        <tr>
+                            <th>Tracking Number</th>
+                            <th>Facility</th>
+                            <th>District</th>
+                            <th>Test Type</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                <%end%>
             </table>
         </div>
     </div>
@@ -16,21 +28,40 @@
 
 <script>
 $(document).ready(function () {
-    let dataset = JSON.parse('<%=raw(@orders_collected.to_json)%>');
-    // let dataset = [
-    //                 {'facility': 'Area 18 health centre', 'orders_collected': 30},
-    //                 {'facility': 'Area 25 health centre', 'orders_collected': 50},
-    //                 {'facility': 'Kabudula health centre', 'orders_collected': 35},
-    //                 {'facility': 'Kawale health centre', 'orders_collected': 356},
-    //                 {'facility': 'St Gabriel Hospital', 'orders_collected': 307},
-    //             ];
-    
-    $('#orders_collected_table').DataTable( {
-                data: dataset,
-                columns: [
-                    { data: 'facility' },
-                    { data: 'orders_collected' }
-                ],
-        } );
+    let dataset = JSON.parse('<%=raw(@data.to_json)%>');
+    if (dataset.type === 'topLevel'){
+        $('#orders_collected_table').DataTable({
+                    data: dataset.orders,
+                    "columnDefs": [
+                        { className: "openPopup", "targets": [ 0 ] }
+                    ],
+                    columns: [
+                        { data: 'facility',
+                            "render": function (data) {
+                                let baseUrl = window.location.href;
+                                let dataURL = new URL(baseUrl+ `?site_name=${data}`).href
+                                return '<a href="'+dataURL+'">'+data+'</a>';
+                            } 
+                        },
+                        { data: 'orders_collected' }
+                        
+                    ],
+                    destroy: true
+            } );
+    }else{
+        $('#orders_collected_table').DataTable( {
+                    data: dataset.orders,
+                    columns: [
+                        { data: 'tracking_number'},
+                        { data: 'facility' },
+                        { data: 'district' },
+                        {data: 'test_type'},
+                        { data: 'date_created' }
+                        
+                    ],
+                    destroy: true
+            } );
+    }
+
 });
 </script>

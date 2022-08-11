@@ -56,4 +56,5 @@ Rails.application.routes.draw do
   get '/r4h_dashboard/orders_delivered_at_molecular_lab' => 'r4h#orders_delivered_at_molecular_lab'
   get '/r4h_dashboard/results_ready_at_molecular' => 'r4h#results_ready_at_molecular'
   get '/r4h_dashboard/dispatched_results_at_molecular' => 'r4h#dispatched_results_at_molecular'
+  get '/r4h_dashboard/:site_name' => 'r4h#total_orders'
 end
