@@ -25,7 +25,9 @@ class R4hController < ApplicationController
         @orders_delivered_at_dho = Speciman.find_by_sql("SELECT COUNT(*) AS orders_delivered_at_dho FROM specimen_dispatches sd
             INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id
             INNER JOIN specimen sp ON sp.tracking_number=sd.tracking_number
-            WHERE sdt.name='delivering_samples_to_district_hub'
+            INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+            WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine'
+            AND sdt.name='delivering_samples_to_district_hub'
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:orders_delivered_at_dho]
         @dispatch_results_at_molecular = Speciman.find_by_sql("SELECT COUNT(*) AS dispatch_results_at_molecular FROM specimen_dispatches sd
             INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id
@@ -33,8 +35,11 @@ class R4hController < ApplicationController
             WHERE sdt.name='delivering_results_to_facility'
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:dispatch_results_at_molecular]
         @results_ready_at_molecular = Speciman.find_by_sql("SELECT COUNT(*) AS results_ready_at_molecular FROM specimen_dispatches sd
-            INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id WHERE
+            INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
+            INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+            INNER JOIN test_results tr ON tr.test_id = t.id 
+            WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND
             sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:results_ready_at_molecular]
     end
@@ -73,7 +78,7 @@ class R4hController < ApplicationController
                 tt.name AS test_type FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
                 INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number 
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
-                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'sample_dispatched_from_facility'
+                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND sdt.name = 'sample_dispatched_from_facility'
                     AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
@@ -85,7 +90,7 @@ class R4hController < ApplicationController
                     INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                     INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
                     WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'sample_dispatched_from_facility' 
-                        AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                    AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
                     GROUP BY sp.sending_facility
                 ")
             @data = {
@@ -103,7 +108,7 @@ class R4hController < ApplicationController
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
                 WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
-                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
                 type: 'drillDown',
@@ -115,7 +120,7 @@ class R4hController < ApplicationController
                 specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id=sp.id 
                 INNER JOIN test_types tt ON tt.id = t.test_type_id 
                 WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
-                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                    AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
                 GROUP BY(sp.sending_facility)
             ")
             @data = {
@@ -133,7 +138,7 @@ class R4hController < ApplicationController
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
                 WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
-                    AND sdt.name = 'delivering_samples_to_molecular_lab' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                    AND sp.priority = 'Routine' AND sdt.name = 'delivering_samples_to_molecular_lab' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
                 type: 'drillDown',
@@ -145,6 +150,7 @@ class R4hController < ApplicationController
                 specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON
                 t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id WHERE
                 (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_molecular_lab'
+                    AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
                 GROUP BY(sp.sending_facility)
             ")
             @data = {
@@ -157,11 +163,16 @@ class R4hController < ApplicationController
     def results_ready_at_molecular
         if params[:site_name]
             site_name = params[:site_name]
-            results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
-                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-                INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id INNER JOIN tests t ON
-                t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id WHERE sp.sending_facility='#{site_name}' AND
-                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
+            results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id,
+                tt.name AS test_type, tr.time_entered FROM specimen_dispatches sd 
+                INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
+                INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+                INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+                INNER JOIN test_results tr ON tr.test_id = t.id 
+                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+                    AND sp.priority = 'Routine'
+                    AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
+                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
                 type: 'drillDown',
@@ -170,9 +181,12 @@ class R4hController < ApplicationController
         else
             results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS results_ready_at_molecular FROM
             specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-            INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id INNER JOIN testtype_specimentypes ttspt ON
-            ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
-            AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL) GROUP BY(sp.sending_facility)
+            INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_results tr ON tr.test_id = t.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+            WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+            AND sp.priority = 'Routine'
+            AND sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL) 
+            AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+            GROUP BY(sp.sending_facility)
             ")
             @data = {
                 type: 'topLevel',
@@ -184,11 +198,14 @@ class R4hController < ApplicationController
     def dispatched_results_at_molecular
         if params[:site_name]
             site_name = params[:site_name]
-            dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
-                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-                INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON
-                t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id WHERE sp.sending_facility='#{site_name}' AND
-                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_results_to_facility'
+            dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id,
+                tt.name AS test_type,sd.date_dispatched FROM specimen_dispatches sd 
+                INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
+                INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+                INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+                    AND sdt.name = 'delivering_results_to_facility'
+                    AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
                 type: 'drillDown',
@@ -197,8 +214,8 @@ class R4hController < ApplicationController
         else
             dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS dispatched_results_at_molecular FROM
             specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
-            INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN testtype_specimentypes ttspt ON
-            ttspt.specimen_type_id=spt.id INNER JOIN test_types tt ON tt.id = ttspt.test_type_id WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
+            INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+             WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine'
             AND sdt.name = 'delivering_results_to_facility' GROUP BY(sp.sending_facility)
             ")
             @data = {
