@@ -94,12 +94,12 @@ class R4hController < ApplicationController
     def orders_delivered_at_dho
         if params[:site_name]
             site_name = params[:site_name]
-            orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id, tt.name AS test_type FROM
-                specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON
-                t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id WHERE sp.sending_facility='#{site_name}' AND
-                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
-                AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+            orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, 
+                sp.id as id, tt.name AS test_type, sd.date_dispatched FROM specimen_dispatches sd 
+                INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
+                INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
+                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
             ")
             @data = {
                 type: 'drillDown',
@@ -108,10 +108,10 @@ class R4hController < ApplicationController
         else
             orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.district AS district, sp.sending_facility AS facility, COUNT(*) AS orders_delivered_at_dho FROM
                 specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN
-                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN specimen_types spt ON spt.id = sp.specimen_type_id INNER JOIN tests t ON
-                t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id WHERE
-                (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
-                AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
+                specimen sp ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id=sp.id 
+                INNER JOIN test_types tt ON tt.id = t.test_type_id 
+                WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
+                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')
                 GROUP BY(sp.sending_facility)
             ")
             @data = {
