@@ -17,7 +17,8 @@
                             <th>Facility</th>
                             <th>District</th>
                             <th>Test Type</th>
-                            <th>Date Created</th>
+                            <th>Date Test Ordered</th>
+                            <th>Date Orders Collected</th>
                         </tr>
                     </thead>
                 <%end%>
@@ -39,7 +40,7 @@ $(document).ready(function () {
                         { data: 'facility',
                             "render": function (data) {
                                 let baseUrl = window.location.href;
-                                let dataURL = new URL(baseUrl+ `?site_name=${data}`).href
+                                let dataURL = new URL(baseUrl+ `?site_name=${data}`).href;
                                 return '<a href="'+dataURL+'">'+data+'</a>';
                             } 
                         },
@@ -56,12 +57,38 @@ $(document).ready(function () {
                         { data: 'facility' },
                         { data: 'district' },
                         {data: 'test_type'},
-                        { data: 'date_created' }
+                        {data: 'date_created',
+                            render: function (data) {
+                                let date = new Date(data);
+                                let month = date.getMonth()+1;
+                                let day = date.getDate();
+                                if(month < 10){
+                                    month = `0${month}`
+                                }
+                                if(day < 10){
+                                    day = `0${day}`;
+                                }
+                                return `${date.getFullYear()}-${month}-${day}`;          
+                            }
+                        },
+                        { data: 'date_dispatched',
+                            render: function (data) {
+                                let date = new Date(data);
+                                let month = date.getMonth()+1;
+                                let day = date.getDate();
+                                if(month < 10){
+                                    month = `0${month}`;
+                                }
+                                if(day < 10){
+                                    day = `0${day}`;
+                                }
+                                return `${date.getFullYear()}-${month}-${day}`;           
+                            }
+                        }
                         
                     ],
                     destroy: true
             } );
     }
-
 });
 </script>
