@@ -3,7 +3,7 @@ class R4hController < ApplicationController
         'Mzuzu Central Hospital Laboratory', 'Queen Elizabeth Central Hospital', 'Queen Elizabeth Central Hospital Laboratory',
         'Queen Elizabeth (QECH) Central Hospital', 'Zomba Central Hospital']
     $sending_facility_not_in_central_hospitals = "sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')"
-    def index 
+    def index
         @orders = Speciman.find_by_sql("SELECT COUNT(*) AS total_orders FROM specimen sp
             INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
             WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND #{$sending_facility_not_in_central_hospitals}
@@ -42,6 +42,7 @@ class R4hController < ApplicationController
             WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND
             sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:results_ready_at_molecular]
+        @result_delivered_to_emr_electronically = 0
     end
 
     def total_orders
@@ -66,6 +67,33 @@ class R4hController < ApplicationController
             @data = {
                 type: 'topLevel',
                 orders: total_orders
+            }
+        end
+    end
+
+    def uncollected_orders
+        if params[:site_name]
+            site_name = params[:site_name]
+            uncollected_orders = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created,
+                tt.name AS test_type FROM specimen sp
+                INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+                WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine'
+                    AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}') AND sp.tracking_number NOT IN (SELECT tracking_number from specimen_dispatches)
+            ")
+            @data = {
+                type: 'drillDown',
+                orders: uncollected_orders
+            }
+        else
+            uncollected_orders = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, COUNT(*) AS uncollected_orders FROM specimen sp 
+                    INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
+                    WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis')
+                    AND sp.priority = 'Routine' AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}') AND sp.tracking_number NOT IN (SELECT tracking_number from specimen_dispatches)
+                    GROUP BY sp.sending_facility
+                ")
+            @data = {
+                type: 'topLevel',
+                orders: uncollected_orders
             }
         end
     end

@@ -1,11 +1,19 @@
 <div class="container mt-5">
- <h5>R4H Visualization Dashboard</h5>
+ <h5>R4H Visualization Dashboard - EID/VIRAL LOAD DATA</h5>
     <div class="row">
         <a href="<%= url_for(action: 'total_orders', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
                     <h6 class="card-title">Total Orders</h6>
                     <p class="card-text"><%= @orders %></p>
+                </div>
+            </div>
+        </a>
+        <a href="<%= url_for(action: 'uncollected_orders', controller: 'r4h', only_path: false) %>">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title"> Uncollected Orders</h6>
+                    <p class="card-text"><%= @orders - @orders_collected %></p>
                 </div>
             </div>
         </a>
@@ -38,6 +46,14 @@
                 <div class="card-body">
                     <h6 class="card-title">Results Ready At Molecular Lab</h6>
                     <p class="card-text"><%= @results_ready_at_molecular %></p>
+                </div>
+            </div>
+        </a>
+        <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>" style="pointer-events: none; color:gray;">
+            <div class="card m-2" style="width: 20rem;">
+                <div class="card-body">
+                    <h6 class="card-title">Results delivered to EMR electronically </h6>
+                    <p class="card-text"><%= @result_delivered_to_emr_electronically %></p>
                 </div>
             </div>
         </a>
