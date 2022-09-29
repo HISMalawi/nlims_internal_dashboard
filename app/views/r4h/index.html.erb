@@ -12,7 +12,7 @@
         <a href="<%= url_for(action: 'uncollected_orders', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title"> Uncollected Orders</h6>
+                    <h6 class="card-title"> Undispatched Orders</h6>
                     <p class="card-text"><%= @orders - @orders_collected %></p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <a href="<%= url_for(action: 'orders_collected', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Orders Collected</h6>
+                    <h6 class="card-title">Dispatched</h6>
                     <p class="card-text"><%= @orders_collected %></p>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Dispatched Results At Molecular Lab</h6>
+                    <h6 class="card-title">Dispatched Results From Molecular Lab</h6>
                     <p class="card-text"><%= @dispatch_results_at_molecular %></p>
                 </div>
             </div>
@@ -68,7 +68,7 @@
         <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Results Delivered At Facilities</h6>
+                    <h6 class="card-title">Results Delivered To Facility</h6>
                     <p class="card-text"><%= @dispatch_results_at_molecular %> </p>
                 </div>
             </div>
