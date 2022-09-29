@@ -45,7 +45,15 @@ $(document).ready(function () {
                                 return '<a href="'+dataURL+'">'+data+'</a>';
                             } 
                         },
-                        {data: 'target_lab'},
+                        {data: 'delivery_location',
+                            render: function (data) {
+                                if(data){
+                                    return data.replaceAll('_', ' ');
+                                }else{
+                                    return data;
+                                }  
+                            }
+                        },
                         { data: 'orders_delivered_at_molecular_lab' }
                         
                     ],

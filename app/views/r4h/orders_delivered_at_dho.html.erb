@@ -17,6 +17,7 @@
                             <th>Tracking Number</th>
                             <th>Facility</th>
                             <th>District</th>
+                            <th>Hub Delivered To</th>
                             <th>Test Type</th>
                             <th>Date Order Created</th>
                             <th>Date Order Delivered to Hub</th>
@@ -59,6 +60,15 @@ $(document).ready(function () {
                         { data: 'tracking_number'},
                         { data: 'facility' },
                         { data: 'district' },
+                        {data: 'delivery_location',
+                            render: function (data) {
+                                if(data){
+                                    return data.replaceAll('_', ' ');
+                                }else{
+                                    return data;
+                                }  
+                            }
+                        },
                         {data: 'test_type'},
                         {data: 'date_created',
                             render: function (data) {
