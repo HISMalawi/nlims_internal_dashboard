@@ -214,14 +214,18 @@ function processDateData(selector, data) {
     if (date == '0') {
         $(`#${selector}`).text(date);
     } else {
-        let lastSync = date.replace(/-/g, '/');
-        lastSync = lastSync.split(' ');
-        lastSyncDate = lastSync[0]
-        lastSyncDate = new Date(lastSyncDate);
-        lastSyncDate = lastSyncDate.toDateString();
-        lastSyncTime = lastSync[1];
-        lastSync = `${lastSyncDate}, ${lastSyncTime}`
-        $(`#${selector}`).text(lastSync);
+        if (date !== null){
+            let lastSync = date.replace(/-/g, '/');
+            lastSync = lastSync.split(' ');
+            lastSyncDate = lastSync[0]
+            lastSyncDate = new Date(lastSyncDate);
+            lastSyncDate = lastSyncDate.toDateString();
+            lastSyncTime = lastSync[1];
+            lastSync = `${lastSyncDate}, ${lastSyncTime}`
+            $(`#${selector}`).text(lastSync);
+        }else { 
+            $(`#${selector}`).text('----');
+        }
     }
 }
 
