@@ -4,7 +4,7 @@
         <a href="<%= url_for(action: 'total_orders', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Total Orders</h6>
+                    <h6 class="card-title">Total Samples Drawn</h6>
                     <p class="card-text"><%= @orders %></p>
                 </div>
             </div>
@@ -12,7 +12,7 @@
         <a href="<%= url_for(action: 'uncollected_orders', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title"> Undispatched Orders</h6>
+                    <h6 class="card-title"> Samples Awaiting Pick up</h6>
                     <p class="card-text"><%= @orders - @orders_collected %></p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <a href="<%= url_for(action: 'orders_collected', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Dispatched Orders</h6>
+                    <h6 class="card-title">Samples Picked up</h6>
                     <p class="card-text"><%= @orders_collected %></p>
                 </div>
             </div>
