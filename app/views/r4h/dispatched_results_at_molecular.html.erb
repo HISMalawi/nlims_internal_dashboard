@@ -68,8 +68,8 @@ $(document).ready(function () {
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                // return `${date.getFullYear()}-${month}-${day}`; 
-                                return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });         
+                                return `${day}/${month}/${date.getFullYear()}`; 
+                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });         
                             }
                         },
                         { data: 'date_dispatched',
@@ -83,8 +83,8 @@ $(document).ready(function () {
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                // return `${date.getFullYear()}-${month}-${day}`;   
-                                return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });        
+                                return `${day}/${month}/${date.getFullYear()}`;   
+                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });        
                             }
                         }
                         
