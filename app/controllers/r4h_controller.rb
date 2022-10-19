@@ -194,7 +194,7 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             results_ready_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id,
-                tt.name AS test_type, tr.time_entered, TimestampDiff(HOUR, sp.date_created, sd.date_dispatched) AS tat_when_ordered_to_dispatched FROM specimen_dispatches sd 
+                tt.name AS test_type, tr.time_entered, TimestampDiff(HOUR, sp.date_created, tr.time_entered) AS tat_when_ordered_to_dispatched FROM specimen_dispatches sd 
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
                 INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
