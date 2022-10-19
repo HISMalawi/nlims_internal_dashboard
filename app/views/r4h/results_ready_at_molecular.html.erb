@@ -19,6 +19,7 @@
                             <th>Test Type</th>
                             <th>Date Sample Drawn</th>
                             <th>Date Results Available</th>
+                            <th>TAT(Sample Drawn vs Results Ready)</th>
                         </tr>
                     </thead>
                 <%end%>
@@ -109,6 +110,16 @@ $(document).ready(function () {
                                     seconds = `0${seconds}`;
                                 }
                                 return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;      
+                            }
+                        },
+                        { data: 'tat_when_ordered_to_dispatched',
+                            render: function (data) {
+                                var Days=Math.floor(data/24);
+                                var Remainder=data % 24;
+                                var Hours=Math.floor(Remainder);
+                                var Minutes=Math.floor(60*(Remainder-Hours));
+                                return `${Days}Days ${Hours}Hrs ${Minutes}Mins`
+                            
                             }
                         }
                         
