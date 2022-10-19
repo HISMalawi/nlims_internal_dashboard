@@ -12,7 +12,7 @@
         <a href="<%= url_for(action: 'uncollected_orders', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title"> Samples Awaiting Pick up</h6>
+                    <h6 class="card-title">Total Samples Awaiting Pick up</h6>
                     <p class="card-text"><%= @orders - @orders_collected %></p>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <a href="<%= url_for(action: 'orders_collected', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Samples Picked up</h6>
+                    <h6 class="card-title">Totals Samples Picked up</h6>
                     <p class="card-text"><%= @orders_collected %></p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
          <a href="<%= url_for(action: 'orders_delivered_at_dho', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Orders Delivered At District Hub</h6>
+                    <h6 class="card-title">Total Samples Delivered At District Hub</h6>
                     <p class="card-text"><%= @orders_delivered_at_dho %></p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
         <a href="<%= url_for(action: 'orders_delivered_at_molecular_lab', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Orders Delivered At Molecular Lab</h6>
+                    <h6 class="card-title">Total Samples Delivered At Molecular Lab</h6>
                     <p class="card-text"><%= @orders_delivered_at_molecular %></p>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         <a href="<%= url_for(action: 'results_ready_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Results Ready At Molecular Lab</h6>
+                    <h6 class="card-title">Total Results Ready At Molecular Lab</h6>
                     <p class="card-text"><%= @results_ready_at_molecular %></p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
         <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>" style="pointer-events: none; color:gray;">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Results delivered to EMR electronically </h6>
+                    <h6 class="card-title">Total Results delivered to EMR electronically </h6>
                     <p class="card-text"><%= @result_delivered_to_emr_electronically %></p>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Dispatched Results From Molecular Lab</h6>
+                    <h6 class="card-title">Total Results Dispatched From Molecular Lab</h6>
                     <p class="card-text"><%= @dispatch_results_at_molecular %></p>
                 </div>
             </div>
@@ -68,7 +68,7 @@
         <a href="<%= url_for(action: 'dispatched_results_at_molecular', controller: 'r4h', only_path: false) %>">
             <div class="card m-2" style="width: 20rem;">
                 <div class="card-body">
-                    <h6 class="card-title">Results Delivered To Facility</h6>
+                    <h6 class="card-title">Total Results Delivered To Facility</h6>
                     <p class="card-text"><%= @dispatch_results_at_molecular %> </p>
                 </div>
             </div>

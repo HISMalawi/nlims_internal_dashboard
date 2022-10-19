@@ -102,7 +102,7 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             orders_collected = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created,
-                sd.date_dispatched, sp.id as id, 
+                sd.date_dispatched, sp.id as id, TimestampDiff(HOUR, sp.date_created, sd.date_dispatched) AS tat_when_ordered_to_dispatched,
                 tt.name AS test_type FROM specimen_dispatches sd INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
                 INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number 
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
@@ -132,7 +132,8 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             orders_delivered_at_dho = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, 
-                sp.id as id, tt.name AS test_type, sd.date_dispatched, sd.delivery_location FROM specimen_dispatches sd 
+                sp.id as id, tt.name AS test_type, sd.date_dispatched, sd.delivery_location, TimestampDiff(HOUR, sp.date_created, sd.date_dispatched) AS tat_when_ordered_to_dispatched
+                 FROM specimen_dispatches sd 
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
                 WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.name = 'delivering_samples_to_district_hub'
@@ -162,7 +163,8 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             orders_delivered_at_molecular_lab = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, 
-                sp.date_created, sp.id as id, tt.name AS test_type, sd.date_dispatched, sd.delivery_location FROM specimen_dispatches sd 
+                sp.date_created, sp.id as id, tt.name AS test_type, sd.date_dispatched, sd.delivery_location, TimestampDiff(HOUR, sp.date_created, sd.date_dispatched) AS tat_when_ordered_to_dispatched 
+                FROM specimen_dispatches sd 
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
                 WHERE sp.sending_facility='#{site_name}' AND (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') 
@@ -227,7 +229,7 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             dispatched_results_at_molecular = Speciman.find_by_sql("SELECT sp.tracking_number, sp.sending_facility AS facility ,sp.district, sp.date_created, sp.id as id,
-                tt.name AS test_type,sd.date_dispatched FROM specimen_dispatches sd 
+                tt.name AS test_type,sd.date_dispatched, TimestampDiff(HOUR, sp.date_created, sd.date_dispatched) AS tat_when_ordered_to_dispatched FROM specimen_dispatches sd 
                 INNER JOIN specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id 
                 INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
                 INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 

@@ -7,7 +7,7 @@
                     <thead>
                         <tr>
                             <th>Facility</th>
-                            <th>Total Orders</th>
+                            <th>Total Samples</th>
                         </tr>
                     </thead>
                 <%else%>
@@ -17,7 +17,7 @@
                             <th>Facility</th>
                             <th>District</th>
                             <th>Test Type</th>
-                            <th>Date Created</th>
+                            <th>Date Sample Drawn</th>
                         </tr>
                     </thead>
                 <%end%>
@@ -61,17 +61,28 @@ if (dataset.type === 'topLevel'){
                     {data: 'test_type'},
                     {data: 'date_created',
                         render: function (data) {
-                            let date = new Date(data);
-                            let month = date.getMonth()+1;
-                            let day = date.getDate();
-                            if(month < 10){
-                                month = `0${month}`
-                            }
-                            if(day < 10){
-                                day = `0${day}`;
-                            }
-                            return `${day}/${month}/${date.getFullYear()}`;    
-                            // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });       
+                           let date = new Date(data);
+                                let month = date.getMonth()+1;
+                                let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
+                                if(month < 10){
+                                    month = `0${month}`;
+                                }
+                                if(day < 10){
+                                    day = `0${day}`;
+                                }
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;        
                         }
                     }
                     

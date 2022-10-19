@@ -17,7 +17,7 @@
                             <th>Facility</th>
                             <th>District</th>
                             <th>Test Type</th>
-                            <th>Date Order Created</th>
+                            <th>Date Sample Drawn</th>
                             <th>Date Results Available</th>
                         </tr>
                     </thead>
@@ -61,17 +61,28 @@ $(document).ready(function () {
                         {data: 'test_type'},
                         {data: 'date_created',
                             render: function (data) {
-                                let date = new Date(data);
+                               let date = new Date(data);
                                 let month = date.getMonth()+1;
                                 let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
                                 if(month < 10){
-                                    month = `0${month}`
+                                    month = `0${month}`;
                                 }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                return `${day}/${month}/${date.getFullYear()}`;     
-                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });    
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;    
                             }
                         },
                         { data: 'time_entered',
@@ -79,14 +90,25 @@ $(document).ready(function () {
                                 let date = new Date(data);
                                 let month = date.getMonth()+1;
                                 let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
                                 if(month < 10){
                                     month = `0${month}`;
                                 }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                return `${day}/${month}/${date.getFullYear()}`;   
-                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });       
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;      
                             }
                         }
                         

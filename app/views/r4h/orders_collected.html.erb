@@ -1,13 +1,18 @@
 <div class="container mt-3">
-    <h5>Total Orders Collected At A Facility - EID/VIRAL LOAD DATA</h5>
+    <h5>Total Orders Collected At A Facility - EID/VIRAL LOAD DATA 
+    <% if @data[:type] == 'drillDown'%>
+    <span id="tat-cover" class="font-weight-bold">(Avg TAT - Sample pickup vs Sample collected:  <span id="tat" class="tat"></span>)</span>
+    <%end%>
+     </h5>
     <div class="row">
         <div class="col-12">
+        
             <table id="orders_collected_table" class="table table-striped table-bordered" style="width:100%">
                 <%if @data[:type] == 'topLevel'%>
                     <thead>
                         <tr>
                             <th>Facility</th>
-                            <th>Total Orders Collected</th>
+                            <th>Total Samples Delivered</th>
                         </tr>
                     </thead>
                 <%else%>
@@ -17,8 +22,9 @@
                             <th>Facility</th>
                             <th>District</th>
                             <th>Test Type</th>
-                            <th>Date Test Ordered</th>
-                            <th>Date Order Collected</th>
+                            <th>Date Sample Drawn</th>
+                            <th>Sample Picked Date</th>
+                            <th>TAT(Sample pickup vs Sample Drawn)</th>
                         </tr>
                     </thead>
                 <%end%>
@@ -30,9 +36,25 @@
 <script>
 $(document).ready(function () {
     let dataset = JSON.parse('<%=raw(@data.to_json)%>');
+    data_orders = dataset.orders;
+
+    function ConvertHours(data) {
+        var Days=Math.floor(data/24);
+        var Remainder=data % 24;
+        var Hours=Math.floor(Remainder);
+        var Minutes=Math.floor(60*(Remainder-Hours));
+        return `${Days}Days ${Hours}Hrs ${Minutes}Mins`
+    }
+    function avgTAT(orders){
+        arr = [];
+        orders.forEach(res => {
+            arr.push(res.tat_when_ordered_to_dispatched);
+        });
+        return arr.reduce((a, b) => a + b, 0) / arr.length;
+    }
     if (dataset.type === 'topLevel'){
         $('#orders_collected_table').DataTable({
-                    data: dataset.orders,
+                    data: data_orders,
                     "columnDefs": [
                         { className: "openPopup", "targets": [ 0 ] }
                     ],
@@ -50,25 +72,38 @@ $(document).ready(function () {
                     destroy: true
             } );
     }else{
+        $('#tat').text(ConvertHours(avgTAT(data_orders)));
         $('#orders_collected_table').DataTable( {
-                    data: dataset.orders,
+                    data: data_orders,
                     columns: [
                         { data: 'tracking_number'},
                         { data: 'facility' },
                         { data: 'district' },
                         {data: 'test_type'},
                         {data: 'date_created',
-                            render: function (data) {
+                           render: function (data) {
                                 let date = new Date(data);
                                 let month = date.getMonth()+1;
                                 let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
                                 if(month < 10){
-                                    month = `0${month}`
+                                    month = `0${month}`;
                                 }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                return `${day}/${month}/${date.getFullYear()}`;    
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;
                                 // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });      
                             }
                         },
@@ -77,14 +112,36 @@ $(document).ready(function () {
                                 let date = new Date(data);
                                 let month = date.getMonth()+1;
                                 let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
                                 if(month < 10){
                                     month = `0${month}`;
                                 }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                return `${day}/${month}/${date.getFullYear()}`; 
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`; 
                                 // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });
+                            }
+                        },
+                        { data: 'tat_when_ordered_to_dispatched',
+                            render: function (data) {
+                                var Days=Math.floor(data/24);
+                                var Remainder=data % 24;
+                                var Hours=Math.floor(Remainder);
+                                var Minutes=Math.floor(60*(Remainder-Hours));
+                                return `${Days}Days ${Hours}Hrs ${Minutes}Mins`
+                            
                             }
                         }
                         

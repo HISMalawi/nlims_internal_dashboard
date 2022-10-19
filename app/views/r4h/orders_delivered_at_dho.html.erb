@@ -8,7 +8,7 @@
                         <tr>
                             <th>Facility</th>
                             <th>District Delivered To</th>
-                            <th>Total Orders Delivered</th>
+                            <th>Total Samples Delivered</th>
                         </tr>
                     </thead>
                 <%else%>
@@ -19,8 +19,9 @@
                             <th>District</th>
                             <th>Hub Delivered To</th>
                             <th>Test Type</th>
-                            <th>Date Order Created</th>
-                            <th>Date Order Delivered to Hub</th>
+                            <th>Date Sample Drawn</th>
+                            <th>Date Sample Delivered to Hub</th>
+                            <th>TAT(Sample Drawn vs Sample Delivered to Hub)</th>
                         </tr>
                     </thead>
                 <%end%>
@@ -75,29 +76,61 @@ $(document).ready(function () {
                                 let date = new Date(data);
                                 let month = date.getMonth()+1;
                                 let day = date.getDate();
-                                if(month < 10){
-                                    month = `0${month}`
-                                }
-                                if(day < 10){
-                                    day = `0${day}`;
-                                }
-                                return `${day}/${month}/${date.getFullYear()}`;  
-                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });      
-                            }
-                        },
-                        { data: 'date_dispatched',
-                            render: function (data) {
-                                let date = new Date(data);
-                                let month = date.getMonth()+1;
-                                let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
                                 if(month < 10){
                                     month = `0${month}`;
                                 }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
-                                return `${day}/${month}/${date.getFullYear()}`;   
-                                // return date.toLocaleString('en-US', { timeZone: 'Africa/Blantyre' });      
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;       
+                            }
+                        },
+                        { data: 'date_dispatched',
+                            render: function (data) {
+                               let date = new Date(data);
+                                let month = date.getMonth()+1;
+                                let day = date.getDate();
+                                let hour = date.getHours();
+                                let minites = date.getMinutes();
+                                let seconds = date.getSeconds();
+                                if(month < 10){
+                                    month = `0${month}`;
+                                }
+                                if(day < 10){
+                                    day = `0${day}`;
+                                }
+                                if(hour < 10){
+                                    hour = `0${hour}`;
+                                }
+                                if(minites < 10){
+                                    minites = `0${minites}`;
+                                }
+                                if(seconds < 10){
+                                    seconds = `0${seconds}`;
+                                }
+                                return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;       
+                            }
+                        },
+                        { data: 'tat_when_ordered_to_dispatched',
+                            render: function (data) {
+                                var Days=Math.floor(data/24);
+                                var Remainder=data % 24;
+                                var Hours=Math.floor(Remainder);
+                                var Minutes=Math.floor(60*(Remainder-Hours));
+                                return `${Days}Days ${Hours}Hrs ${Minutes}Mins`
+                            
                             }
                         }
                         
