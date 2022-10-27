@@ -29,6 +29,9 @@
 <script>
 $(document).ready(function () {
     let dataset = JSON.parse('<%=raw(@data.to_json)%>');
+    let short_months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+        ];
     if (dataset.type === 'topLevel'){
         $('#orders_uncollected_table').DataTable({
                     data: dataset.orders,
@@ -59,14 +62,11 @@ $(document).ready(function () {
                         {data: 'date_created',
                             render: function (data) {
                                 let date = new Date(data);
-                                let month = date.getMonth()+1;
+                                let month = short_months[date.getMonth()];
                                 let day = date.getDate();
                                 let hour = date.getHours();
                                 let minites = date.getMinutes();
                                 let seconds = date.getSeconds();
-                                if(month < 10){
-                                    month = `0${month}`;
-                                }
                                 if(day < 10){
                                     day = `0${day}`;
                                 }
