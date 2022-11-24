@@ -1,0 +1,120 @@
+<div class="container mt-3">
+  <h5>Total Results Delivered Electronically To EMR Facility - EID/VIRAL LOAD DATA</h5>
+  <div class="row">
+      <div class="col-12">
+          <table id="emrack" class="table table-striped table-bordered" style="width:100%">
+              <%if @data[:type] == 'topLevel'%>
+                  <thead>
+                      <tr>
+                          <th>Facility</th>
+                          <th>District Delivered To</th>
+                          <th>Total Results Delivered</th>
+                      </tr>
+                  </thead>
+              <%else%>
+                  <thead>
+                      <tr>
+                          <th>Tracking Number</th>
+                          <th>Facility</th>
+                          <th>District</th>
+                          <th>Test Type</th>
+                          <th>Date Sample Drawn</th>
+                          <th>Date Result reached EMR</th>
+                      </tr>
+                  </thead>
+              <%end%>
+          </table>
+      </div>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+  let dataset = JSON.parse('<%=raw(@data.to_json)%>');
+  let short_months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+      ];
+  if (dataset.type === 'topLevel'){
+      $('#emrack').DataTable({
+                  data: dataset.orders,
+                  "columnDefs": [
+                      { className: "openPopup", "targets": [ 0 ] }
+                  ],
+                  columns: [
+                      { data: 'facility',
+                          "render": function (data) {
+                              let baseUrl = window.location.href;
+                              let dataURL = new URL(baseUrl+ `?site_name=${data}`).href
+                              return '<a href="'+dataURL+'">'+data+'</a>';
+                          } 
+                      },
+                      {data: 'district'},
+                      {data: 'count'}
+                      
+                  ],
+                  destroy: true
+          } );
+  }else{
+      $('#emrack').DataTable( {
+                  data: dataset.orders,
+                  columns: [
+                      { data: 'tracking_number'},
+                      { data: 'facility' },
+                      { data: 'district' },
+                      {data: 'test_type'},
+                      {data: 'date_created',
+                          render: function (data) {
+                              let date = new Date(data);
+                              let month = short_months[date.getMonth()];
+                              let day = date.getDate();
+                              let hour = date.getHours();
+                              let minites = date.getMinutes();
+                              let seconds = date.getSeconds();
+                              if(day < 10){
+                                  day = `0${day}`;
+                              }
+                              if(hour < 10){
+                                  hour = `0${hour}`;
+                              }
+                              if(minites < 10){
+                                  minites = `0${minites}`;
+                              }
+                              if(seconds < 10){
+                                  seconds = `0${seconds}`;
+                              }
+                              return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;       
+                          }
+                      },
+                      {data: 'emrack_date',
+                      render: function (data) {
+                          let date = new Date(data);
+                          let month = short_months[date.getMonth()];
+                          let day = date.getDate();
+                          let hour = date.getHours();
+                          let minites = date.getMinutes();
+                          let seconds = date.getSeconds();
+                          if(day < 10){
+                              day = `0${day}`;
+                          }
+                          if(hour < 10){
+                              hour = `0${hour}`;
+                          }
+                          if(minites < 10){
+                              minites = `0${minites}`;
+                          }
+                          if(seconds < 10){
+                              seconds = `0${seconds}`;
+                          }
+                          return `${day}/${month}/${date.getFullYear()} ${hour}:${minites}:${seconds}`;       
+                      }
+                  }
+                      
+                      
+                  ],
+                  destroy: true
+          } );
+  }
+
+});
+</script>

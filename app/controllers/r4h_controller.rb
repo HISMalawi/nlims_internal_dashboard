@@ -1,3 +1,5 @@
+require 'date'
+require 'json'
 class R4hController < ApplicationController
     $central_hospitals = ['Kamuzu Central Hospital','Kamuzu Central Hospital Laboratory', 'Mzuzu Central Hospital',
         'Mzuzu Central Hospital Laboratory', 'Queen Elizabeth Central Hospital', 'Queen Elizabeth Central Hospital Laboratory',
@@ -42,7 +44,11 @@ class R4hController < ApplicationController
             WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND
             sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:results_ready_at_molecular]
-        @result_delivered_to_emr_electronically = 0
+        @result_delivered_to_emr_electronically = Speciman.find_by_sql("SELECT COUNT(*) AS emr_ack FROM specimen_dispatches sd INNER JOIN specimen sp 
+            ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+            INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
+            AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2 
+            AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0]['emr_ack']
     end
 
     def total_orders
@@ -253,5 +259,82 @@ class R4hController < ApplicationController
                 orders: dispatched_results_at_molecular
             }
         end
+    end
+
+    def emr_ack
+        if params[:site_name]
+            site_name = params[:site_name]
+            ack_emr_response = Speciman.find_by_sql("SELECT sp.tracking_number,sp.sending_facility AS facility, sp.district,  sp.date_created,
+                 t.date_result_given AS emrack_date FROM specimen_dispatches sd INNER JOIN specimen sp 
+                ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+                INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
+                AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2  AND sp.sending_facility='#{site_name}'
+                AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")
+            @data = {
+                type: 'drillDown',
+                orders: ack_emr_response
+            }
+        else
+            ack_emr_response = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, sp.district, COUNT(*) AS count FROM specimen_dispatches sd INNER JOIN specimen sp 
+                ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+                INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
+                AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2
+                AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}') GROUP BY sp.sending_facility")
+                @data = {
+                    type: 'topLevel',
+                    orders: ack_emr_response
+                }
+        end
+    end
+
+    def test_tat
+        sp = Speciman.find_by_sql("
+            SELECT 
+                sp.tracking_number,
+                sdt.name,
+                sp.date_created,
+                sd.date_dispatched,
+                sp.id
+            FROM
+                specimen_dispatches sd
+                    INNER JOIN
+                specimen_dispatch_types sdt ON sdt.id = sd.dispatcher_type_id
+                    INNER JOIN
+                specimen sp ON sp.tracking_number = sd.tracking_number
+                    INNER JOIN
+                tests t ON t.specimen_id = sp.id
+                    INNER JOIN
+                test_types tt ON tt.id = t.test_type_id
+            WHERE
+                    (tt.name = 'Viral Load'
+                    OR tt.name = 'Early Infant Diagnosis')
+                    AND sp.priority = 'Routine'
+                    AND sp.sending_facility NOT IN ('Kamuzu Central Hospital' , 'Kamuzu Central Hospital Laboratory',
+                    'Mzuzu Central Hospital',
+                    'Mzuzu Central Hospital Laboratory',
+                    'Queen Elizabeth Central Hospital',
+                    'Queen Elizabeth Central Hospital Laboratory',
+                    'Queen Elizabeth (QECH) Central Hospital',
+                    'Zomba Central Hospital')
+            ")
+            arr = []
+            h = {}
+            sp.each do | v |
+                j= JSON.parse(v.to_json)
+                if h.has_key?(j['tracking_number'])
+                    inner_h = h[j['tracking_number']]
+                    inner_h[j['name']] = {
+                        date_created: DateTime.parse(j['date_created']).to_i,
+                        date_dispatched: DateTime.parse(j['date_dispatched'])
+                    }
+                    h.store(j['tracking_number'], inner_h)
+                else
+                    h.store(j['tracking_number'], j['name'] => {
+                        date_created: DateTime.parse(j['date_created']).to_i,
+                        date_dispatched: DateTime.parse(j['date_dispatched'])
+                    })
+                end
+            end
+            render json: h.to_json
     end
 end
