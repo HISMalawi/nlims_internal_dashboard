@@ -264,7 +264,7 @@ class R4hController < ApplicationController
     def emr_ack
         if params[:site_name]
             site_name = params[:site_name]
-            ack_emr_response = Speciman.find_by_sql("SELECT sp.tracking_number,sp.sending_facility AS facility, sp.district,  sp.date_created,
+            ack_emr_response = Speciman.find_by_sql("SELECT sp.tracking_number,sp.sending_facility AS facility, sp.district,  sp.date_created, tt.name AS test_type,
                  t.date_result_given AS emrack_date FROM specimen_dispatches sd INNER JOIN specimen sp 
                 ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
                 INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
