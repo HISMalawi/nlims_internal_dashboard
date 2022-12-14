@@ -44,8 +44,7 @@ class R4hController < ApplicationController
             WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine' AND
             sdt.name = 'delivering_samples_to_molecular_lab' AND (tr.result <> '' OR tr.result IS NOT NULL)
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0][:results_ready_at_molecular]
-        @result_delivered_to_emr_electronically = Speciman.find_by_sql("SELECT COUNT(*) AS emr_ack FROM specimen_dispatches sd INNER JOIN specimen sp 
-            ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+        @result_delivered_to_emr_electronically = Speciman.find_by_sql("SELECT COUNT(*) AS emr_ack FROM specimen sp INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
             INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
             AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2 
             AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")[0]['emr_ack']
@@ -265,8 +264,7 @@ class R4hController < ApplicationController
         if params[:site_name]
             site_name = params[:site_name]
             ack_emr_response = Speciman.find_by_sql("SELECT sp.tracking_number,sp.sending_facility AS facility, sp.district,  sp.date_created, tt.name AS test_type,
-                 t.date_result_given AS emrack_date FROM specimen_dispatches sd INNER JOIN specimen sp 
-                ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+                 t.date_result_given AS emrack_date FROM specimen sp INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
                 INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
                 AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2  AND sp.sending_facility='#{site_name}'
                 AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}')")
@@ -275,8 +273,8 @@ class R4hController < ApplicationController
                 orders: ack_emr_response
             }
         else
-            ack_emr_response = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, sp.district, COUNT(*) AS count FROM specimen_dispatches sd INNER JOIN specimen sp 
-                ON sp.tracking_number = sd.tracking_number INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
+            ack_emr_response = Speciman.find_by_sql("SELECT sp.sending_facility AS facility, sp.district, COUNT(*) AS count FROM specimen sp 
+                INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
                 INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
                 AND sp.priority = 'Routine' AND t.test_result_receipent_types = 2
                 AND sp.sending_facility NOT IN ('#{$central_hospitals.join("','")}') GROUP BY sp.sending_facility")
