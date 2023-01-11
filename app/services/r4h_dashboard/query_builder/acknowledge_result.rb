@@ -16,7 +16,7 @@ module R4hDashboard
 
         def count_per_site(start_date: R4hDashboard::Utils::General.start_date, end_date: R4hDashboard::Utils::General.end_date)
           central_hospitals = R4hDashboard::Utils::General.central_hospitals
-          sql = "SELECT t.test_result_receipent_types as id, trrt.name, sp.sending_facility, sp.district,
+          sql = "SELECT t.test_result_receipent_types as id, trrt.name, sp.sending_facility, MAX(sp.district) AS district,
             COUNT(t.test_result_receipent_types) AS count
             FROM specimen sp INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
             INNER JOIN test_result_recepient_types trrt ON trrt.id = t.test_result_receipent_types
@@ -24,7 +24,7 @@ module R4hDashboard
             AND sp.priority = 'Routine'"
           sql << " AND sp.sending_facility NOT IN #{central_hospitals}"
           sql << " AND (substr(t.time_created,1,10) BETWEEN '#{start_date}' AND '#{end_date}')"
-          sql << " GROUP BY t.test_result_receipent_types,sp.sending_facility, sp.district"
+          sql << " GROUP BY t.test_result_receipent_types,sp.sending_facility"
         end
 
         def drill_details(site_name: '', start_date: R4hDashboard::Utils::General.start_date, 
