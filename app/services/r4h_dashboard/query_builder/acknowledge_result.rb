@@ -14,14 +14,15 @@ module R4hDashboard
           sql << " GROUP BY t.test_result_receipent_types"
         end
 
-        def total_count_per_site(start_date: R4hDashboard::Utils::General.start_date, end_date: R4hDashboard::Utils::General.end_date)
+        def total_count_per_site(start_date: R4hDashboard::Utils::General.start_date, end_date: R4hDashboard::Utils::General.end_date,
+          acknowledgement_type: 2)
           central_hospitals = R4hDashboard::Utils::General.central_hospitals
           sql = "SELECT t.test_result_receipent_types as id, trrt.name, sp.sending_facility, MAX(sp.district) AS district,
             COUNT(t.test_result_receipent_types) AS count
             FROM specimen sp INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id
             INNER JOIN test_result_recepient_types trrt ON trrt.id = t.test_result_receipent_types
             INNER JOIN test_results tr ON tr.test_id = t.id WHERE (tt.name = 'Viral Load' OR tt.name = 'Early Infant Diagnosis')
-            AND sp.priority = 'Routine'"
+            AND sp.priority = 'Routine' AND t.test_result_receipent_types = #{acknowledgement_type}"
           sql << " AND sp.sending_facility NOT IN #{central_hospitals}"
           sql << " AND (substr(t.time_created,1,10) BETWEEN '#{start_date}' AND '#{end_date}')"
           sql << " GROUP BY t.test_result_receipent_types,sp.sending_facility"
