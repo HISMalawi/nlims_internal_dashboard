@@ -4,7 +4,7 @@ module R4hDashboard
       class << self
         def total_count(start_date: R4hDashboard::Utils::General.start_date, end_date: R4hDashboard::Utils::General.end_date)
           central_hospitals = R4hDashboard::Utils::General.central_hospitals
-          sql = "SELECT sd.id AS id, 'results_ready_at_molecular' AS 'name', COUNT(t.id) AS count FROM specimen_dispatches sd
+          sql = "SELECT MAX(sd.id) AS id, 'results_ready_at_molecular' AS 'name', COUNT(t.id) AS count FROM specimen_dispatches sd
             INNER JOIN specimen sp ON sp.tracking_number = sd.tracking_number
             INNER JOIN tests t ON t.specimen_id = sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
             INNER JOIN test_results tr ON tr.test_id = t.id 

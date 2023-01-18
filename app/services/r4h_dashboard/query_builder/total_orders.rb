@@ -4,7 +4,7 @@ module R4hDashboard
       class << self
         def total_count(start_date: R4hDashboard::Utils::General.start_date, end_date: R4hDashboard::Utils::General.end_date, uncollected_orders: false)
           central_hospitals = R4hDashboard::Utils::General.central_hospitals
-          sql = "SELECT sp.id AS id, 'total_orders' AS name, COUNT(sp.id) AS count FROM specimen sp
+          sql = "SELECT MAX(sp.id) AS id, 'total_orders' AS name, COUNT(sp.id) AS count FROM specimen sp
               INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
               WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sp.priority = 'Routine'"
           sql << " AND sp.sending_facility NOT IN #{central_hospitals}"
