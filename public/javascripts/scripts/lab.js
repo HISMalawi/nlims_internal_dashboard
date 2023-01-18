@@ -323,6 +323,7 @@ function searchData()
                 data: res,
                 columns: [
                     { data: 'tracking_number' },
+                    { data: 'sending_facility' },
                     { data: 'date_created' },
                     { data: 'specimen_status.time_updated' },
                     { data: 'test_status' },
