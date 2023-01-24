@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  
+  namespace :api do 
+    namespace :v1 do 
+      get '/r4h', to: 'r4h#index'
+      get '/r4h/count_per_site', to: 'r4h#count_per_site'
+      get '/r4h/drilldown', to: 'r4h#drilldown'
+      get '/home', to: 'home#index'
+    end
+  end
+
   get '' , to: 'home#index'
 
   post '/query_lab_stats_total_orders_submitted' => "home#query_lab_stats_total_orders"
