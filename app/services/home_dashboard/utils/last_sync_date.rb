@@ -3,6 +3,9 @@ module HomeDashboard
     module LastSyncDate 
       class << self
         def get(facility_code)
+         if facility_code.nil?
+          sync_date = 'N/A'
+         else
           facility_code_condition = HomeDashboard::QueryBuilder::Sql.generate_facility_code_condition(facility_code)
           sql = "SELECT sp.created_at FROM specimen sp WHERE " << facility_code_condition
           sql << " ORDER BY id DESC LIMIT 1"
@@ -12,6 +15,7 @@ module HomeDashboard
           else
             sync_date = 'N/A'
           end
+         end
         end
       end
     end
