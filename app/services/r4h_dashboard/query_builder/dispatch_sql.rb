@@ -21,9 +21,9 @@ module R4hDashboard
               INNER JOIN tests t ON t.specimen_id=sp.id INNER JOIN test_types tt ON tt.id = t.test_type_id 
               WHERE (tt.name='Viral Load' OR tt.name='Early Infant Diagnosis') AND sdt.id = #{dispatch_type_id} 
               AND sp.priority = 'Routine'"
-          sql = " AND sp.sending_facility NOT IN #{central_hospitals}"
+          sql << " AND sp.sending_facility NOT IN #{central_hospitals}"
           sql << " AND (substr(sd.created_at,1,10) BETWEEN '#{start_date}' AND '#{end_date}')"
-          sql <<" GROUP BY sdt.id, sp.sending_facility"
+          sql << " GROUP BY sdt.id, sp.sending_facility"
         end
 
         def drilldown(site_name: '', start_date: R4hDashboard::Utils::General.start_date, 
