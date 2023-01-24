@@ -5,7 +5,11 @@ Rails.application.routes.draw do
       get '/r4h', to: 'r4h#index'
       get '/r4h/count_per_site', to: 'r4h#count_per_site'
       get '/r4h/drilldown', to: 'r4h#drilldown'
-      get '/home', to: 'home#index'
+      get '/home/orders', to: 'home#orders'
+      get '/home/tests', to: 'home#tests'
+      get '/home/sites', to: 'home#sites'
+      get '/home/test_types', to: 'home#test_types'
+      get '/home/last_sync_date', to: 'home#last_sync_date'
     end
   end
 
