@@ -17,10 +17,22 @@ module R4hDashboard
           end
         end
         obj = {
-          emr_acknowledged: acknowledgement,
-          total_orders: total_orders,
-          total_dispatches: dispatches,
-          results_ready_at_molecular: result_ready
+          emr_acknowledged: {
+            data: acknowledgement,
+            url_level: 'acknowledgement'
+          },
+          total_orders: {
+            data: total_orders,
+            url_level: 'total'
+          },
+          total_dispatches: {
+            data: dispatches,
+            url_level: 'dispatches'
+          },
+          results_ready_at_molecular: {
+            data: result_ready,
+            url_level: 'result_ready'
+          }
         }
         JSON.parse(obj.to_json)
        end
